@@ -1,0 +1,23 @@
+{
+  "name": "fstnl-bom-mngr",
+  "version": "0.0.1",
+  "description": "Track and Manage Deliveries and industrial Projects",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a3rtgm-berlin/fstnl-bom-mngr.git"
+  },
+  "author": "a3rtgm-bln",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/a3rtgm-berlin/fstnl-bom-mngr/issues"
+  },
+  "homepage": "https://github.com/a3rtgm-berlin/fstnl-bom-mngr#readme",
+  "devDependencies": {
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
+  }
+}
