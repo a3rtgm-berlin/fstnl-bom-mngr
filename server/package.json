@@ -1,0 +1,12 @@
+{
+  "name": "fstnl-bom-server",
+  "version": "0.0.1",
+  "description": "backend for ng-fstnl-bom-mngr",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "a3rtgm-ds",
+  "license": "ISC"
+}

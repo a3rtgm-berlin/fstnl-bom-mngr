@@ -1,0 +1,11 @@
+nav {
+    .navbar-nav {
+        display:flex;
+        width: 100%;
+        flex-direction: row;
+
+        a {
+            flex: 0 1 8%;
+        }
+    }
+}
