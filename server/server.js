@@ -17,8 +17,9 @@ server.listen(port, () => {
 server.use(cors(corsOptions));
 
 server.get('/', (req, res, next) => {
-    res.send('success');
+    res.status(200).end();
 });
 server.post('/upload', (req, res) => {
     res.send('u got post');
 });
+ 
