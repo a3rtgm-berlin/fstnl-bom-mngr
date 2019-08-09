@@ -10,16 +10,14 @@ const corsOptions = {
     optionsSuccessStatus: 200,
 }
 
+server.use(cors(corsOptions));
+server.get('/', (req, res, next) => {
+    res.send(req);
+});
+server.post('/upload/', upload);
+
+
 server.listen(port, () => {
     console.log(`server started @Port:${port}`);
-});
-
-server.use(cors(corsOptions));
-
-server.get('/', (req, res, next) => {
-    res.status(200).end();
-});
-server.post('/upload', (req, res) => {
-    res.send('u got post');
 });
  

@@ -38,12 +38,6 @@ export class XlsLoaderComponent implements OnInit {
   private onSubmit() {
     if (this.file) {
       this.uploadService.upload([this.file]);
-
-      // this.reader.readAsDataURL(this.file);
-
-      // this.reader.onload = () => {
-      //   this.parseXls(this.reader.result);
-      // };
     } else {
       alert('Please select valid file!');
     }
