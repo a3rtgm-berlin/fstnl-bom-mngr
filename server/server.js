@@ -11,8 +11,8 @@ const corsOptions = {
 }
 
 server.use(cors(corsOptions));
-server.get('/', (req, res, next) => {
-    res.send(req);
+server.get('/', (req, res) => {
+    res.send("connected");
 });
 server.post('/upload/', upload);
 

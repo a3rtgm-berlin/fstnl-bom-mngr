@@ -1,19 +1,31 @@
-// const Excel = require('../node_modules/exceljs');
 const XLSX = require('../node_modules/xlsx');
 
+const rangeToIgnore = {c:1, r:3};
+
 module.exports = function xlsParser(input) {
-    // load from buffer
-    let wb = XLSX.read(input, {type:"array"});
-    let ws = wb.Sheets[wb.SheetNames[0]];
+    // load from buffer, 
+    const wb = XLSX.read(input, {type:"array"});
+    const ws = wb.Sheets[wb.SheetNames[0]];
 
-    console.log(ws);
+    // retrieve date of file
+    let date = ws['A1'].v;
+    let index = date.indexOf(' ');
+    date = date.substring(0, index);
 
-    delete_rows(ws, 0, 3);
+    // Get range of BOM File
+    const range = XLSX.utils.decode_range(ws['!ref']);
+    range.s = rangeToIgnore;
 
+    // Set new Range according to standard BOM File
+    const newRange = XLSX.utils.encode_range(range);
 
-    let dataAsJson = XLSX.utils.sheet_to_json(ws);
-    let dataAsCsv = XLSX.utils.sheet_to_csv(ws);
+    // Create new Worksheet from range
+    const dataAsJson = XLSX.utils.sheet_to_json(ws, {range: newRange});
+    const newWs = XLSX.utils.json_to_sheet(dataAsJson);
 
-    return dataAsCsv;
+    // encode as CSV
+    const dataAsCsv = XLSX.utils.sheet_to_csv(newWs, {FS: ';'});
+
+    return {json: {}, csv: dataAsCsv, date: date, uploadDate: new Date()};
 }
 

@@ -3,6 +3,7 @@ const FileReader = require('../node_modules/filereader');
 const fs = require('../node_modules/file-system');
 const path = require('../node_modules/path');
 const parser = require('./xlsParser');
+const csvHandler = require('./csvHandler');
 
 const reader = new FileReader();
 
@@ -19,11 +20,14 @@ module.exports = function upload(req, res) {
         reader.addEventListener('load', (evt) => {
             const view = new Uint8Array(reader.result);
 
-            // Output
-            dataAsCsv = parser(reader.result);
+            // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
+            const newDatum = parser(reader.result);
 
+            // save files to server dir
             fs.writeFile(path.join(uploadDir, file.name), view);
-            fs.writeFile(path.join(uploadDir, "test.csv"), dataAsCsv);
+            fs.writeFile(path.join(uploadDir, `${file.name}.csv`), newDatum.csv);
+
+            csvHandler.csvToJson(newDatum.csv);
         });
     });
 
@@ -32,4 +36,4 @@ module.exports = function upload(req, res) {
     });
 
     form.parse(req);
-}
+};
