@@ -42,10 +42,4 @@ export class XlsLoaderComponent implements OnInit {
       alert('Please select valid file!');
     }
   }
-
-  public parseXls(d: string | ArrayBuffer) {
-    const input: any = d;
-    console.log(input);
-  }
-
 }

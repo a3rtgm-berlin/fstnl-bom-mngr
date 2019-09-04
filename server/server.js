@@ -1,6 +1,10 @@
 const express = require('../node_modules/express');
 const cors = require('../node_modules/cors');
+const bodyParser = require("../node_modules/body-parser");
+const mongoose = require("../node_modules/mongoose");
 const upload = require('./upload');
+// DB Models
+const MaterialList = require("./models/list");
 
 const server = express();
 const port = process.env.PORT || 8000;
@@ -10,14 +14,43 @@ const corsOptions = {
     optionsSuccessStatus: 200,
 }
 
+// Connect DB
+mongoose.connect('mongodb://localhost/fstnl-bom-mngr', { useNewUrlParser: true });
+
+// Set server options
 server.use(cors(corsOptions));
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: false }));
+
+// Set routes
 server.get('/', (req, res) => {
-    res.send("connected");
+    res.send(200, "connected");
 });
-server.post('/upload/', upload);
+server.post('/api/upload/', upload);
+server.get('/api/projects', (req, res, next) => {
+    MaterialList.find((err, data) => {
+        if (err) return console.error(err);
 
+        let output = [];
+        data.forEach(d => {
+            output.push(d.id, d.date, d.uploadDate);
+        });
+        res.send([output]);
+    });
+});
+server.get('/api/projects/:id', function(req, res, next) {
+    const q = req.params.id;
 
+    MaterialList.find({id: q}, (err, data) => {
+        console.log(data[0].id);
+        res.send([data[0]]);
+    });
+});
+
+// Open Server Connection
 server.listen(port, () => {
     console.log(`server started @Port:${port}`);
 });
+
+
  

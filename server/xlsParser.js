@@ -11,6 +11,7 @@ module.exports = function xlsParser(input) {
     let date = ws['A1'].v;
     let index = date.indexOf(' ');
     date = date.substring(0, index);
+    let id = date.substring(3, 5) + date.substring(6);
 
     // Get range of BOM File
     const range = XLSX.utils.decode_range(ws['!ref']);
@@ -26,6 +27,6 @@ module.exports = function xlsParser(input) {
     // encode as CSV
     const dataAsCsv = XLSX.utils.sheet_to_csv(newWs, {FS: ';'});
 
-    return {json: {}, csv: dataAsCsv, date: date, uploadDate: new Date()};
+    return {id: id, json: {}, csv: dataAsCsv, date: date, uploadDate: new Date()};
 }
 

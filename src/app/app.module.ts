@@ -7,12 +7,16 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { XlsLoaderComponent } from './xls-loader/xls-loader.component';
 import { ProjectListComponent } from './project-list/project-list.component';
+import { CompareOrdersComponent } from './compare-orders/compare-orders.component';
+import { ProjectComponent } from './project/project.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     XlsLoaderComponent,
     ProjectListComponent,
+    CompareOrdersComponent,
+    ProjectComponent,
   ],
   imports: [
     BrowserModule,

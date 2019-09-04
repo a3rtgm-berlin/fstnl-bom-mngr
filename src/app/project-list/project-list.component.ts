@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RestService } from '../rest/rest.service';
 
 @Component({
   selector: 'app-project-list',

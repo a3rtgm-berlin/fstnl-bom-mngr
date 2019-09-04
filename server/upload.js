@@ -4,12 +4,14 @@ const fs = require('../node_modules/file-system');
 const path = require('../node_modules/path');
 const parser = require('./xlsParser');
 const csvHandler = require('./csvHandler');
+// DB Models
+const MaterialList = require("./models/list");
 
 const reader = new FileReader();
 
 const uploadDir = "./user-upload/";
 
-module.exports = async function upload(req, res) {
+module.exports = function upload(req, res) {
     let form = new IncomingForm();
 
     form.on('file', (field, file) => {
@@ -28,13 +30,18 @@ module.exports = async function upload(req, res) {
             // send csv to csvHandler and wait for resolution
             // return the new data-object
             // send the json back to the client as response
-            addJson(newDatum);
+            addJson(newDatum).then((data) => {
+                dbModel = new MaterialList(data);
+                dbModel.save();
+
+                console.log(data.id);
+                res.send([data.id]);
+            });
         });
     });
 
-    form.on('end', () => {
-        // res.json();
-    });
+    
+    form.on('end', (data) => {});
 
     form.parse(req);
 };

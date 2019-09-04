@@ -1,5 +1,5 @@
 const d3 = require('../node_modules/d3');
-const mat = require('./material');
+const mat = require('./models/material');
 const dsv = d3.dsvFormat(";");
 
 async function csvToJson (csv) {
