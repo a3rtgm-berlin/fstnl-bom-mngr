@@ -6,10 +6,10 @@ import { CompareOrdersComponent } from './compare-orders/compare-orders.componen
 import { ProjectComponent } from './project/project.component';
 
 const routes: Routes = [
-  { path: '',  redirectTo: '/projects', pathMatch: 'full' },
-  { path: 'projects', component: ProjectListComponent },
-  { path: 'projects/:id', component: ProjectComponent },
-  { path: 'compare/:id1&:id2', component: CompareOrdersComponent },
+  { path: '',  redirectTo: '/app/lists', pathMatch: 'full' },
+  { path: 'app/lists', component: ProjectListComponent },
+  { path: 'app/lists/:id', component: ProjectComponent },
+  { path: 'app/lists/compare/:id1&:id2', component: CompareOrdersComponent },
 ];
 
 @NgModule({

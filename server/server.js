@@ -27,24 +27,51 @@ server.get('/', (req, res) => {
     res.send(200, "connected");
 });
 server.post('/api/upload/', upload);
-server.get('/api/projects', (req, res, next) => {
+server.get('/api/lists', (req, res, next) => {
     MaterialList.find((err, data) => {
         if (err) return console.error(err);
-
-        let output = [];
-        data.forEach(d => {
-            output.push(d.id, d.date, d.uploadDate);
-        });
-        res.send([output]);
+        res.send(data);
     });
 });
-server.get('/api/projects/:id', function(req, res, next) {
+server.get('/api/lists/:id', (req, res, next) => {
     const q = req.params.id;
 
-    MaterialList.find({id: q}, (err, data) => {
-        console.log(data[0].id);
-        res.send([data[0]]);
+    MaterialList.findOne({id: q}, (err, data) => {
+        if (err) return console.error(err);
+        console.log(data.id);
+        res.send(data);
     });
+});
+server.delete('/api/lists/:id', (req, res, next) => {
+    const q = req.params.id;
+
+    MaterialList.findOneAndDelete({id: q}, (err) => {
+        if (err) return console.error(err);
+        res.send(204);
+    });
+});
+server.put('/api/lists/:id', (req, res, next) => {
+    const q = req.params.id,
+        body = req.body;
+
+    MaterialList.FindOneAndUpdate({id: q}, req.body, (err) => {
+        res.send(200);
+    });
+});
+server.post('/api/lists', (req, res, next) => {
+    const dbModel = new MaterialList(data);
+    
+    res.send(201, dbModel);
+});
+
+/**
+ * Just for testing
+ */
+server.get('/api/purge', (req, res, next) => {
+    MaterialList.deleteMany({}, (err) => {
+        if (err) { console.error(err); }
+    });
+    res.send(204, "DB purged");
 });
 
 // Open Server Connection

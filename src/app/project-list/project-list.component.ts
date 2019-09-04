@@ -8,9 +8,24 @@ import { RestService } from '../rest/rest.service';
 })
 export class ProjectListComponent implements OnInit {
 
-  constructor() { }
+  public observable;
+
+  constructor(public restService: RestService) { }
 
   ngOnInit() {
+    this.getAll();
   }
 
+  private onSubmit() {
+    this.getAll();
+  }
+
+  private getAll() {
+    this.observable = this.restService.getAllLists();
+    this.resolveObservable();
+  }
+
+  private async resolveObservable() {
+    console.log(await this.observable.toPromise());
+  }
 }

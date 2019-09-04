@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 
-const url = 'http://localhost:8000/api';
+const url = 'http://localhost:8000/api/upload';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class UploadService {
       this.http.request(req).subscribe((event) => {
         if (event instanceof HttpResponse) {
           console.log(`Success! ${file.name} uploaded.`);
-          this.router.navigate([`/projects/${event.body}`]);
+          this.router.navigate([`/projects/:${event.body}`]);
         }
       });
     });
