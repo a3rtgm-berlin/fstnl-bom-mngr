@@ -9,6 +9,7 @@ import { XlsLoaderComponent } from './xls-loader/xls-loader.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { CompareOrdersComponent } from './compare-orders/compare-orders.component';
 import { ProjectComponent } from './project/project.component';
+import { QueryFormComponent } from './query-form/query-form.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ProjectComponent } from './project/project.component';
     ProjectListComponent,
     CompareOrdersComponent,
     ProjectComponent,
+    QueryFormComponent,
   ],
   imports: [
     BrowserModule,
