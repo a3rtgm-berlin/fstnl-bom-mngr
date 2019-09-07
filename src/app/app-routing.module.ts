@@ -4,6 +4,7 @@ import { XlsLoaderComponent } from './xls-loader/xls-loader.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { CompareOrdersComponent } from './compare-orders/compare-orders.component';
 import { ProjectComponent } from './project/project.component';
+import { Observable } from 'rxjs';
 
 const routes: Routes = [
   { path: '',  redirectTo: '/app/lists', pathMatch: 'full' },

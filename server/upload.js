@@ -34,8 +34,7 @@ module.exports = function upload(req, res) {
                 dbModel = new MaterialList(data);
                 dbModel.save();
 
-                console.log(data.id);
-                res.send([data.id]);
+                res.send(203, [data.id]);
             });
         });
     });

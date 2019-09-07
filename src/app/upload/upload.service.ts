@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 
 const url = 'http://localhost:8000/api/upload';
@@ -11,7 +13,10 @@ export class UploadService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  public upload(files: [File]) {
+  public upload(files: [File]): {[key: string]: {progress: Observable<number>}} {
+
+    const status: { [key: string]: { progress: Observable<number> } } = {};
+
     files.forEach(file => {
       const formData: FormData = new FormData();
       formData.append('file', file, file.name);
@@ -20,12 +25,24 @@ export class UploadService {
         reportProgress: true
       });
 
+      const progress = new Subject<number>();
+
       this.http.request(req).subscribe((event) => {
-        if (event instanceof HttpResponse) {
-          console.log(`Success! ${file.name} uploaded.`);
-          this.router.navigate([`/projects/:${event.body}`]);
+        if (event.type === HttpEventType.UploadProgress) {
+          const percentDone = Math.round(100 * event.loaded / event.total);
+
+          progress.next(percentDone);
+        } else if (event instanceof HttpResponse) {
+          progress.complete();
+          this.router.navigate([`app/lists/${event.body}`]);
         }
       });
+
+      status[file.name] = {
+        progress: progress.asObservable()
+      };
     });
+
+    return status;
   }
 }

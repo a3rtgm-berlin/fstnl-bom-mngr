@@ -47,7 +47,8 @@ server.delete('/api/lists/:id', (req, res, next) => {
 
     MaterialList.findOneAndDelete({id: q}, (err) => {
         if (err) return console.error(err);
-        res.send(204);
+        console.log(q + ' deleted.');
+        res.sendStatus(204);
     });
 });
 server.put('/api/lists/:id', (req, res, next) => {

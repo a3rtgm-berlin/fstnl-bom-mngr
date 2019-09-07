@@ -13,7 +13,6 @@ export class XlsLoaderComponent implements OnInit {
 
   public data: object;
 
-  private reader = new FileReader();
   private file: File | null = null;
   private acceptedTypes: string[] = ['application/vnd.ms-excel', 'text/csv'];
 
@@ -37,7 +36,13 @@ export class XlsLoaderComponent implements OnInit {
   // Submit uploaded file to server as POST request
   private onSubmit() {
     if (this.file) {
-      this.uploadService.upload([this.file]);
+      const upload = this.uploadService.upload([this.file]);
+
+      upload[this.file.name].progress.subscribe({
+        next: v => console.log(`POST ${this.file.name}: ${v}%`),
+        error: err => console.error(`POST Error`, err),
+        complete: () => console.log(` POST ${this.file.name} has been successfully uploaded and stored in the database.`)
+      });
     } else {
       alert('Please select valid file!');
     }
