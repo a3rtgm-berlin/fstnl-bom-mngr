@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '',  redirectTo: '/app/lists', pathMatch: 'full' },
   { path: 'app/lists', component: ProjectListComponent },
   { path: 'app/lists/:id', component: ProjectComponent },
-  { path: 'app/lists/compare/:id1&:id2', component: CompareOrdersComponent },
+  { path: 'app/lists/compare/:id1/:id2', component: CompareOrdersComponent },
 ];
 
 @NgModule({

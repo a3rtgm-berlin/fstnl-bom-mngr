@@ -38,7 +38,6 @@ server.get('/api/lists/:id', (req, res, next) => {
 
     MaterialList.findOne({id: q}, (err, data) => {
         if (err) return console.error(err);
-        console.log(data.id);
         res.send(data);
     });
 });

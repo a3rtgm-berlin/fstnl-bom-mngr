@@ -11,7 +11,7 @@ module.exports = function xlsParser(input) {
     let date = ws['A1'].v;
     let index = date.indexOf(' ');
     date = date.substring(0, index);
-    let id = date.substring(3, 5) + date.substring(6);
+    let id = date.substring(6) + '-' + date.substring(3, 5);
 
     // Get range of BOM File
     const range = XLSX.utils.decode_range(ws['!ref']);

@@ -10,6 +10,8 @@ import { ProjectListComponent } from './project-list/project-list.component';
 import { CompareOrdersComponent } from './compare-orders/compare-orders.component';
 import { ProjectComponent } from './project/project.component';
 import { QueryFormComponent } from './query-form/query-form.component';
+import { MaterialListViewComponent } from './material-list-view/material-list-view.component';
+import { MaterialListsCollectionViewComponent } from './material-lists-collection-view/material-lists-collection-view.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { QueryFormComponent } from './query-form/query-form.component';
     CompareOrdersComponent,
     ProjectComponent,
     QueryFormComponent,
+    MaterialListViewComponent,
+    MaterialListsCollectionViewComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,16 @@
-<p>project-list</p>
+<ng-container *ngIf="materialLists; else elseTemplate">
+        <div class="d-flex flex-column single-list">
+            <app-material-lists-collection-view [materialLists]="materialLists" (selectedMaterialLists)="setSelectedMaterialLists($event)"></app-material-lists-collection-view>
+            <div class="input-group mb-3" id="getAllLists">
+                <button class="btn btn-outline-secondary" type="button" (click)="triggerCompareLists()">Compare selected</button>
+            </div>
+        </div>
+</ng-container>
+<ng-template #elseTemplate>
+    <div class="d-flex flex-column single-list">
+        <div class="input-group mb-3">
+            <small class="form-text text-muted" *ngIf="!materialList">There are no Lists stored in the database. Please upload a BOM-File first.</small>
+        </div>
+    </div>
+</ng-template>
+
