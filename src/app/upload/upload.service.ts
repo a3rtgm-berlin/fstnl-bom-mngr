@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
+import { RestService } from '../rest/rest.service';
 
 const url = 'http://localhost:8000/api/upload';
 
@@ -11,7 +11,7 @@ const url = 'http://localhost:8000/api/upload';
 })
 export class UploadService {
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private restService: RestService) {}
 
   public upload(files: [File]): {[key: string]: {progress: Observable<number>}} {
 
@@ -34,6 +34,8 @@ export class UploadService {
           progress.next(percentDone);
         } else if (event instanceof HttpResponse) {
           progress.complete();
+
+          this.restService.getList(`${event.body}`);
           this.router.navigate([`app/lists/${event.body}`]);
         }
       });

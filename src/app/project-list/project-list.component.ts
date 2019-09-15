@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MaterialList } from '../materialListModel';
 import { RestService } from '../rest/rest.service';
 
@@ -12,31 +12,27 @@ export class ProjectListComponent implements OnInit {
 
   public materialLists: MaterialList[];
   public selectedMaterialLists: Set<MaterialList> = new Set<MaterialList>();
-  private observable;
 
-  constructor(private route: ActivatedRoute, private restService: RestService) {
-  }
-
-  ngOnInit() {
-    this.getAllLists();
-  }
-
-  async getAllLists() {
-    this.observable = this.restService.getAllLists();
-
-    const materialLists$ = await this.observable.toPromise();
-
-    this.materialLists = materialLists$.map((el) => {
-      el.uploadDate = new Date(el.uploadDate);
-      return el;
+  constructor(private restService: RestService, private router: Router) {
+    this.restService.allLists.subscribe(res => {
+      this.materialLists = res;
     });
   }
 
-  setSelectedMaterialLists(lists) {
-    this.selectedMaterialLists = lists;
+  ngOnInit() {
+  }
+
+  setSelectedMaterialLists(event$) {
+    if (event$.status) {
+      this.selectedMaterialLists.add(event$.materialList);
+    } else {
+      this.selectedMaterialLists.delete(event$.materialList);
+    }
   }
 
   triggerCompareLists() {
-    console.log(this.selectedMaterialLists);
+    const arr = Array.from(this.selectedMaterialLists);
+
+    this.router.navigate([`./app/lists/compare/${arr[0].id}/${arr[1].id}`]);
   }
 }

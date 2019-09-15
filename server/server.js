@@ -3,6 +3,8 @@ const cors = require('../node_modules/cors');
 const bodyParser = require("../node_modules/body-parser");
 const mongoose = require("../node_modules/mongoose");
 const upload = require('./upload');
+const Comparison = require('./compareLists');
+
 // DB Models
 const MaterialList = require("./models/list");
 
@@ -62,6 +64,16 @@ server.post('/api/lists', (req, res, next) => {
     const dbModel = new MaterialList(data);
     
     res.send(201, dbModel);
+});
+server.get('/api/lists/compare/:id1/:id2', (req, res, next) => {
+    const q = req.params;
+    let comparison;
+
+    MaterialList.find({id: {$in: [q.id1, q.id2]}}, (err, data) => {
+        if (err) return console.error(err);
+        comparison = new Comparison(data);
+        res.send(comparison);
+    });
 });
 
 /**

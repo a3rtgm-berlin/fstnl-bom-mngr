@@ -16,7 +16,7 @@ class Item {
         // relevant rows from csv
         this.Material = d["Material P"];
         this.Objektkurztext = d["Objektkurztext"];
-        this.Menge = d["Menge"];
+        this.Menge = parseInt(d["   Menge"]);
         this.ME = d["ME"];
         this.MArt = d["MArt"];
         this.Station = d["ArbPlatz"];

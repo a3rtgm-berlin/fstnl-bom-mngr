@@ -1,6 +1,15 @@
 <ng-container *ngIf="materialLists; else elseTemplate">
         <div class="d-flex flex-column single-list">
-            <app-material-lists-collection-view [materialLists]="materialLists" (selectedMaterialLists)="setSelectedMaterialLists($event)"></app-material-lists-collection-view>
+            <label>List of all uploaded files</label>
+            <small class="form-text text-muted"></small>
+            <ul>
+                <li class="list-group list-group-flush" *ngFor="let materialList of materialLists">
+                    <app-material-lists-collection-view 
+                        [materialList]="materialList" 
+                        (selectedMaterialList)="setSelectedMaterialLists($event)">
+                    </app-material-lists-collection-view>
+                </li>
+            </ul>
             <div class="input-group mb-3" id="getAllLists">
                 <button class="btn btn-outline-secondary" type="button" (click)="triggerCompareLists()">Compare selected</button>
             </div>
