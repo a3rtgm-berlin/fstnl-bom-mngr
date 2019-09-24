@@ -5,23 +5,21 @@
   </h2>
 </div>
 
-<!-- <nav class="navbar">
-  <div class="navbar-nav">
-    <a class="nav-item nav-link" [routerLink]="'/lists'">Lists</a>
-    <a class="nav-item nav-link" [routerLink]="'/list'">List</a>
-  </div>
-</nav> -->
-
-<div class="content container-fluid">
-  <div class="tools d-flex flex-row bd-highlight mb-3">
-    <router-outlet class="component"></router-outlet>
-  </div>
-  <div class="tools d-flex flex-row bd-highlight mb-3">
-    <app-query-form class="component"></app-query-form>
-  </div>
-  <div class="tools d-flex flex-row bd-highlight mb-3">
-      <app-xls-loader class="component"></app-xls-loader>
+<div class="app-body">
+  <div class="content container-fluid">
+    <div class="tools d-flex flex-row bd-highlight mb-3">
+      <router-outlet class="component"></router-outlet>
+    </div>
+    <div class="tools d-flex flex-row bd-highlight mb-3">
+      <app-query-form class="component"></app-query-form>
+    </div>
+    <div class="tools d-flex flex-row bd-highlight mb-3">
+        <app-xls-loader class="component"></app-xls-loader>
+    </div>
   </div>
 </div>
 
+<!-- Custom modal setup -->
+<div id="modal-container" class="hidden"></div>
+<div id="overlay" (click)="removeModal()" class="hidden"></div>
 

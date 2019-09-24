@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MaterialList } from '../materialListModel';
-import { RestService } from '../rest/rest.service';
+import { RestService } from '../services/rest/rest.service';
 
 @Component({
   selector: 'app-project-list',

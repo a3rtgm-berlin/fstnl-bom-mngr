@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UploadService } from '../upload/upload.service';
+import { UploadService } from '../services/upload/upload.service';
 
 // Component to upload and interpret the BOM-xls file
 // and pass the object on to the related project.

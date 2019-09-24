@@ -10,8 +10,17 @@ import { ProjectListComponent } from './project-list/project-list.component';
 import { CompareOrdersComponent } from './compare-orders/compare-orders.component';
 import { ProjectComponent } from './project/project.component';
 import { QueryFormComponent } from './query-form/query-form.component';
-import { MaterialListViewComponent } from './material-list-view/material-list-view.component';
-import { MaterialListsCollectionViewComponent } from './material-lists-collection-view/material-lists-collection-view.component';
+import { MaterialListViewComponent } from './project/material-list-view/material-list-view.component';
+import { MaterialListsCollectionViewComponent } from './project-list/material-lists-collection-view/material-lists-collection-view.component';
+import { ComparisonRowViewComponent } from './compare-orders/comparison-row-view/comparison-row-view.component';
+import { ComparisonMetaViewComponent } from './compare-orders/comparison-meta-view/comparison-meta-view.component';
+import { ComparisonListViewComponent } from './compare-orders/comparison-list-view/comparison-list-view.component';
+import { DialogComponent } from './snippets/dialog/dialog.component';
+import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
+import { CreateProjectComponent } from './manage-projects/create-project/create-project.component';
+
+import { ModalService } from './services/modal/modal.service';
+import { DomService } from './services/dom/dom.service';
 
 @NgModule({
   declarations: [
@@ -23,6 +32,15 @@ import { MaterialListsCollectionViewComponent } from './material-lists-collectio
     QueryFormComponent,
     MaterialListViewComponent,
     MaterialListsCollectionViewComponent,
+    ComparisonRowViewComponent,
+    ComparisonMetaViewComponent,
+    ComparisonListViewComponent,
+    DialogComponent,
+    ManageProjectsComponent,
+    CreateProjectComponent,
+  ],
+  entryComponents: [
+    CreateProjectComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +52,10 @@ import { MaterialListsCollectionViewComponent } from './material-lists-collectio
   exports: [
     XlsLoaderComponent
   ],
-  providers: [],
+  providers: [
+    DomService,
+    ModalService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

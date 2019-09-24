@@ -25,8 +25,11 @@ module.exports = function xlsParser(input) {
     const newWs = XLSX.utils.json_to_sheet(dataAsJson);
 
     // encode as CSV
-    const dataAsCsv = XLSX.utils.sheet_to_csv(newWs, {FS: ';'});
+    let dataAsCsv = XLSX.utils.sheet_to_csv(newWs, {FS: ';'});
 
-    return {id: id, json: {}, csv: dataAsCsv, date: date, uploadDate: new Date()};
-}
+    // fix inconsistencies in column naming
+    dataAsCsv = dataAsCsv.replace(dataAsCsv.substring(0, dataAsCsv.search(/\n/)), dataAsCsv.substring(0, dataAsCsv.search(/\n/)).replace(/\s/g, ""));
+
+    return {id: id, name: "", json: {}, csv: dataAsCsv, date: date, uploadDate: new Date()};
+};
 

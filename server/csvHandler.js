@@ -13,7 +13,7 @@ async function csvToJson (csv) {
 
 function filterData (d) {
     if (d.ArbPlatz === "INV") {
-        catId = d["Material P"];
+        catId = d["MaterialP"];
         catName = d["Objektkurztext"];
     } else {
         if (d.SchGut === "X") {

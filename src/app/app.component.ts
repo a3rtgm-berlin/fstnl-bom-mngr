@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MaterialList } from './materialListModel';
+import { ModalService } from './services/modal/modal.service';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,13 @@ import { MaterialList } from './materialListModel';
 })
 export class AppComponent {
   title = 'BOM Supply Manager';
+  modalService: ModalService;
+
+  constructor(modalService: ModalService) {
+    this.modalService = modalService;
+  }
+
+  removeModal() {
+    this.modalService.destroy();
+  }
 }

@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const materialListSchema = new Schema({
     id: String,
+    name: String,
     json: {
         type: Object,
         required: true,
@@ -15,4 +16,4 @@ const materialListSchema = new Schema({
     collection: 'order-data'
 });
 
-module.exports = mongoose.model('MaterialList', materialListSchema);
+module.exports = { MaterialListModel: mongoose.model('MaterialList', materialListSchema), materialListSchema };

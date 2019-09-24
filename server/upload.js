@@ -5,7 +5,7 @@ const path = require('../node_modules/path');
 const parser = require('./xlsParser');
 const csvHandler = require('./csvHandler');
 // DB Models
-const MaterialList = require("./models/list");
+const MaterialList = require("./models/list").MaterialListModel;
 
 const reader = new FileReader();
 
@@ -22,6 +22,7 @@ module.exports = function upload(req, res) {
 
             // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
             let newDatum = parser(reader.result);
+            newDatum.name = file.name;
 
             // save files to server dir
             fs.writeFile(path.join(uploadDir, file.name), view);

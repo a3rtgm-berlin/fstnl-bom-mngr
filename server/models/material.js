@@ -14,12 +14,12 @@ class Item {
         this.KatID = catId;
 
         // relevant rows from csv
-        this.Material = d["Material P"];
+        this.Material = d["MaterialP"];
         this.Objektkurztext = d["Objektkurztext"];
-        this.Menge = parseInt(d["   Menge"]);
+        this.Menge = parseInt(d["Menge"]);
         this.ME = d["ME"];
         this.MArt = d["MArt"];
-        this.Station = d["ArbPlatz"];
+        this.Station = d["ArbPlatz"] ? d["ArbPlatz"] : "No Location";
 
 
         // this.SchGut = ((d) => {
