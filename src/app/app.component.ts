@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MaterialList } from './materialListModel';
 import { ModalService } from './services/modal/modal.service';
+import $ from 'jquery';
 
 @Component({
   selector: 'app-root',

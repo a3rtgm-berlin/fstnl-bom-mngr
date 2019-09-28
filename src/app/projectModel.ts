@@ -5,5 +5,5 @@ export interface Project {
     description: string;
     trainsCount: number;
     deadline: Date;
-    bomLists: Set<MaterialList>;
+    bomLists: Set<String>;
 };

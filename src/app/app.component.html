@@ -1,22 +1,25 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div class="content container-fluid" style="padding-top:15px;">
-  <h2 class="page-title">
-    {{ title }}
-  </h2>
+<div class="app-bar">
+  <div class="content container-fluid" style="padding-top:15px;">
+    <h2 class="page-title">
+      {{ title }}
+    </h2>
+  </div>
+  <div id ="logo"><img src="../assets/img/Fastenal-Logo_wht.png"/></div>
+  <app-menu></app-menu>
 </div>
 
 <div class="app-body">
-  <app-menu></app-menu>
   <div class="content container-fluid">
     <div class="tools d-flex flex-row bd-highlight mb-3">
       <router-outlet class="component"></router-outlet>
     </div>
-    <div class="tools d-flex flex-row bd-highlight mb-3">
+   <!-- <div class="tools d-flex flex-row bd-highlight mb-3">
       <app-query-form class="component"></app-query-form>
     </div>
     <div class="tools d-flex flex-row bd-highlight mb-3">
         <app-xls-loader class="component"></app-xls-loader>
-    </div>
+    </div> -->
   </div>
 </div>
 

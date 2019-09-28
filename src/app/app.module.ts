@@ -22,6 +22,7 @@ import { ModalService } from './services/modal/modal.service';
 import { DomService } from './services/dom/dom.service';
 import { MatrixFilesComponent } from './matrix-files/matrix-files.component';
 import { MenuComponent } from './menu/menu.component';
+import { ProjectListViewComponent } from './project-list-view/project-list-view.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { MenuComponent } from './menu/menu.component';
     CreateProjectComponent,
     MatrixFilesComponent,
     MenuComponent,
+    ProjectListViewComponent,
   ],
   entryComponents: [
     CreateProjectComponent,

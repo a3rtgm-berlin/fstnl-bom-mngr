@@ -1,1 +1,12 @@
-<button class="btn btn-success" (click)="openCreateDialog()">+ Create new Project</button>
+<div id="list-projects">
+    <ul>
+        <li class="nProject">
+            <button class="btn btn-success" (click)="openCreateDialog()"><img src="../../assets/img/pls_fat.png"><a>Create new Project</a></button>
+        </li>
+        <li class="actProject" *ngFor="let super of supers">
+            <div>
+                {{super}}
+            </div>
+        </li>
+    </ul>
+</div>

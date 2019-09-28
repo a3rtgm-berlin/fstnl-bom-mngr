@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import $ from 'jquery';
+import { RestService } from '../services/rest/rest.service';
 
 @Component({
   selector: 'app-menu',
@@ -14,14 +15,11 @@ export class MenuComponent implements OnInit {
     'Egal'
   ]
 
-  constructor() {
+  constructor(restService: RestService) {
   }
 
   ngOnInit() {
-    $(document).click(function(){
-      alert("little boxes on the hillside little boxes little boxes");
-    })
-    
+
   }
 
   onClick() {
