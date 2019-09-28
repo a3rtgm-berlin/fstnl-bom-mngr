@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MaterialList } from './materialListModel';
 import { ModalService } from './services/modal/modal.service';
+declare var $: any;
 
 @Component({
   selector: 'app-root',

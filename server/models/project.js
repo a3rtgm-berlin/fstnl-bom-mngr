@@ -1,5 +1,4 @@
 const mongoose = require("../../node_modules/mongoose");
-const MaterialList = require("./list").materialListSchema;
 const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
@@ -7,9 +6,11 @@ const projectSchema = new Schema({
     description: String,
     trainsCount: Number,
     deadline: Date,
-    bomLists: [MaterialList]
+    bomLists: [String]
 }, {
     collection: 'project-data'
 });
 
-module.exports = {ProjectModel: mongoose.model('Project', projectSchema), projectSchema };
+const ProjectModel = mongoose.model('Project', projectSchema);
+
+module.exports = { ProjectModel, projectSchema };
