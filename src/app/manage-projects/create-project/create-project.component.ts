@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalService } from '../../services/modal/modal.service';
 import { RestService } from '../../services/rest/rest.service';
 import { Project } from '../../projectModel';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-create-project',
