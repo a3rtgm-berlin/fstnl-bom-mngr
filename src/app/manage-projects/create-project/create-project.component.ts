@@ -3,6 +3,7 @@ import { ModalService } from '../../services/modal/modal.service';
 import { RestService } from '../../services/rest/rest.service';
 import { Project } from '../../projectModel';
 import * as $ from 'jquery';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-project',
@@ -13,7 +14,7 @@ export class CreateProjectComponent implements OnInit {
 
   private projectData: Project;
 
-  constructor(public modalService: ModalService, public restService: RestService) { }
+  constructor(public modalService: ModalService, public restService: RestService, public router: Router) { }
 
   ngOnInit() {
   }
@@ -38,6 +39,8 @@ export class CreateProjectComponent implements OnInit {
       }
 
       this.restService.createProject(this.projectData);
+      this.restService.getAllProjects();
+      
       this.close();
     } else {
       alert(`please enter project information`);

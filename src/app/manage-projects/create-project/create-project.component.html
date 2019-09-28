@@ -3,7 +3,7 @@
         <div class="modal-header">
             <h5 class="modal-title">Create Project</h5>
             <button type="button" class="close" (click)="close()">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true"></span>
             </button>
         </div>
         <div class="modal-body">
@@ -25,10 +25,14 @@
                         <span class="input-group-text">Trains</span>
                     </div>
                     <input type="number" class="form-control" value="1" name="train-count" id="train-count" #trains (change)="update(name.value, desc.value, trains.value, deadline.value)">
-                    <input type="date" class="form-control" value="2019-07-22" name="deadline" id="deadline" #deadline (change)="update(name.value, desc.value, trains.value, deadline.value)">
-                    <div class="input-group-append">
-                        <span class="input-group-text">Deadline</span>
-                    </div>
+
+                    
+                </div>
+                <div class="input-group mb-3">
+                        <div class="input-group-append">
+                                <span class="input-group-text">Deadline</span>
+                            </div>
+                            <input type="date" class="form-control" value="2019-07-22" name="deadline" id="deadline" #deadline (change)="update(name.value, desc.value, trains.value, deadline.value)">
                 </div>
             </form>
         </div>

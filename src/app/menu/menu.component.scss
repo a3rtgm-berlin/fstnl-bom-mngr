@@ -1,0 +1,51 @@
+@import "../../variables";
+
+:host {
+    @include flex-standard;
+    justify-content:flex-start;
+    width:100%;
+
+    #menu {
+        justify-self:flex-start;
+        position:relative;
+        height:50px;
+        order:1;
+
+        ul {
+            @include flex-standard;
+            list-style:none;
+
+            li {
+                @include outershadow;
+                border:1px solid white;
+                height:40px;
+                margin:5px;
+
+                a {
+                    display:block;
+                    font-size:80%;
+                    font-weight:100;
+                    line-height:40px;
+                    color:white;
+                    padding:0px 10px;
+                    text-decoration:none;
+                }
+
+                a.act {
+                    background:$lightgrey;
+                    color:$brandblue;
+                }
+
+                a:hover {
+                    background:$darkbrandblue;
+                    color:whitesmoke !important;
+                    transition:0.1s;
+                }
+            }
+            
+            li:hover {
+                border:1px solid $darkbrandblue;
+            }
+        }
+    }
+}
