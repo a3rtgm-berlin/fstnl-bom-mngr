@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import $ from 'jquery';
 
 @Component({
   selector: 'app-menu',
@@ -18,6 +18,10 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    $(document).click(function(){
+      alert("little boxes on the hillside little boxes little boxes");
+    })
+    
   }
 
   onClick() {
