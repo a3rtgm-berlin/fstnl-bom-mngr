@@ -13,7 +13,7 @@ export class UploadService {
 
   constructor(private http: HttpClient, private router: Router, private restService: RestService) {}
 
-  public upload(files: [File]): {[key: string]: {progress: Observable<number>}} {
+  public upload(files: [File], service: string): {[key: string]: {progress: Observable<number>}} {
 
     const status: { [key: string]: { progress: Observable<number> } } = {};
 
@@ -21,7 +21,7 @@ export class UploadService {
       const formData: FormData = new FormData();
       formData.append('file', file, file.name);
 
-      const req = new HttpRequest('POST', url, formData, {
+      const req = new HttpRequest('POST', `${url}/${service}`, formData, {
         reportProgress: true
       });
 
@@ -35,8 +35,16 @@ export class UploadService {
         } else if (event instanceof HttpResponse) {
           progress.complete();
 
-          this.restService.getList(`${event.body}`);
-          this.router.navigate([`app/lists/${event.body}`]);
+          switch (service) {
+            case 'bom':
+              this.restService.getList(`${event.body}`);
+              this.router.navigate([`app/lists/${event.body}`]);
+              break;
+            case 'matrix':
+              break;
+            default:
+              break;
+          }
         }
       });
 

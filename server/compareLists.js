@@ -38,11 +38,14 @@ module.exports = class Comparison {
     }
 
     compareLists() {
+        const $added = new Set();
+        const $removed = new Set();
         const comparedList = {
             added: 0,
             removed: 0,
             modified: 0,
             remain: 0,
+            moved: 0
         };
 
         this.currentList.json.forEach((currentItem) => {
@@ -69,8 +72,9 @@ module.exports = class Comparison {
                         }
                     }
                 } else {
-                    currentItem.status = 'added';
-                    comparedList.added += 1;
+                    // currentItem.status = 'added';
+                    // comparedList.added += 1;
+                    $added.add(currentItem);
                     return true;
                 }
             });
@@ -91,11 +95,26 @@ module.exports = class Comparison {
             });
 
             if ($successors.length === 0) {
-                oldItem.status = "removed";
-                comparedList.removed += 1;
-                this.currentList.json.push(oldItem);
+                // oldItem.status = "removed";
+                // comparedList.removed += 1;
+                // this.currentList.json.push(oldItem);
+                $removed.add(oldItem);
             } else {
                 oldItem.status = $successors[0][this.quantitySelector] - oldItem[this.quantitySelector];
+            }
+        });
+
+        $added.forEach((currentItem) => {
+            const $ancestor = $removed.find(oldItem => oldItem.Material === currentItem.Material);
+
+            if ($ancestor) {
+                $ancestor.status = "moved";
+                this.currentList.json.push($ancestor);
+
+                currentItem.status = "moved";
+                currentItem.movedFrom = $ancestor.Station;
+                
+                comparedList.moved += 1;
             }
         });
 
@@ -108,7 +127,6 @@ module.exports = class Comparison {
 
     setMeta() {
         this.meta = {};
-        this.meta.project = 'WIP';
         this.meta.current = this.currentList.id;
         this.meta.last = this.lastList.id;
         this.meta.changes = this.compareLists();

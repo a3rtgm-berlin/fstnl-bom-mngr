@@ -118,7 +118,7 @@ export class RestService {
     const projects = await observable.toPromise();
 
     if (projects) {
-      this.setAllLists(projects);
+      this.setAllProjects(projects);
     }
   }
 }

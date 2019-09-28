@@ -15,13 +15,14 @@ import { MaterialListsCollectionViewComponent } from './project-list/material-li
 import { ComparisonRowViewComponent } from './compare-orders/comparison-row-view/comparison-row-view.component';
 import { ComparisonMetaViewComponent } from './compare-orders/comparison-meta-view/comparison-meta-view.component';
 import { ComparisonListViewComponent } from './compare-orders/comparison-list-view/comparison-list-view.component';
-import { DialogComponent } from './snippets/dialog/dialog.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { CreateProjectComponent } from './manage-projects/create-project/create-project.component';
 
 import { ModalService } from './services/modal/modal.service';
 import { DomService } from './services/dom/dom.service';
-import { MatrixLoaderComponent } from './matrix-loader/matrix-loader.component';
+import { MatrixFilesComponent } from './matrix-files/matrix-files.component';
+import { MenuComponent } from './menu/menu.component';
+import { ProjectListViewComponent } from './manage-projects/project-list-view/project-list-view.component';
 
 @NgModule({
   declarations: [
@@ -36,10 +37,11 @@ import { MatrixLoaderComponent } from './matrix-loader/matrix-loader.component';
     ComparisonRowViewComponent,
     ComparisonMetaViewComponent,
     ComparisonListViewComponent,
-    DialogComponent,
     ManageProjectsComponent,
     CreateProjectComponent,
-    MatrixLoaderComponent,
+    MatrixFilesComponent,
+    MenuComponent,
+    ProjectListViewComponent,
   ],
   entryComponents: [
     CreateProjectComponent,

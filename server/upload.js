@@ -6,6 +6,7 @@ const parser = require('./xlsParser');
 const csvHandler = require('./csvHandler');
 // DB Models
 const MaterialList = require("./models/list").MaterialListModel;
+const ArbMatrix = require('./models/arbMatrix');
 
 const reader = new FileReader();
 
@@ -21,7 +22,7 @@ function bom(req, res) {
             const view = new Uint8Array(reader.result);
 
             // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
-            let newDatum = parser(reader.result);
+            let newDatum = parser.xlsParser(reader.result);
             newDatum.name = file.name;
 
             // save files to server dir
@@ -33,15 +34,16 @@ function bom(req, res) {
             // send the json back to the client as response
             addJson(newDatum).then((data) => {
                 dbModel = new MaterialList(data);
-                dbModel.save();
-
-                res.send(203, [data.id]);
+                dbModel.save((err) => {
+                    if (err) {
+                        res.status(500).send(err);
+                        return console.error(err);
+                    }
+                    res.status(203).send([data.id]);
+                });
             });
         });
     });
-
-    
-    form.on('end', (data) => {});
 
     form.parse(req);
 };
@@ -59,16 +61,49 @@ async function addJson (datum) {
 function matrix (req, res) {
     let form = new IncomingForm();
 
-    form.on('file', (file) => {
+    form.on('file', (field, file) => {
         // Parse & save to disk
         reader.readAsArrayBuffer(file);
         reader.addEventListener('load', (evt) => {
             const view = new Uint8Array(reader.result);
+            const newMatrix = parser.matrixParser(reader.result);
+            const matrixObj = {
+                'json': newMatrix,
+                'uploadDate': new Date()
+            };
+            const dbModel = new ArbMatrix(matrixObj);
 
-            console.log(view);
             fs.writeFile(path.join(uploadDir, '/arb-matrix/', file.name), view);
+            fs.writeFile(path.join(uploadDir, '/arb-matrix/', 'arbMatrix.json'), JSON.stringify(newMatrix));
+
+            ArbMatrix.find((err, data) => {
+                if (err) {
+                    res.status(500).send(err);
+                    return console.error(err);
+                }
+
+                if (data.length > 0) {
+                    ArbMatrix.findOneAndUpdate({}, dbModel, {}, (err) => {
+                        if (err) {
+                            res.status(500).send(err);
+                            return console.error(err);
+                        }
+                        res.status(203).send([file.name]);
+                    });
+                } else {
+                    dbModel.save((err) => {
+                        if (err) {
+                            res.status(500).send(err);
+                            return console.error(err);
+                        }
+                        res.status(203).send([file.name]);
+                    });
+                }
+            });
         });
     });
+
+    form.parse(req);
 }
 
 module.exports = {bom, matrix};

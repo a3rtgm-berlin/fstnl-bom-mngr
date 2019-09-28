@@ -8,7 +8,7 @@ class Item {
      * @param {*} catName - "Objektkurztext" of the last INV-row
      */
 
-    constructor (d, catId, catName) {
+    constructor (d, catId, catName, arbMatrix) {
         // Keep category from last INV-row
         this.Kategorie = catName;
         this.KatID = catId;
@@ -19,9 +19,9 @@ class Item {
         this.Menge = parseInt(d["Menge"]);
         this.ME = d["ME"];
         this.MArt = d["MArt"];
-        this.Station = d["ArbPlatz"] ? d["ArbPlatz"] : "No Location";
+        this.Station = d["ArbPlatz"] ? this.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location";
 
-
+        // console.log(this.Station);
         // this.SchGut = ((d) => {
         //     return (d["SchGut"] === "X") ? true : false;
         // });
@@ -32,6 +32,17 @@ class Item {
         // this.Horiz = d["Horiz"];
         // this.DMk = d["DMk"];
         // this.BeschArt = d["BeschArt"];
+    }
+
+    mapMatrix(station, arbMatrix) {
+        if (!station) return "No Location";
+        if (!arbMatrix) return station;
+
+        const map = arbMatrix.find((map) => map.ArbPlatz === station).Area;
+
+        if (!map) return "Unmatched Area";
+        if (map === "Not Valid" || map === "(Leer)") return "No Location";
+        return map;
     }
 }
 

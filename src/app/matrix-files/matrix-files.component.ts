@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UploadService } from '../services/upload/upload.service';
 
-// Component to upload and interpret the BOM-xls file
-// and pass the object on to the related project.
-
 @Component({
-  selector: 'app-xls-loader',
-  templateUrl: './xls-loader.component.html',
-  styleUrls: ['./xls-loader.component.scss']
+  selector: 'app-matrix-files',
+  templateUrl: './matrix-files.component.html',
+  styleUrls: ['./matrix-files.component.scss']
 })
-export class XlsLoaderComponent implements OnInit {
+export class MatrixFilesComponent implements OnInit {
 
   public data: object;
 
@@ -40,7 +37,7 @@ export class XlsLoaderComponent implements OnInit {
   // Submit uploaded file to server as POST request
   private onSubmit() {
     if (this.file) {
-      const upload = this.uploadService.upload([this.file], 'bom');
+      const upload = this.uploadService.upload([this.file], 'matrix');
 
       upload[this.file.name].progress.subscribe({
         next: v => console.log(`POST ${this.file.name}: ${v}%`),

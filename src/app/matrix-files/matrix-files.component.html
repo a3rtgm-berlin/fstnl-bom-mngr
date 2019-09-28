@@ -1,0 +1,14 @@
+<form class="upload" (ngSubmit)="onSubmit(upload.value)">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Upload new work-station matrix</span>
+        </div>
+        <div class="custom-file">
+            <input #upload type="file" class="custom-file-input" id="inputGroupFile04" (change)="onChange($event)" accept="text/csv, text/xls, text/xlsx">
+            <label class="custom-file-label" for="inputGroupFile04">{{file ? file.name : 'Choose File' }}</label>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" (click)="onSubmit()">Submit</button>
+        </div>
+    </div>
+</form>
