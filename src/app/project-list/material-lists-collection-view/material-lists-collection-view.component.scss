@@ -1,0 +1,8 @@
+:host {
+    .btn-group {
+        display:flex;
+        &.active {
+            box-shadow: 0 0 5px #0088FF;
+        }
+    }
+}

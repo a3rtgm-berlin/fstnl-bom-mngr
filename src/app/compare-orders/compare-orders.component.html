@@ -1,0 +1,21 @@
+<div class="d-flex flex-row compare-list">
+<ng-container *ngIf="comparison; else elseTemplate">
+    <div class="d-flex flex-column meta-info">
+        <app-comparison-meta-view
+            [metaData]="comparison.meta">
+        </app-comparison-meta-view>
+    </div>
+    <div *ngIf="comparison !== null" class="d-flex flex-row comparison-container">
+        <app-comparison-list-view [bom]="comparison.currentList.json"></app-comparison-list-view>
+    </div>
+</ng-container>
+<ng-template #elseTemplate>
+    <div class="d-flex flex-column single-list">
+        <div class="input-group mb-3">
+            <small class="form-text text-muted" *ngIf="!materialList">
+                Please wait while project is loaded!
+            </small>
+        </div>
+    </div>
+</ng-template>
+</div>

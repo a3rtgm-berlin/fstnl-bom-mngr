@@ -1,0 +1,17 @@
+:host {
+    width:100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #CCC;
+    div.d-flex {
+        margin: 0 10px;
+    }
+
+    #BOM {
+        thead {
+            th {
+                width:15vw;
+            }
+        }
+    }
+}

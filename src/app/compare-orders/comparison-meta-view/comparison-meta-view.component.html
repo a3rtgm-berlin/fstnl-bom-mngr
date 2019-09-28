@@ -1,0 +1,28 @@
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <th scope="row">Project</th>
+        <th colspan="4" class="project-name">{{metaData.project}}</th>
+    </thead>
+    <tr>
+        <th scope="row">Current</th>
+        <td colspan="4">{{metaData$.current}}</td>
+    </tr>
+    <tr>
+        <th scope="row">Previous</th>
+        <td colspan="4">{{metaData$.last}}</td>
+    </tr>
+    <tr scope="row">
+        <th scope="row">Changes</th>
+        <td>Added</td>
+        <td>Modified</td>
+        <td>Remain</td>
+        <td>Remove</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>{{metaData$.changes.added}}</td>
+        <td>{{metaData$.changes.modified}}</td>
+        <td>{{metaData$.changes.remain}}</td>
+        <td>{{metaData$.changes.removed}}</td>
+    </tr>
+</table>
