@@ -109,7 +109,10 @@ export class RestService {
 
     this.http.request(req).subscribe({
       error: err => console.error(`POST Error`, err),
-      complete: () => console.log(` POST new Project ${projectData.name} has been created`)
+      complete: () => {
+        console.log(` POST new Project ${projectData.name} has been created`);
+        this.getAllProjects();
+      }
     });
   }
 

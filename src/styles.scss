@@ -1,16 +1,4 @@
-form {
-    flex: 0 1 25%;
-
-    .input-group {
-        button {
-            flex: 1;
-        }
-        label {
-            display:block;
-        }
-    }
-}
-
-.flex-row {
-    justify-content: center;
+* {
+    margin:0;
+    padding:0;
 }

@@ -1,1 +1,30 @@
-<p>project-list-view works!</p>
+<div class="prjct">
+    <div class="prjct_tpbr">
+        <div class="prjct_ttl">{{project$.name}}</div>
+        <div class="prjct_sb_mn"><img src="../../../assets/img/icn_mn.png"></div>
+    </div>
+
+    <div class="prjct_bdy">
+        <div class="prjct_bom">{{project$.bomLists}}</div>
+        <div class="prjct_vars">
+            <ul>
+                <li class="trains">
+                    <div class="imgbx"></div>
+                    <div class="field">{{project$.trainsCount}}</div>
+                    <div class="chg"><button></button></div>
+                    <div class="txtbx"><p>trains pending</p></div>
+                </li>
+                <li class="date">
+                    <div class="imgbx"></div>
+                    <div class="field">{{project$.deadline}}</div>
+                    <div class="chg"><button></button></div>
+                    <div class="txtbx"><p>weeks left</p></div>
+                </li>
+
+            </ul>
+        </div>
+        <div class="prjct_state">
+
+        </div>
+    </div>
+</div>

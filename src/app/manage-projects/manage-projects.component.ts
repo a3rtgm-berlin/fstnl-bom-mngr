@@ -14,8 +14,6 @@ export class ManageProjectsComponent implements OnInit {
 
   allProjects: Project[];
 
-  supers;
-
   constructor(public modalService: ModalService, public restService: RestService) {
     this.restService.allProjects.subscribe((res) => {
       this.allProjects = res;
@@ -24,8 +22,6 @@ export class ManageProjectsComponent implements OnInit {
 
   ngOnInit() {
     this.restService.getAllProjects();
-
-    this.supers = [1,2,3];
   }
 
   openCreateDialog() {

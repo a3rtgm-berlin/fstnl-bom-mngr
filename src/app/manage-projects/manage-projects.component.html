@@ -1,12 +1,17 @@
 <div id="list-projects">
     <ul>
         <li class="nProject">
-            <button class="btn btn-success" (click)="openCreateDialog()"><img src="../../assets/img/pls_fat.png"><a>Create new Project</a></button>
+            <button class="btn btn-success" (click)="openCreateDialog()"><img src="../../assets/img/pls_fat.png"><a>Create New Project</a></button>
         </li>
-        <li class="actProject" *ngFor="let super of supers">
-            <div>
-                {{super}}
-            </div>
+        <li class="actProject" *ngFor="let project of allProjects">
+            <app-project-list-view [project]="project">
+            </app-project-list-view>
+        </li>
+
+        <li class="bigRedButton">
+            <button (click)="bigRedButton()">
+                <a>Process All BOM Files</a>
+            </button>
         </li>
     </ul>
 </div>

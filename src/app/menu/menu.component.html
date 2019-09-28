@@ -1,7 +1,7 @@
 <div id="menu">
-        <ul class="nav navbar-nav" routerLinkActive="active">
-                <li class="nav-item"><a class="nav-link" routerLink="app/projects">Projects</a></li>
+        <ul routerLinkActive="active">
+                <li class="nav-item"><a class="nav-link" [routerLink]="['/app/projects']" [routerLinkActive]="'act'">Projects</a></li>
                 <li class="nav-item"><a class="nav-link" routerLink="#">Archived Projects</a></li>
-                <li class="nav-item"><a class="nav-link" routerLink="#">Setting</a></li>
+                <li class="nav-item"><a class="nav-link" routerLink="#">Settings</a></li>
         </ul>
 </div>
