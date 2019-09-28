@@ -23,7 +23,7 @@ const corsOptions = {
 }
 
 // Connect DB
-mongoose.connect('mongodb://localhost/fstnl-bom-mngr', { useNewUrlParser: true });
+mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true });
 
 // Set server options
 server.use(cors(corsOptions));
