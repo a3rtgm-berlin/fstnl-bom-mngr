@@ -11,7 +11,7 @@ const reader = new FileReader();
 
 const uploadDir = "./user-upload/";
 
-module.exports = function upload(req, res) {
+function bom(req, res) {
     let form = new IncomingForm();
 
     form.on('file', (field, file) => {
@@ -55,3 +55,20 @@ async function addJson (datum) {
 
     return datum;
 }
+
+function matrix (req, res) {
+    let form = new IncomingForm();
+
+    form.on('file', (file) => {
+        // Parse & save to disk
+        reader.readAsArrayBuffer(file);
+        reader.addEventListener('load', (evt) => {
+            const view = new Uint8Array(reader.result);
+
+            console.log(view);
+            fs.writeFile(path.join(uploadDir, '/arb-matrix/', file.name), view);
+        });
+    });
+}
+
+module.exports = {bom, matrix};

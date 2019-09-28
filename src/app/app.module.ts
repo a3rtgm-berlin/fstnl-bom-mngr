@@ -21,6 +21,7 @@ import { CreateProjectComponent } from './manage-projects/create-project/create-
 
 import { ModalService } from './services/modal/modal.service';
 import { DomService } from './services/dom/dom.service';
+import { MatrixLoaderComponent } from './matrix-loader/matrix-loader.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { DomService } from './services/dom/dom.service';
     DialogComponent,
     ManageProjectsComponent,
     CreateProjectComponent,
+    MatrixLoaderComponent,
   ],
   entryComponents: [
     CreateProjectComponent,

@@ -3,6 +3,8 @@ const express = require('../node_modules/express');
 const cors = require('../node_modules/cors');
 const bodyParser = require("../node_modules/body-parser");
 const mongoose = require("../node_modules/mongoose");
+
+// Server Modules
 const upload = require('./upload');
 const projectHandler = require('./projectsHandler');
 
@@ -34,6 +36,12 @@ server.use(bodyParser.urlencoded({ extended: false }));
 server.get('/', (req, res) => {
     res.send(200, "connected");
 });
+/**
+ * @description Handles upload of ArbMatrix files
+ * @param {*} file
+ * @method POST
+ */
+server.post('/api/upload/matrix', upload.matrix);
 
 /**
  * @description Handles uploaded BOM files
@@ -41,7 +49,7 @@ server.get('/', (req, res) => {
  * @method POST
  * @returns {void}
  */
-server.post('/api/upload/', upload);
+server.post('/api/upload/', upload.bom);
 
 /**
  * @description returns all uploaded BOM Lists
