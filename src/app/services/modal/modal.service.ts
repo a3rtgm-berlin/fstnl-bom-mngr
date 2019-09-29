@@ -16,14 +16,14 @@ export class ModalService {
       outputs: outputs
     };
 
-    this.domService.appendComponentTo(this.modalElementId, component, componentConfig);
+    this.domService.appendComponentTo(host ? host.nativeElement : this.modalElementId, component, componentConfig);
     $(host ? host.nativeElement : this.modalElementId).addClass('show').removeClass('hidden');
     if (overlay) { $(this.overlayElementId).addClass('show').removeClass('hidden'); }
   }
 
   destroy(host?: any) {
     this.domService.removeComponent();
-    $(host ? host.nativeElement : this.modalElementId).addClass('hidden');
+    $(host ? host.nativeElement : this.modalElementId).addClass('hidden').removeClass('show');
     $(this.overlayElementId).addClass('hidden').removeClass('show');
   }
 }
