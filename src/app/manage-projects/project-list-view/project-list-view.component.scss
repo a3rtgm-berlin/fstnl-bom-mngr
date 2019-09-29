@@ -38,6 +38,10 @@
                     filter:invert(1);
                 }
 
+                .prjctsb {
+                    @include absolute-full;
+                }
+
             }
         }
 

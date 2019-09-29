@@ -9,7 +9,7 @@ import { ModalService } from '../../services/modal/modal.service';
 })
 export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewInit {
 
-  @ViewChild ('ganzoben', {static: false}) btn: any;
+  @ViewChild ('prjctsb', {static: false}) injector: any;
 
   private project$: any;
   modalController = true;
@@ -35,9 +35,9 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   createComponent() {
     if (this.modalController) {
-      this.modalService.init(ProjectSubSettingsComponent, {title: 'Vorerst Banane'}, {}, 'prjctsb', false);
+      this.modalService.init(ProjectSubSettingsComponent, {title: 'Vorerst Banane'}, {}, this.injector, false);
     } else {
-      this.modalService.destroy('prjctsb');
+      this.modalService.destroy(this.injector);
     }
 
     this.modalController = !this.modalController;
