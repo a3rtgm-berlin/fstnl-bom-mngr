@@ -16,6 +16,8 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   @ViewChild('brb', {static: false}) popup: any;
 
   allProjects: Project[];
+  date: Date = new Date();
+  todayMonth: any;
 
   constructor(public modalService: ModalService, public restService: RestService) {
     this.restService.allProjects.subscribe((res) => {
@@ -25,6 +27,21 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.restService.getAllProjects();
+    var month = new Array();
+        month[0] = "January";
+        month[1] = "February";
+        month[2] = "March";
+        month[3] = "April";
+        month[4] = "May";
+        month[5] = "June";
+        month[6] = "July";
+        month[7] = "August";
+        month[8] = "September";
+        month[9] = "October";
+        month[10] = "November";
+        month[11] = "December";
+    this.todayMonth = month[this.date.getMonth()] + this.date.getFullYear();
+    console.log(this.todayMonth);
   }
 
   ngAfterViewInit(): void {
