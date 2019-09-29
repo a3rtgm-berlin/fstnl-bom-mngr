@@ -38,6 +38,7 @@ module.exports = class Comparison {
     }
 
     compareLists() {
+        // console.log(this.currentList, this.lastList);
         const $added = new Set();
         const $removed = new Set();
         const comparedList = {
@@ -72,9 +73,8 @@ module.exports = class Comparison {
                         }
                     }
                 } else {
-                    // currentItem.status = 'added';
-                    // comparedList.added += 1;
                     $added.add(currentItem);
+                    console.log($added);
                     return true;
                 }
             });
@@ -95,30 +95,43 @@ module.exports = class Comparison {
             });
 
             if ($successors.length === 0) {
-                // oldItem.status = "removed";
-                // comparedList.removed += 1;
-                // this.currentList.json.push(oldItem);
                 $removed.add(oldItem);
             } else {
                 oldItem.status = $successors[0][this.quantitySelector] - oldItem[this.quantitySelector];
             }
         });
 
-        $added.forEach((currentItem) => {
-            const $ancestor = $removed.find(oldItem => oldItem.Material === currentItem.Material);
+        console.log($added, 'add');
+        console.log($removed, 'rm');
+
+        $added.forEach((e, currentItem, s) => {
+            const $ancestor = Array.from($removed).find(oldItem => oldItem.Material === currentItem.Material);
 
             if ($ancestor) {
-                $ancestor.status = "moved";
+                $added.delete(currentItem);
+                $removed.delete($ancestor);
+
+                $ancestor.status = "movedTo";
+                $ancestor.moved = currentItem.Station;
                 this.currentList.json.push($ancestor);
 
-                currentItem.status = "moved";
-                currentItem.movedFrom = $ancestor.Station;
-                
+                currentItem.status = "movedFrom";
+                currentItem.moved = $ancestor.Station;
+
                 comparedList.moved += 1;
+            } else {
+                currentItem.status = 'added';
+                comparedList.added += 1;
             }
         });
 
-        console.log(Date.now());
+        $removed.forEach((e, oldItem, s) => {
+            oldItem.status = "removed";
+            comparedList.removed += 1;
+            this.currentList.json.push(oldItem);
+        });
+
+        console.log(new Date());
         return comparedList;
     }
 

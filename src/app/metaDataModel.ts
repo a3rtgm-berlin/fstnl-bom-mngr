@@ -10,4 +10,5 @@ interface Changes {
     modified: number;
     remain: number;
     removed: number;
+    moved: number;
 }

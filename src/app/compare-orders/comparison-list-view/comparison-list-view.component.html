@@ -8,8 +8,20 @@
         <th scope="col">Change</th>
     </thead>
     <ng-container *ngFor="let item of bom$">
-        <tr>
-            <th>{{item.status}}</th>
+        <tr class="{{item.status}}">
+            <th>
+                <span [ngSwitch]="item.status">
+                <span *ngSwitchCase="'movedFrom'">
+                    Moved <span style="font-weight: 400">from: {{item.moved}}</span>
+                </span>
+                <span *ngSwitchCase="'movedTo'">
+                    Moved <span style="font-weight: 400">to: {{item.moved}}</span>
+                </span>
+                <span *ngSwitchDefault>
+                    {{item.status}}
+                </span>
+                </span>
+            </th>
             <td>{{item.Station}}</td>
             <td>{{item.Material}}</td>
             <td>{{item.Objektkurztext}}</td>

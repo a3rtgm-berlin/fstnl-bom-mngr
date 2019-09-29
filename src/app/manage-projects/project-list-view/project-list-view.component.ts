@@ -1,11 +1,13 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-project-list-view',
   templateUrl: './project-list-view.component.html',
   styleUrls: ['./project-list-view.component.scss']
 })
-export class ProjectListViewComponent implements OnInit, OnChanges {
+export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewInit {
+
+  @ViewChild ('ganzoben', {static: false}) btn: any;
 
   private project$: any;
 
@@ -17,6 +19,10 @@ export class ProjectListViewComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     console.log(this.project$);
+  }
+
+  ngAfterViewInit(): void {
+    console.log(this.btn);
   }
 
   ngOnChanges(changes: SimpleChanges) {

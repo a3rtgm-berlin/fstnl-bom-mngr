@@ -9,7 +9,7 @@ const newProject = function(req, res, next) {
             const dbModel = new Project(fields);
             dbModel.save();
 
-            res.send(201, [fields]);
+            res.status(201).send([fields]);
         }
         if (err) return console.error(err);
     });

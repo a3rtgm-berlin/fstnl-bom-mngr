@@ -5,6 +5,7 @@ import {
   EmbeddedViewRef,
   ApplicationRef
 } from '@angular/core';
+import $ from 'jquery';
 
 @Injectable()
 export class DomService {
@@ -16,7 +17,7 @@ export class DomService {
     private injector: Injector
   ) { }
 
-  public appendComponentTo(parentId: string, child: any, childConfig?: ChildConfig) {
+  public appendComponentTo(parent: any, child: any, childConfig?: ChildConfig) {
     // Create a component reference from the component
     const childComponentRef = this.componentFactoryResolver
       .resolveComponentFactory(child)
@@ -34,7 +35,7 @@ export class DomService {
       .rootNodes[0] as HTMLElement;
 
     // Append DOM element to the body
-    document.getElementById(parentId).appendChild(childDomElem);
+    $(parent).append($(childDomElem));
 
   }
 

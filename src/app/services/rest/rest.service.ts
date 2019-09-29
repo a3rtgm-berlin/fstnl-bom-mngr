@@ -94,7 +94,7 @@ export class RestService {
     this.setComparison(comparison);
   }
 
-  public createProject(projectData: Project){
+  public createProject(projectData: Project) {
     const formData: FormData = new FormData();
 
     for (const prop in projectData) {
