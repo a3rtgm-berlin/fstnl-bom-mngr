@@ -3,6 +3,48 @@
 :host {
     width:100%;
 
+    #projects-intro {
+        @include flex-standard;
+        width:100%;
+        max-width:1192px;
+        height:auto;
+        margin:25px auto;
+
+        .lft-wrppr {
+            flex:1 0 50%;
+            .header {
+                h2 {
+                    font-size:120%;
+                    color:#444;
+                    font-weight:500;
+
+                    strong {
+                        font-weight:700;
+                        color:$brandblue;
+                        margin-right:5px;
+                    }
+                }
+            }
+
+            .prjct_cnt {
+                h3 {
+                    font-size:100%;
+                    font-weight:300;
+                    color:#888;
+                }
+            }
+        }
+
+        .rght-wrppr {
+            flex:1 0 50%;
+
+            .time_cnt {
+                text-align:right;
+                color:#222;
+                font-weight:600;
+            }
+        }
+    }
     #list-projects {
         margin:50px auto;
         max-width:1192px;
@@ -26,6 +68,8 @@
                 border:1px solid #ccc;
                 background:white;
                 @include outershadow;
+                overflow:visible;
+                z-index:5;
             }
             
             li.actProject:hover {
@@ -38,6 +82,7 @@
                 /*@include innershadow;*/
                 background:#efefef;
                 transition:0.2s;
+                z-index:3;
 
                 button {
                     position:relative;
@@ -112,6 +157,7 @@
                 border:1px solid #ccc;
                 /*@include outershadow;*/
                 transition:0.2s;
+                z-index:3;
 
                 button {
                     display:block;

@@ -4,6 +4,7 @@
     position:relative;
     width:100%;
     height:100%;
+    overflow:visible;
 
     .prjct {
         position:relative;
@@ -12,6 +13,8 @@
         margin:3px;
 
         .prjct_tpbr {
+            @include flex-standard;
+            justify-content:flex-start;
             position:relative;
             height:40px;
             background:$bluepaper;
@@ -26,22 +29,48 @@
             }
 
             .prjct_sb_mn {
-                position:absolute;
-                top:5px;
-                right:0px;
+                justify-self:flex-end;
+                margin:5px 0px 5px auto;
                 height:30px;
                 width:30px;
+                z-index:501;
 
-                img {
+                span {
+                    display:block;
+                    width:4px;
+                    height:4px;
+                    border-radius:50%;
+                    background:white;
+                    margin-top:4.5px;
+                    margin-bottom:4.5px;
+                    margin-left:13px;
+                    margin-right:13px;
+                }
+
+                /*img {
                     height:30px;
                     width:auto;
                     filter:invert(1);
-                }
+                }*/
 
                 .prjctsb {
                     @include absolute-full;
                 }
 
+            }
+
+            .prjct_sb_mn:hover {
+                cursor:pointer;
+
+                span:nth-child(odd) {
+                    margin-left:11px;
+                    transition:0.3s;
+                }
+
+                span:nth-child(even) {
+                    margin-right:11px;
+                    transition:0.3s;
+                }
             }
         }
 
@@ -52,6 +81,19 @@
                 background:$lightgrey;
                 border:1px solid #aaa;
                 margin:10px auto 5px auto;
+
+                select {
+                    width:100%;
+                    height:30px;
+                    border:none;
+                    text-align:center;
+                    margin:auto;
+                    font-size:80%;
+
+                    .act-list {
+                        width:80%;
+                    }
+                }
             }
 
             .prjct_vars {

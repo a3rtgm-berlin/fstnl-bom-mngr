@@ -36,7 +36,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
     this.restService.getAllProjects();
     this.currentMonth = dateToday.getFullYear() + '-' + (dateToday.getMonth() + 1);
 
-    this.todayMonth = Month[this.date.getMonth()] + this.date.getFullYear();
+    this.todayMonth = Month[this.date.getMonth()] + ' ' + this.date.getFullYear();
     console.log(this.todayMonth);
   }
 

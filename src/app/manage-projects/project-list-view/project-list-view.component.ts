@@ -12,6 +12,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   @ViewChild ('prjctsb', {static: false}) injector: any;
 
   private project$: any;
+  bomList$: any;
   modalController = true;
 
   @Input() set project(project) {
@@ -22,7 +23,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngOnInit() {
-    console.log(this.project$);
+    this.bomList$ = this.project$.bomLists;
   }
 
   ngAfterViewInit(): void {
@@ -34,7 +35,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   createComponent() {
     if (this.modalController) {
-      this.modalService.init(ProjectSubSettingsComponent, {title: 'Vorerst Banane'}, {}, this.injector, false);
+      this.modalService.init(ProjectSubSettingsComponent, {project: this.project$}, {}, this.injector, false);
     } else {
       this.modalService.destroy(this.injector);
     }

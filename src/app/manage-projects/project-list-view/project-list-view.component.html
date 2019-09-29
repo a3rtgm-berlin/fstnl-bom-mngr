@@ -5,13 +5,18 @@
             <span>{{project$.tag}}</span>
         </div>
         <div class="prjct_sb_mn" (click)="createComponent()">
-            <img src="../../../assets/img/icn_mn.png">
+            <span></span><span></span><span></span>
+            <!--<img src="../../../assets/img/icn_mn.png">-->
             <div class="prjctsb hidden" #prjctsb></div>
         </div>
     </div>
 
     <div class="prjct_bdy">
-        <div class="prjct_bom">{{project$.bomLists}}</div>
+        <div class="prjct_bom">
+            <select class="bomlists">
+                <option class="act-lst" *ngFor="let bom of bomList$">{{bomList$}}</option>
+            </select>
+        </div>
         <div class="prjct_vars">
             <ul>
                 <li class="trains">
