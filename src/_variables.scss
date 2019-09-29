@@ -1,10 +1,14 @@
 $brandblue: #0c5a9e;
 $darkbrandblue: #003b69;
+$brightblue:#83d0f5;
 $brandorange: #ff6600;
 $lightgrey: #fbfbfb;
 $red:#ed677a;
+$brightgreen:#caf583;
+$honey:#f5d583;
 $paper:linear-gradient(-45deg, white, #fbfbfb);
 $bluepaper: linear-gradient(45deg, $brandblue, $darkbrandblue);
+$darkpaper:linear-gradient(-45deg, #222, #666);
 
 @mixin flex-standard {
     display:flex;
