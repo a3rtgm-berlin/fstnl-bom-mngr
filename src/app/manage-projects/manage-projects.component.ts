@@ -45,7 +45,6 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.popup, "challo");
   }
 
   openCreateDialog() {
