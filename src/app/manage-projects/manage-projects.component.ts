@@ -4,6 +4,7 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { ModalService } from '../services/modal/modal.service';
 import { RestService } from '../services/rest/rest.service';
 import { Project } from '../projectModel';
+import { Month } from '../dateModel';
 
 
 @Component({
@@ -16,6 +17,8 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   @ViewChild('brb', {static: false}) popup: any;
 
   allProjects: Project[];
+  date: Date = new Date();
+  todayMonth: any;
 
   private upToDate = false;
   private currentMonth: string;
@@ -31,8 +34,10 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
     const dateToday = new Date();
 
     this.restService.getAllProjects();
-
     this.currentMonth = dateToday.getFullYear() + '-' + (dateToday.getMonth() + 1);
+
+    this.todayMonth = Month[this.date.getMonth()] + this.date.getFullYear();
+    console.log(this.todayMonth);
   }
 
   ngAfterViewInit(): void {
