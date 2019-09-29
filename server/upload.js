@@ -41,7 +41,6 @@ async function bom(req, res) {
             // return the new data-object
             // send the json back to the client as response
             addJson(newDatum).then((data) => {
-                console.log(data.id, file.name);
                 dbModel = new MaterialList(data);
                 dbModel.save((err) => {
                     if (err) {

@@ -7,6 +7,7 @@ const mongoose = require("../node_modules/mongoose");
 // Server Modules
 const upload = require('./upload');
 const projectHandler = require('./projectsHandler');
+const createMaster = require('./createMaster');
 
 // Classes
 const Comparison = require('./compareLists');
@@ -14,6 +15,7 @@ const Comparison = require('./compareLists');
 // DB Models
 const MaterialList = require("./models/list").MaterialListModel;
 const Project = require("./models/project").ProjectModel;
+const MasterBom = require('./models/masterBom');
 
 // Server
 const server = express();
@@ -50,6 +52,42 @@ server.post('/api/upload/matrix', upload.matrix);
  * @returns {void}
  */
 server.post('/api/upload/bom', upload.bom);
+
+/**
+ * @description todo
+ * @param
+ * @method
+ */
+server.post('/api/lists/create-master', createMaster);
+
+/**
+ * @description todo
+ * @param
+ * @method
+ */
+server.get('api/lists/master', (req, res) => {
+    MasterBom.findOne().sort('id').exec((err, data) => {
+        if (err) throw err;
+
+        console.log(data);
+        res.status(200).send(data);
+    });
+});
+
+/**
+ * @description todo
+ * @param
+ * @method
+ */
+server.get('api/lists/master-id', (req, res) => {
+    console.log('looking for master');
+    MasterBom.findOne().sort('id').exec((err, data) => {
+        if (err) throw err;
+
+        console.log(data.id);
+        res.status(200).send(data.id);
+    });
+});
 
 /**
  * @description returns all uploaded BOM Lists

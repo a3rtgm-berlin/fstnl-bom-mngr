@@ -22,7 +22,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngOnInit() {
-    console.log(this.project$);
+    // console.log(this.project$);
   }
 
   ngAfterViewInit(): void {
