@@ -1,17 +1,23 @@
+@import "../../variables";
+
 :host {
     width:100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #CCC;
-    div.d-flex {
-        margin: 0 10px;
-    }
+    margin:20px auto;
+    
+    .compare-list {
+        display:flex !important;
+        flex-direction:row !important;
+        flex-wrap:wrap;
 
-    #BOM {
-        thead {
-            th {
-                width:15vw;
-            }
+        .meta-info {
+            flex:0 0 33%;
+            overflow-x:hidden;
+            margin-right:1%;
+        }
+
+        .comparison-container {
+            flex:0 0 66%;
+            overflow-x:hidden;
         }
     }
 }

@@ -1,0 +1,73 @@
+@import "../../../variables";
+
+:host {
+    #BOM {
+        thead {
+            padding:0px;
+            margin:0px;
+            height:40px;
+            line-height:40px;
+            border-bottom:2px solid #222;
+            background:$darkpaper;
+
+            th {
+                text-align:center;
+                padding:0px 10px;
+                background:transparent;
+                font-weight:400;
+                color:whitesmoke;
+                font-size:90%;
+            }
+        }
+
+        tr {
+            padding:5px 10px;
+            border-bottom:2px solid #eee;
+            background:#f8f8f8;
+            text-align:center;
+            th {
+                position:relative;
+                span {
+                    color:whitesmoke;
+                    font-size:90%;
+                    font-weight:400;
+                }
+            }
+            td {
+                font-size:80%;
+                font-weight:300;
+                color:#444;
+            }
+
+            &.movedFrom, &.movedTo {
+                th {
+                    background:$honey;
+                    span {
+                        strong {
+                            display:block;
+                            margin:3px auto;
+                            padding:3px;
+                            font-size:80%;
+                            font-weight:300;
+                            color:#222;
+                            @include innershadow;
+                        }
+                    }
+                }
+            }
+
+            &.remain {
+                th {
+                    background:$brightblue;
+                }}
+            &.removed {
+                th {
+                    background:$red;
+                }}
+            &.add {
+                th {
+                    background:$brightgreen;
+                }}
+        }
+    }
+}

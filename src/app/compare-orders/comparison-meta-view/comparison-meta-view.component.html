@@ -11,20 +11,13 @@
         <th scope="row">Previous</th>
         <td colspan="4">{{metaData$.last}}</td>
     </tr>
-    <tr scope="row">
-        <th scope="row">Changes</th>
-        <td>Added</td>
-        <td>Modified</td>
-        <td>Moved</td>
-        <td>Remain</td>
-        <td>Remove</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>{{metaData$.changes.added}}</td>
-        <td>{{metaData$.changes.modified}}</td>
-        <td>{{metaData$.changes.moved}}</td>
-        <td>{{metaData$.changes.remain}}</td>
-        <td>{{metaData$.changes.removed}}</td>
+    <tr class="vert" scope="row">
+        <div class="wrp">
+            <div class="cat"><div class="post green">Added</div><div class="pre">{{metaData$.changes.added}}</div></div>  
+            <div class="cat"><div class="post yellow">Moved</div><div class="pre">{{metaData$.changes.moved}}</div></div>   
+            <div class="cat"><div class="post blue">Remain</div><div class="pre">{{metaData$.changes.remain}}</div></div>  
+            <div class="cat"><div class="post red">Removed</div><div class="pre">{{metaData$.changes.removed}}</div></div>  
+            <div class="cat"><div class="post grey">Modified</div><div class="pre">{{metaData$.changes.modified}}</div></div>     
+        </div>
     </tr>
 </table>

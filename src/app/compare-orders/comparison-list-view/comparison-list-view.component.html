@@ -12,10 +12,10 @@
             <th>
                 <span [ngSwitch]="item.status">
                 <span *ngSwitchCase="'movedFrom'">
-                    Moved <span style="font-weight: 400">from: {{item.moved}}</span>
+                    Moved <strong style="font-weight: 400">from: {{item.moved}}</strong>
                 </span>
                 <span *ngSwitchCase="'movedTo'">
-                    Moved <span style="font-weight: 400">to: {{item.moved}}</span>
+                    Moved <strong style="font-weight: 400">to: {{item.moved}}</strong>
                 </span>
                 <span *ngSwitchDefault>
                     {{item.status}}
