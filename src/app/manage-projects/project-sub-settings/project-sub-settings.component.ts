@@ -8,7 +8,6 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 export class ProjectSubSettingsComponent implements OnInit {
 
   private project$: any;
-  bomLists: any;
 
   @Input() set project(project: any) {
     this.project$ = project;
@@ -18,7 +17,6 @@ export class ProjectSubSettingsComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.project$);
-    console.log(this.project$.bomLists);
   }
 
   ngOnChanges(changes: SimpleChanges) {

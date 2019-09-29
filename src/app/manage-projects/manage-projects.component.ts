@@ -20,12 +20,18 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   date: Date = new Date();
   todayMonth: any;
 
-  private upToDate = false;
-  private currentMonth: string;
+  private upToDate = true;
+  private listsToCombine: string[] = [];
+  private masterId: string;
 
   constructor(public modalService: ModalService, public restService: RestService) {
     this.restService.allProjects.subscribe((res) => {
       this.allProjects = res;
+      this.updateBrb();
+    });
+
+    this.restService.masterId.subscribe((res) => {
+      this.masterId = res ? res : '00-0000';
       this.updateBrb();
     });
   }
@@ -34,7 +40,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
     const dateToday = new Date();
 
     this.restService.getAllProjects();
-    this.currentMonth = dateToday.getFullYear() + '-' + (dateToday.getMonth() + 1);
+    this.restService.getLatestMasterId();
 
     this.todayMonth = Month[this.date.getMonth()] + ' ' + this.date.getFullYear();
     console.log(this.todayMonth);
@@ -48,15 +54,25 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   }
 
   updateBrb() {
-    let listCount = 0;
+    const listsToCombine = [];
+    let latestId = this.masterId;
 
     if (this.allProjects) {
       this.allProjects.forEach((project) => {
         if (project.bomLists.length > 0) {
-          const latestBom = project.bomLists[project.bomLists.length - 1];
-          console.log(latestBom.slice(latestBom.indexOf('-') + 1), this.currentMonth);
+          const thisId = project.bomLists[project.bomLists.length - 1];
+          const thisId$ = thisId.substring(thisId.indexOf('-') + 1);
+
+          if (thisId$ > this.masterId) {
+            latestId = thisId$;
+            listsToCombine.push(thisId);
+          }
         }
       });
+
+      if (listsToCombine.length >= this.allProjects.length) {
+        this.upToDate = false;
+      }
     }
   }
 

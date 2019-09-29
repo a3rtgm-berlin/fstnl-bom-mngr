@@ -14,7 +14,7 @@ function xlsParser(input, tag) {
     // retrieve date of file
     let date = ws['A1'].v;
     let index = date.indexOf(' ');
-    date = date.substring(0, index);
+    date = index !== -1 ? date.substring(0, index) : date;
     let id = tag + '-' + date.substring(6) + '-' + date.substring(3, 5);
 
     // Set new Range according to standard BOM File

@@ -22,8 +22,8 @@
             </app-project-list-view>
         </li>
 
-        <li class="bigRedButton" #brb>
-            <button (click)="bigRedButton()">
+        <li [class]="upToDate ? 'bigRedButton' : 'bigRedButton active'" #brb>
+            <button (click)="bigRedButton()" [disabled]="upToDate ? true : false">
                 <a>Process All BOM Files</a>
             </button>
         </li>

@@ -192,22 +192,36 @@
                         @include background-cover;
                     }
                 }
-            }
+                &.active {
+                    button {
+                        background: #cc1140;
 
-            li.bigRedButton:hover {
-                transform:scale(1.01);
-                transition:0.3s;
+                        a {
+                            color:white;
 
-                button {
-                    background:$brandblue;
-                    border:2px solid $brandblue;
-                    a {
-                        color:whitesmoke;
+                            &:before {
+                                filter:invert(1);
+                                opacity:1;
+                            }
+                        }
                     }
 
-                    a:before {
-                        filter:invert(1);
-                        opacity:0.85;
+                    &:hover {
+                        transform:scale(1.01);
+                        transition:0.3s;
+        
+                        button {
+                            background:$brandblue;
+                            border:2px solid $brandblue;
+                            a {
+                                color:whitesmoke;
+                            }
+        
+                            a:before {
+                                filter:invert(1);
+                                opacity:0.95;
+                            }
+                        }
                     }
                 }
             }

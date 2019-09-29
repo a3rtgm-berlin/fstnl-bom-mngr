@@ -18,6 +18,8 @@ export class RestService {
   public allLists: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public comparison: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allProjects: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public master: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public masterId: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   setSingleList(val) {
     if (val) {
@@ -48,6 +50,22 @@ export class RestService {
       this.allProjects.next(val);
     } else {
       this.allProjects.next(null);
+    }
+  }
+
+  setMaster(val) {
+    if (val) {
+      this.master.next(val);
+    } else {
+      this.master.next(null);
+    }
+  }
+
+  setMasterId(val) {
+    if (val) {
+      this.masterId.next(val);
+    } else {
+      this.masterId.next(null);
     }
   }
 
@@ -122,6 +140,33 @@ export class RestService {
 
     if (projects) {
       this.setAllProjects(projects);
+    }
+  }
+
+  public async createMaster(id: string) {
+    const observable = this.http.get<string>(url + 'lists/create-master/' + id);
+    const master = await observable.toPromise();
+
+    if (master) {
+      console.log(master);
+    }
+  }
+
+  public async getLatestMaster() {
+    const observable = this.http.get(url + 'lists/master');
+    const master = await observable.toPromise();
+
+    if (master) {
+      this.setMaster(master);
+    }
+  }
+
+  public async getLatestMasterId() {
+    const observable = this.http.get(url + 'lists/master-id');
+    const masterId = await observable.toPromise();
+
+    if (masterId) {
+      this.setMasterId(masterId);
     }
   }
 }
