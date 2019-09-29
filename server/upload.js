@@ -7,13 +7,21 @@ const csvHandler = require('./csvHandler');
 // DB Models
 const MaterialList = require("./models/list").MaterialListModel;
 const ArbMatrix = require('./models/arbMatrix');
+const Project = require('./models/project').ProjectModel;
 
 const reader = new FileReader();
 
 const uploadDir = "./user-upload/";
 
-function bom(req, res) {
-    let form = new IncomingForm();
+async function bom(req, res) {
+    let form = new IncomingForm(),
+        tag;
+
+    form.parse(req, (err, fields) => {
+        if (err) return console.error(err);
+        
+        tag = fields.field;
+    });
 
     form.on('file', (field, file) => {
         // Parse & Save to Disk
@@ -22,7 +30,7 @@ function bom(req, res) {
             const view = new Uint8Array(reader.result);
 
             // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
-            let newDatum = parser.xlsParser(reader.result);
+            let newDatum = parser.xlsParser(reader.result, tag);
             newDatum.name = file.name;
 
             // save files to server dir
@@ -33,19 +41,26 @@ function bom(req, res) {
             // return the new data-object
             // send the json back to the client as response
             addJson(newDatum).then((data) => {
+                console.log(data.id, file.name);
                 dbModel = new MaterialList(data);
                 dbModel.save((err) => {
                     if (err) {
                         res.status(500).send(err);
                         return console.error(err);
                     }
+
+                    Project.findOne({tag: tag}, (err, project) => {
+                        if (err) throw err;
+
+                        project.bomLists.push(data.id);
+                        project.save(); 
+                    });
+
                     res.status(203).send([data.id]);
                 });
             });
         });
     });
-
-    form.parse(req);
 };
 
 async function addJson (datum) {

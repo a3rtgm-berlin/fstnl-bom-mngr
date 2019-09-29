@@ -2,7 +2,7 @@ const XLSX = require('../node_modules/xlsx');
 
 const rangeToIgnore = {c:1, r:3};
 
-function xlsParser(input) {
+function xlsParser(input, tag) {
     // load from buffer, 
     const wb = XLSX.read(input, {type:"array"});
     const ws = wb.Sheets[wb.SheetNames[0]];
@@ -15,7 +15,7 @@ function xlsParser(input) {
     let date = ws['A1'].v;
     let index = date.indexOf(' ');
     date = date.substring(0, index);
-    let id = date.substring(6) + '-' + date.substring(3, 5);
+    let id = tag + '-' + date.substring(6) + '-' + date.substring(3, 5);
 
     // Set new Range according to standard BOM File
     const newRange = XLSX.utils.encode_range(range);

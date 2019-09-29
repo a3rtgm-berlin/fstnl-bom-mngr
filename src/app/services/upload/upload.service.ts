@@ -13,12 +13,13 @@ export class UploadService {
 
   constructor(private http: HttpClient, private router: Router, private restService: RestService) {}
 
-  public upload(files: [File], service: string): {[key: string]: {progress: Observable<number>}} {
+  public upload(files: [File], service: string, projectTag?: string): {[key: string]: {progress: Observable<number>}} {
 
     const status: { [key: string]: { progress: Observable<number> } } = {};
 
     files.forEach(file => {
       const formData: FormData = new FormData();
+      formData.append('field', projectTag);
       formData.append('file', file, file.name);
 
       const req = new HttpRequest('POST', `${url}/${service}`, formData, {

@@ -12,19 +12,20 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Project Name</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Vienna" #name (change)="update(name.value, desc.value, trains.value, deadline.value)">
+                    <input type="text" class="form-control" placeholder="Vienna" #name (change)="update(name.value, tag.value, desc.value, trains.value, deadline.value)">
+                    <input type="text" class="form-control short" placeholder="VIE" #tag (change)="update(name.value, tag.value, desc.value, trains.value, deadline.value)">
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Description</span>
                     </div>
-                    <textarea type="text" class="form-control" rows="4" #desc (change)="update(name.value, desc.value, trains.value, deadline.value)"></textarea>
+                    <textarea type="text" class="form-control" rows="4" #desc (change)="update(name.value, tag.value, desc.value, trains.value, deadline.value)"></textarea>
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Trains</span>
                     </div>
-                    <input type="number" class="form-control" value="1" name="train-count" id="train-count" #trains (change)="update(name.value, desc.value, trains.value, deadline.value)">
+                    <input type="number" class="form-control" value="1" name="train-count" id="train-count" #trains (change)="update(name.value, tag.value, desc.value, trains.value, deadline.value)">
 
                     
                 </div>
@@ -32,7 +33,7 @@
                         <div class="input-group-append">
                                 <span class="input-group-text">Deadline</span>
                             </div>
-                            <input type="date" class="form-control" value="{{findFormat}}" name="deadline" id="deadline" #deadline (change)="update(name.value, desc.value, trains.value, deadline.value)">
+                            <input type="date" class="form-control" value="{{findFormat}}" name="deadline" id="deadline" #deadline (change)="update(name.value, tag.value, desc.value, trains.value, deadline.value)">
                 </div>
             </form>
         </div>

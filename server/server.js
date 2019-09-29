@@ -88,6 +88,12 @@ server.delete('/api/lists/:id', (req, res, next) => {
     MaterialList.findOneAndDelete({id: q}, (err) => {
         if (err) return console.error(err);
         console.log(q + ' deleted.');
+
+        Project.findOne({tag: q.slice(0, q.indexOf('-'))}, (err, data) => {
+            data.bomLists = data.bomLists.filter(id => id !== q);
+            data.save();
+        });
+
         res.sendStatus(204);
     });
 });
@@ -153,10 +159,10 @@ server.get('/api/projects', (req, res, next) => {
  * @description returns a projects by name
  * @returns {Project}
  */
-server.get('/api/projects/:name', (req, res, next) => {
-    const q = req.params.name;
+server.get('/api/projects/:tag', (req, res, next) => {
+    const q = req.params.tag;
 
-    Project.findOne({name: q}, (err, data) => {
+    Project.findOne({tag: q}, (err, data) => {
         if (err) return console.error(err);
         res.send(data);
     });
@@ -166,8 +172,8 @@ server.get('/api/projects/:name', (req, res, next) => {
  * @description deletes project by name
  * @returns {void}
  */
-server.delete('/api/projects/:name', (req, res, next) => {
-    const q = req.params.name;
+server.delete('/api/projects/:tag', (req, res, next) => {
+    const q = req.params.tag;
 
     if (q === 'delete-all') {
         Project.deleteMany({}, (err) => {
@@ -175,7 +181,7 @@ server.delete('/api/projects/:name', (req, res, next) => {
             res.sendStatus(204);
         });
     } else {
-        Project.findOneAndDelete({name: q}, (err) => {
+        Project.findOneAndDelete({tag: q}, (err) => {
             if (err) return console.error(err);
             console.log(q + ' deleted.');
             res.sendStatus(204);

@@ -77,6 +77,11 @@
                         flex-grow:1;
                         order:2;
                         @include outershadow;
+
+                        &.short {
+                            flex-basis: 60px;
+                            flex-grow: 0;
+                        }
                     }
 
                     textarea {

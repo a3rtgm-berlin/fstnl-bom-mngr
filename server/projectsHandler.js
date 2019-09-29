@@ -4,7 +4,7 @@ const Project = require("./models/project").ProjectModel;
 const newProject = function(req, res, next) {
     let form = new IncomingForm();
 
-    form.parse(req, (err, fields, files) => {
+    form.parse(req, (err, fields) => {
         if (fields) {
             const dbModel = new Project(fields);
             dbModel.save();

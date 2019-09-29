@@ -17,14 +17,22 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
   allProjects: Project[];
 
+  private upToDate = false;
+  private currentMonth: string;
+
   constructor(public modalService: ModalService, public restService: RestService) {
     this.restService.allProjects.subscribe((res) => {
       this.allProjects = res;
+      this.updateBrb();
     });
   }
 
   ngOnInit() {
+    const dateToday = new Date();
+
     this.restService.getAllProjects();
+
+    this.currentMonth = dateToday.getFullYear() + '-' + (dateToday.getMonth() + 1);
   }
 
   ngAfterViewInit(): void {
@@ -32,6 +40,19 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
   openCreateDialog() {
     this.modalService.init(CreateProjectComponent, {title: 'Create new Project'}, {});
+  }
+
+  updateBrb() {
+    let listCount = 0;
+
+    if (this.allProjects) {
+      this.allProjects.forEach((project) => {
+        if (project.bomLists.length > 0) {
+          const latestBom = project.bomLists[project.bomLists.length - 1];
+          console.log(latestBom.slice(latestBom.indexOf('-') + 1), this.currentMonth);
+        }
+      });
+    }
   }
 
 }

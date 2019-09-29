@@ -13,6 +13,8 @@ export class XlsLoaderComponent implements OnInit {
 
   public data: object;
 
+  private projectTag$: string;
+
   private file: File | null = null;
   private acceptedTypes: string[] = [
     'application/vnd.ms-excel',
@@ -24,6 +26,8 @@ export class XlsLoaderComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  private projectTag(tag) { this.projectTag$ = tag; console.log(this.projectTag$); }
 
   // Update UI on input change
   // Migrate to REACTIVE form later?
@@ -39,8 +43,9 @@ export class XlsLoaderComponent implements OnInit {
 
   // Submit uploaded file to server as POST request
   private onSubmit() {
+
     if (this.file) {
-      const upload = this.uploadService.upload([this.file], 'bom');
+      const upload = this.uploadService.upload([this.file], 'bom', this.projectTag$);
 
       upload[this.file.name].progress.subscribe({
         next: v => console.log(`POST ${this.file.name}: ${v}%`),

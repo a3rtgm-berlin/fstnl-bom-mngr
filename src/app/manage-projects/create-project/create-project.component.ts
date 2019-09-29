@@ -20,17 +20,16 @@ export class CreateProjectComponent implements OnInit {
 
   ngOnInit() {
     this.findFormat = this.dateToday.toISOString().substr(0, 10);
+  }
 
-
- }
-
-  private update(name, description, trainsCount, deadline): void {
+  private update(name, tag, description, trainsCount, deadline): void {
     this.projectData = {
       name,
+      tag,
       description,
       trainsCount,
       deadline,
-      bomLists: new Set<any>()
+      bomLists: []
     };
   }
 
@@ -44,7 +43,6 @@ export class CreateProjectComponent implements OnInit {
       }
 
       this.restService.createProject(this.projectData);
-      
 
       this.close();
     } else {

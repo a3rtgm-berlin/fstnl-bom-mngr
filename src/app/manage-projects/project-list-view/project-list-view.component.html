@@ -1,6 +1,9 @@
 <div class="prjct" #ganzoben>
     <div class="prjct_tpbr">
-        <div class="prjct_ttl">{{project$.name}}</div>
+        <div class="prjct_ttl">
+            {{project$.name}}
+            <span>{{project$.tag}}</span>
+        </div>
         <div class="prjct_sb_mn" (click)="createComponent()">
             <img src="../../../assets/img/icn_mn.png">
             <div class="prjctsb hidden" #prjctsb></div>

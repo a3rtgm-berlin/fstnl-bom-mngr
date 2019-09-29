@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
     name: String,
+    tag: {
+        type: String,
+        uppercase: true
+    },
     description: String,
     trainsCount: Number,
     deadline: Date,
