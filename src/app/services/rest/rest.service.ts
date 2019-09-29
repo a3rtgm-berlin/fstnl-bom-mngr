@@ -144,16 +144,16 @@ export class RestService {
   }
 
   public async createMaster(id: string) {
-    const observable = this.http.get<string>(url + 'lists/create-master/' + id);
-    const master = await observable.toPromise();
+    const observable = this.http.get(url + 'master/create/' + id);
+    const masterId = await observable.toPromise();
 
-    if (master) {
-      console.log(master);
+    if (masterId) {
+      this.setMasterId(masterId);
     }
   }
 
   public async getLatestMaster() {
-    const observable = this.http.get(url + 'lists/master');
+    const observable = this.http.get(url + 'master');
     const master = await observable.toPromise();
 
     if (master) {
@@ -162,7 +162,7 @@ export class RestService {
   }
 
   public async getLatestMasterId() {
-    const observable = this.http.get(url + 'lists/master-id');
+    const observable = this.http.get(url + 'master/id');
     const masterId = await observable.toPromise();
 
     if (masterId) {

@@ -22,10 +22,19 @@
             </app-project-list-view>
         </li>
 
-        <li [class]="upToDate ? 'bigRedButton' : 'bigRedButton active'" #brb>
-            <button (click)="bigRedButton()" [disabled]="upToDate ? true : false">
-                <a>Process All BOM Files</a>
-            </button>
-        </li>
+        <ng-container *ngIf="masterId != '0000-00' && upToDate; else elseTemplate">
+                <li class="bigRedButton done" #brb>
+                        <button class="btn-success" (click)="showBom()">
+                            <a>View latest BOM</a>
+                        </button>
+                    </li>
+        </ng-container>
+        <ng-template #elseTemplate>
+                <li [class]="upToDate ? 'bigRedButton' : 'bigRedButton active'" #brb>
+                    <button (click)="bigRedButton()" [disabled]="upToDate ? true : false">
+                        <a>Process All BOM Files</a>
+                    </button>
+                </li>
+        </ng-template>
     </ul>
 </div>

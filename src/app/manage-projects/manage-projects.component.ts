@@ -23,6 +23,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   private upToDate = true;
   private listsToCombine: string[] = [];
   private masterId: string;
+  private latestId: string;
 
   constructor(public modalService: ModalService, public restService: RestService) {
     this.restService.allProjects.subscribe((res) => {
@@ -31,7 +32,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
     });
 
     this.restService.masterId.subscribe((res) => {
-      this.masterId = res ? res : '00-0000';
+      this.masterId = res ? res[0] : '00-0000';
       this.updateBrb();
     });
   }
@@ -53,9 +54,19 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
     this.modalService.init(CreateProjectComponent, {title: 'Create new Project'}, {});
   }
 
+  bigRedButton() {
+    if (this.listsToCombine.length > 0) {
+      this.restService.createMaster(this.latestId);
+    }
+  }
+
+  showBom() {
+    this.restService.getLatestMaster();
+  }
+
   updateBrb() {
-    const listsToCombine = [];
-    let latestId = this.masterId;
+    this.listsToCombine = [];
+    this.latestId = this.masterId;
 
     if (this.allProjects) {
       this.allProjects.forEach((project) => {
@@ -64,15 +75,13 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
           const thisId$ = thisId.substring(thisId.indexOf('-') + 1);
 
           if (thisId$ > this.masterId) {
-            latestId = thisId$;
-            listsToCombine.push(thisId);
+            this.latestId = thisId$;
+            this.listsToCombine.push(thisId);
           }
         }
       });
 
-      if (listsToCombine.length >= this.allProjects.length) {
-        this.upToDate = false;
-      }
+      this.upToDate = this.listsToCombine.length >= this.allProjects.length ? false : true;
     }
   }
 

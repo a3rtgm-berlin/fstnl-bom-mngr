@@ -1,5 +1,19 @@
 const mongoose = require('../../node_modules/mongoose');
-const materialListSchema = require('./list').materialListSchema;
-const MasterBom = mongoose.model('MasterBom', materialListSchema);
+const Schema = mongoose.Schema;
 
-module.exports = MasterBom;
+const masterBomSchema = new Schema({
+    id: String,
+    json: {
+        type: Object,
+        required: true,
+        default: {}
+    },
+    comparison: Object,
+    date: String,
+    uploadDate: Date
+}, {
+    collection: 'master-bom'
+});
+
+
+module.exports = mongoose.model('MasterBom', masterBomSchema);

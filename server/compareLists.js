@@ -131,11 +131,7 @@ module.exports = class Comparison {
             this.currentList.json.push(oldItem);
         });
 
-        console.log(new Date());
         return comparedList;
-    }
-
-    sortLists(param) {
     }
 
     setMeta() {

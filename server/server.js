@@ -58,18 +58,16 @@ server.post('/api/upload/bom', upload.bom);
  * @param
  * @method
  */
-server.post('/api/lists/create-master', createMaster);
+server.get('/api/master/create/:id', createMaster);
 
 /**
  * @description todo
  * @param
  * @method
  */
-server.get('api/lists/master', (req, res) => {
+server.get('/api/master', (req, res) => {
     MasterBom.findOne().sort('id').exec((err, data) => {
         if (err) throw err;
-
-        console.log(data);
         res.status(200).send(data);
     });
 });
@@ -79,13 +77,10 @@ server.get('api/lists/master', (req, res) => {
  * @param
  * @method
  */
-server.get('api/lists/master-id', (req, res) => {
-    console.log('looking for master');
+server.get('/api/master/id', (req, res) => {
     MasterBom.findOne().sort('id').exec((err, data) => {
         if (err) throw err;
-
-        console.log(data.id);
-        res.status(200).send(data.id);
+        res.status(200).send([data.id]);
     });
 });
 
@@ -128,8 +123,12 @@ server.delete('/api/lists/:id', (req, res, next) => {
         console.log(q + ' deleted.');
 
         Project.findOne({tag: q.slice(0, q.indexOf('-'))}, (err, data) => {
-            data.bomLists = data.bomLists.filter(id => id !== q);
-            data.save();
+            if (err) return console.error(err);
+            
+            if (data) {
+                data.bomLists = data.bomLists.filter(id => id !== q);
+                data.save();
+            }
         });
 
         res.sendStatus(204);
