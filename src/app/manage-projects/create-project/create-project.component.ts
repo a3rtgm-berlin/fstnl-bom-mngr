@@ -8,16 +8,21 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
-  styleUrls: ['./create-project.component.scss']
+  styleUrls: ['./create-project.component.scss'],
 })
 export class CreateProjectComponent implements OnInit {
 
   private projectData: Project;
+  dateToday: Date = new Date();
+  findFormat: any;
 
   constructor(public modalService: ModalService, public restService: RestService, public router: Router) { }
 
   ngOnInit() {
-  }
+    this.findFormat = this.dateToday.toISOString().substr(0, 10);
+
+
+ }
 
   private update(name, description, trainsCount, deadline): void {
     this.projectData = {
@@ -39,8 +44,8 @@ export class CreateProjectComponent implements OnInit {
       }
 
       this.restService.createProject(this.projectData);
-      this.restService.getAllProjects();
       
+
       this.close();
     } else {
       alert(`please enter project information`);
