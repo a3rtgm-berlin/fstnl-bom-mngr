@@ -1,7 +1,10 @@
 <div class="prjct">
     <div class="prjct_tpbr">
         <div class="prjct_ttl">{{project$.name}}</div>
-        <div class="prjct_sb_mn"><img src="../../../assets/img/icn_mn.png"></div>
+        <div class="prjct_sb_mn" (click)="createComponent()">
+            <img src="../../../assets/img/icn_mn.png">
+            <div id="prjctsb" class="hidden"></div>
+        </div>
     </div>
 
     <div class="prjct_bdy">

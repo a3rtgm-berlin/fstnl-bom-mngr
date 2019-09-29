@@ -3,7 +3,7 @@
 :host {
     .modal-content {
         border-radius:0px;
-        background:#222;
+        background:$darkbrandblue;
 
         .modal-header {
             border-radius:0px;
@@ -72,7 +72,7 @@
                         border-radius:0px;
                         border:none;
                         color:whitesmoke;
-                        background:#444;
+                        background:rgba(0,0,0,0.3);
                         margin-left:10px;
                         flex-grow:1;
                         order:2;
@@ -83,7 +83,7 @@
                         border-radius:0px;
                         flex-grow:1;
                         color:whitesmoke;
-                        background:#444;
+                        background:rgba(0,0,0,0.3);
                         border:none;
                         font-size:80%;
                         margin-left:10px;

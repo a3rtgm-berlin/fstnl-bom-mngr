@@ -32,7 +32,7 @@
                         <div class="input-group-append">
                                 <span class="input-group-text">Deadline</span>
                             </div>
-                            <input type="date" class="form-control" value="2019-07-22" name="deadline" id="deadline" #deadline (change)="update(name.value, desc.value, trains.value, deadline.value)">
+                            <input type="date" class="form-control" value="{{findFormat}}" name="deadline" id="deadline" #deadline (change)="update(name.value, desc.value, trains.value, deadline.value)">
                 </div>
             </form>
         </div>

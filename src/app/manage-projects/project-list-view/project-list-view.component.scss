@@ -102,9 +102,11 @@
                         .txtbx {
                             flex:1 0 100%;
                             p {
-                                margin-left:2.5%;
-                                font-size:70%;
-                                color:$darkbrandblue;
+                                margin-right: 1px;
+                                margin-left: auto;
+                                text-align: right;
+                                font-size: 70%;
+                                color: #003b69;
                             }
                         }
                     }
@@ -137,7 +139,7 @@
         .prjct_tpbr {
             .prjct_ttl {
                 transform:scale(1.02);
-                margin-left:12px;
+                margin-left:15px;
                 transition:0.3s;
             }
         }

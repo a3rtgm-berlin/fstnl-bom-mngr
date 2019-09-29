@@ -23,6 +23,7 @@ import { DomService } from './services/dom/dom.service';
 import { MatrixFilesComponent } from './matrix-files/matrix-files.component';
 import { MenuComponent } from './menu/menu.component';
 import { ProjectListViewComponent } from './manage-projects/project-list-view/project-list-view.component';
+import { ProjectSubSettingsComponent } from './manage-projects/project-sub-settings/project-sub-settings.component';
 
 @NgModule({
   declarations: [
@@ -42,9 +43,11 @@ import { ProjectListViewComponent } from './manage-projects/project-list-view/pr
     MatrixFilesComponent,
     MenuComponent,
     ProjectListViewComponent,
+    ProjectSubSettingsComponent,
   ],
   entryComponents: [
     CreateProjectComponent,
+    ProjectSubSettingsComponent,
   ],
   imports: [
     BrowserModule,
