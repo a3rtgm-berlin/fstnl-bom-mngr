@@ -17,13 +17,33 @@ export class ModalService {
     };
 
     this.domService.appendComponentTo(host ? host.nativeElement : this.modalElementId, component, componentConfig);
-    $(host ? host.nativeElement : this.modalElementId).addClass('show').removeClass('hidden');
+    switch (typeof host) {
+      case 'string':
+        $(host).addClass('show').removeClass('hidden');
+        break;
+      case 'object':
+        $(host.nativeElement).addClass('show').removeClass('hidden');
+        break;
+      default:
+        $(this.modalElementId).addClass('show').removeClass('hidden');
+        break;
+    }
     if (overlay) { $(this.overlayElementId).addClass('show').removeClass('hidden'); }
   }
 
   destroy(host?: any) {
     this.domService.removeComponent();
-    $(host ? host.nativeElement : this.modalElementId).addClass('hidden').removeClass('show');
+    switch (typeof host) {
+      case 'string':
+        $(host).addClass('hidden').removeClass('show');
+        break;
+      case 'object':
+        $(host.nativeElement).addClass('hidden').removeClass('show');
+        break;
+      default:
+        $(this.modalElementId).addClass('hidden').removeClass('show');
+        break;
+    }
     $(this.overlayElementId).addClass('hidden').removeClass('show');
   }
 }

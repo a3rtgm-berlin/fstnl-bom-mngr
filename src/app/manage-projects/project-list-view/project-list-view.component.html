@@ -4,8 +4,10 @@
             {{project$.name}}
             <span>{{project$.tag}}</span>
         </div>
-        <div class="prjct_sb_mn" (click)="createComponent()">
-            <span></span><span></span><span></span>
+        <div class="prjct_sb_mn">
+            <div class="menu" (click)="createComponent()">
+                <span></span><span></span><span></span>
+            </div>
             <!--<img src="../../../assets/img/icn_mn.png">-->
             <div class="prjctsb hidden" #prjctsb></div>
         </div>

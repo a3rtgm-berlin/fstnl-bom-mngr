@@ -80,7 +80,8 @@ server.get('/api/master', (req, res) => {
 server.get('/api/master/id', (req, res) => {
     MasterBom.findOne().sort('id').exec((err, data) => {
         if (err) throw err;
-        res.status(200).send([data.id]);
+        if (data) return res.status(200).send([data.id]);
+        res.sendStatus(404);
     });
 });
 
@@ -111,7 +112,7 @@ server.get('/api/lists/:id', (req, res, next) => {
 });
 
 /**
- * @description deletes a list by date
+ * @description deletes a list by ID (Project + Date)
  * @todo ... and project
  * @returns {void}
  */
@@ -206,7 +207,7 @@ server.get('/api/projects/:tag', (req, res, next) => {
 });
 
 /**
- * @description deletes project by name
+ * @description deletes project by name including all its BOM files
  * @returns {void}
  */
 server.delete('/api/projects/:tag', (req, res, next) => {
@@ -218,10 +219,19 @@ server.delete('/api/projects/:tag', (req, res, next) => {
             res.sendStatus(204);
         });
     } else {
-        Project.findOneAndDelete({tag: q}, (err) => {
+        Project.findOne({tag: q}, (err, data) => {
             if (err) return console.error(err);
-            console.log(q + ' deleted.');
-            res.sendStatus(204);
+            if (data) {
+                data.bomLists.forEach((list) => {
+                    MaterialList.findOneAndDelete({id: list}, (err) => {
+                        if (err) return console.error(err);
+                    });
+                });
+                data.remove();
+                console.log(q + ' deleted.');
+                return res.sendStatus(204);
+            }
+            res.sendStatus(404);
         });
     }
 });

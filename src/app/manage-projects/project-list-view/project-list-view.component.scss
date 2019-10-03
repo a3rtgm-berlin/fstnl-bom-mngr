@@ -55,6 +55,9 @@
 
                 .prjctsb {
                     @include absolute-full;
+                    &.hidden {
+                        pointer-events: none;
+                    }
                 }
 
             }

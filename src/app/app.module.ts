@@ -24,6 +24,7 @@ import { MatrixFilesComponent } from './matrix-files/matrix-files.component';
 import { MenuComponent } from './menu/menu.component';
 import { ProjectListViewComponent } from './manage-projects/project-list-view/project-list-view.component';
 import { ProjectSubSettingsComponent } from './manage-projects/project-sub-settings/project-sub-settings.component';
+import { DeleteProjectComponent } from './manage-projects/delete-project/delete-project.component';
 
 @NgModule({
   declarations: [
@@ -44,10 +45,12 @@ import { ProjectSubSettingsComponent } from './manage-projects/project-sub-setti
     MenuComponent,
     ProjectListViewComponent,
     ProjectSubSettingsComponent,
+    DeleteProjectComponent,
   ],
   entryComponents: [
     CreateProjectComponent,
     ProjectSubSettingsComponent,
+    DeleteProjectComponent
   ],
   imports: [
     BrowserModule,

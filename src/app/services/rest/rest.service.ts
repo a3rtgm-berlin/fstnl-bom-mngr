@@ -134,6 +134,15 @@ export class RestService {
     });
   }
 
+  public deleteProject(tag: string) {
+    const observable = this.http.delete<string>(url + 'projects/' + tag);
+    observable.subscribe(
+      (val) => console.log('DELETE call successful value returned in body', val),
+      err => console.error('DELETE call in error', err),
+      () => console.log('The DELETE observable is now completed.')
+    );
+  }
+
   public async getAllProjects() {
     const observable = this.http.get<Project[]>(url + 'projects');
     const projects = await observable.toPromise();

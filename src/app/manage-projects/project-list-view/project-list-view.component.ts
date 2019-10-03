@@ -34,17 +34,6 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   createComponent() {
-    if (this.modalController) {
-      this.modalService.init(ProjectSubSettingsComponent, {project: this.project$}, {}, this.injector, false);
-    } else {
-      this.modalService.destroy(this.injector);
-    }
-
-    this.modalController = !this.modalController;
+    this.modalService.init(ProjectSubSettingsComponent, {project: this.project$}, {}, this.injector, false);
   }
-
-  removeModal() {
-    this.modalService.destroy('prjctsb');
-  }
-
 }

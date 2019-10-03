@@ -32,7 +32,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
     });
 
     this.restService.masterId.subscribe((res) => {
-      this.masterId = res ? res[0] : '00-0000';
+      this.masterId = res ? res[0] : '0000-00';
       this.updateBrb();
     });
   }
@@ -44,7 +44,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
     this.restService.getLatestMasterId();
 
     this.todayMonth = Month[this.date.getMonth()] + ' ' + this.date.getFullYear();
-    console.log(this.todayMonth);
+    // console.log(this.todayMonth);
   }
 
   ngAfterViewInit(): void {

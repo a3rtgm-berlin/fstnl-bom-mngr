@@ -1,0 +1,15 @@
+<div class="dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Are you sure you want to delete the Project {{projectTag}} including all its saved BOM Files?</h5>
+                <p></p>
+                <button type="button" class="close" (click)="close()">
+                <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">Cancel</button>
+                <button type="button" class="btn btn-delete" (click)="submit()">Delete</button>
+            </div>
+        </div>
+    </div>

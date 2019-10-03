@@ -70,12 +70,13 @@
                 @include outershadow;
                 overflow:visible;
                 z-index:5;
-            }
-            
-            li.actProject:hover {
-                transform:scale(1.02);
-                transition:0.25s;
-                border:1px solid $brandblue;
+
+                &:hover, &:focus {
+                    transform:scale(1.02);
+                    transition:0.25s;
+                    border:1px solid $brandblue;
+                    z-index: 10;
+                }
             }
 
             li.nProject {
