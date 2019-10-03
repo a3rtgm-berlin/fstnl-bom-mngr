@@ -1,5 +1,7 @@
 const MaterialList = require("./models/list").MaterialListModel;
 const MasterBom = require('./models/masterBom');
+const Comparison = require('./compareLists');
+
 
 const createMasterBom = function (req, res) {
     const id = req.params.id;
@@ -15,10 +17,10 @@ const createMasterBom = function (req, res) {
             return mat;
         })), id, lists[0].date);
 
-        MasterBom.findOne().sort('id').exec((err, data) => {
+        MasterBom.findOne({id: {$lt: id}}).sort('id').exec((err, data) => {
             if (err) throw err;
             
-            console.log(id);
+            console.log(id, data.id);
             if (data && data.id < id) {
                 console.log(data);
 
