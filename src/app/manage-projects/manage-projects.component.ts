@@ -28,6 +28,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   constructor(public modalService: ModalService, public restService: RestService) {
     this.restService.allProjects.subscribe((res) => {
       this.allProjects = res;
+      console.log(this.allProjects);
       this.updateBrb();
     });
 

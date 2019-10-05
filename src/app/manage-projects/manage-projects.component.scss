@@ -52,7 +52,7 @@
         ul {
             @include flex-standard;
             list-style:none;
-            justify-content:flex-start;
+            justify-content: flex-start;
 
             li {
                 position:relative;

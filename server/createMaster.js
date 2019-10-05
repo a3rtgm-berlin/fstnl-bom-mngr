@@ -16,17 +16,16 @@ const createMasterBom = function (req, res) {
             mat.list = list.id;
             return mat;
         })), id, lists[0].date);
+        const dbModel = new MasterBom(newMaster);
 
         MasterBom.findOne({id: {$lt: id}}).sort('id').exec((err, data) => {
             if (err) throw err;
             
-            console.log(id, data.id);
             if (data && data.id < id) {
-                console.log(data);
-
+                console.log(id, data.id);
+                console.log(data, dbModel);
             }
 
-            const dbModel = new MasterBom(newMaster);
             dbModel.save((err) => {
                 if (err) {
                     res.sendStatus(500);
