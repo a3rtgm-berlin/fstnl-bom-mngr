@@ -25,7 +25,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   private masterId: string;
   private latestId: string;
   public state: string;
-
+  private count: any;
   public penisse: string;
 
   constructor(public modalService: ModalService, public restService: RestService) {
@@ -33,6 +33,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
       this.allProjects = res;
       console.log(this.allProjects);
       this.updateBrb();
+      this.updateProjectCount();
     });
 
     this.restService.masterId.subscribe((res) => {
@@ -62,6 +63,19 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
       this.restService.createMaster(this.latestId);
     }
   }
+
+  updateProjectCount() {
+    this.count = 0;
+    if(this.allProjects) {
+      this.allProjects.forEach((el) => {
+        if(el.active != false) {
+          this.count += 1;
+          console.log(this.count)
+        }
+      });
+    }
+  }
+  
 
   showBom() {
   }

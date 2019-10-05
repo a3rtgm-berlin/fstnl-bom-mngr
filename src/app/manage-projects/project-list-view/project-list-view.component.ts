@@ -14,6 +14,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   private project$: any;
   bomList$: any;
+  totalDiff: any;
   modalController = true;
 
   @Input() set project(project) {
@@ -25,6 +26,13 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   ngOnInit() {
     this.bomList$ = this.project$.bomLists;
+
+    let date1 = new Date(this.project$.deadline);
+    let date2 = new Date();
+    let diffInWeeks =(date2.getTime() - date1.getTime()) / 1000;
+    diffInWeeks /= (60 * 60 * 24 * 7);
+    console.log(diffInWeeks);
+    this.totalDiff = Math.abs(Math.round(diffInWeeks));
   }
 
   ngAfterViewInit(): void {

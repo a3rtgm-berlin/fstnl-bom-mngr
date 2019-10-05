@@ -1,11 +1,11 @@
 <table class="table table-sm" id="BOM">
     <thead class="thead-dark">
-        <th scope="col">Status</th>
-        <th scope="col">Station</th>
-        <th scope="col">Part#</th>
-        <th scope="col">Part</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Change</th>
+        <th (click)="addSort('status', $event)" data="status" scope="col">Status</th>
+        <th (click)="addSort('Station', $event)" data="Station" scope="col">Station</th>
+        <th (click)="addSort('Material', $event)" data="Material" scope="col">Part#</th>
+        <th (click)="addSort('Objektkurztext', $event)" data="Objektkurztext" scope="col">Part</th>
+        <th (click)="addSort('Menge', $event)" data="Menge" scope="col">Quantity</th>
+        <th (click)="addSort('change', $event)" data="change" scope="col">Change</th>
     </thead>
     <ng-container *ngFor="let item of bom$">
         <tr class="{{item.status}}">
