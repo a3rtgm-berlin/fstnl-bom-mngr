@@ -48,7 +48,6 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
     this.restService.getLatestMasterId();
 
     this.todayMonth = Month[this.date.getMonth()] + ' ' + this.date.getFullYear();
-    // console.log(this.todayMonth);
   }
 
   ngAfterViewInit(): void {
@@ -65,7 +64,6 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   }
 
   showBom() {
-    this.restService.getLatestMaster();
   }
 
   updateBrb() {

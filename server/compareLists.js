@@ -6,6 +6,8 @@ module.exports = class Comparison {
         this.comparators = Config[this.client].comparators;
         this.quantitySelector = Config[this.client].quantity;
 
+        // console.log(lists.map(l => l.id));
+
         const sortedLists = lists.sort((a, b) => {
             return Date.parse(a.id) - Date.parse(b.id);
         });

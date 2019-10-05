@@ -14,13 +14,14 @@ export class ProjectListComponent implements OnInit {
   public selectedMaterialLists: Set<MaterialList> = new Set<MaterialList>();
 
   constructor(private restService: RestService, private router: Router) {
-    this.restService.allLists.subscribe(res => {
+    this.restService.allMaster.subscribe(res => {
       this.materialLists = res;
+      console.log(res);
     });
   }
 
   ngOnInit() {
-    this.restService.getAllLists();
+    this.restService.getAllMaster();
   }
 
   setSelectedMaterialLists(event$) {

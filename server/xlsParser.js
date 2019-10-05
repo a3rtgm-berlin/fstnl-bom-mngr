@@ -30,7 +30,7 @@ function xlsParser(input, tag) {
     // fix inconsistencies in column naming
     dataAsCsv = dataAsCsv.replace(dataAsCsv.substring(0, dataAsCsv.search(/\n/)), dataAsCsv.substring(0, dataAsCsv.search(/\n/)).replace(/\s/g, ""));
 
-    return {id: id, name: "", json: {}, csv: dataAsCsv, date: date, uploadDate: new Date()};
+    return {id: id, name: "", project: tag, json: {}, csv: dataAsCsv, date: date, uploadDate: new Date()};
 };
 
 function matrixParser(input) {
