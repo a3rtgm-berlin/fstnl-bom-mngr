@@ -16,6 +16,7 @@ const Comparison = require('./compareLists');
 const MaterialList = require("./models/list").MaterialListModel;
 const Project = require("./models/project").ProjectModel;
 const MasterBom = require('./models/masterBom');
+const User = require("./models/userModel").UserModel;
 
 // Server
 const server = express();

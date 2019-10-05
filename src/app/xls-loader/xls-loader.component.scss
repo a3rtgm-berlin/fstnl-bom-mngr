@@ -1,10 +1,50 @@
-form {
-    flex: 0 1 25%;
+@import "../../variables";
 
-    label {
-        display:block;
-    }
-}
 :host {
-    width:100%;
+    display:block;
+    margin:10px auto;
+    width:90%;
+    height:auto;
+
+    form {
+        @include flex-standard;
+        width:100%;
+
+        .input-group {
+            flex:1 0 100%;
+
+            .custom-file {
+                height:30px;
+                border-radius:0px;
+                input {
+                    line-height:30px;
+                    height:30px;
+                }
+                label {
+                    text-align:center;
+                    border-radius:0px;
+                    font-size:80%;
+                    color:#aaa;
+
+                    &:after {
+                        display:none;
+                    }
+                }
+            }
+        }
+
+        .input-group-append {
+            flex: 1 0 100%;
+            button {
+                border-radius:0px;
+                border:1px solid $brandorange;
+                line-height:30px;
+                height:30px;
+                padding:0;
+                color:$brandorange;
+                font-size:80%;
+                background:rgba(255,148,77,0.35);
+            }
+        }
+    }
 }

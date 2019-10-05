@@ -101,8 +101,7 @@
 
             .prjct_vars {
                 width:90%;
-                height:30px;
-                margin:5px auto;
+                margin:5px auto 3px auto;
                 ul {
                     @include flex-standard;
                     justify-content:space-between;
@@ -153,6 +152,7 @@
                             p {
                                 margin-right: 1px;
                                 margin-left: auto;
+                                margin-bottom:0px;
                                 text-align: right;
                                 font-size: 70%;
                                 color: #003b69;

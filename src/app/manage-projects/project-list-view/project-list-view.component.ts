@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { ProjectSubSettingsComponent } from '../project-sub-settings/project-sub-settings.component';
+import { XlsLoaderComponent } from '../../xls-loader/xls-loader.component';
 import { ModalService } from '../../services/modal/modal.service';
 
 @Component({

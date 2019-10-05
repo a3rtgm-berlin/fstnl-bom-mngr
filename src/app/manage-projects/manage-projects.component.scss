@@ -52,15 +52,15 @@
         ul {
             @include flex-standard;
             list-style:none;
-            justify-content:space-between;
+            justify-content:flex-start;
 
             li {
                 position:relative;
                 display:flex;
-                flex:0 0 33%;
+                flex-basis:calc(33% - 6px);
                 min-width:300px;
                 min-height:180px;
-                margin-bottom:3px;
+                margin:3px;
                 overflow:hidden;
             }
 

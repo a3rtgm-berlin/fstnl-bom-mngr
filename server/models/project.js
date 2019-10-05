@@ -10,7 +10,11 @@ const projectSchema = new Schema({
     description: String,
     trainsCount: Number,
     deadline: Date,
-    bomLists: [String]
+    bomLists: [String],
+    active: {
+        type: Boolean,
+        default: true,
+    },
 }, {
     collection: 'project-data'
 });

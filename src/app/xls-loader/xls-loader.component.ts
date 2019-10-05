@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { UploadService } from '../services/upload/upload.service';
 
 // Component to upload and interpret the BOM-xls file
@@ -11,27 +11,29 @@ import { UploadService } from '../services/upload/upload.service';
 })
 export class XlsLoaderComponent implements OnInit {
 
-  public data: object;
+  @Input() projectTag: string;
 
-  private projectTag$: string;
+  public data: object;
 
   private file: File | null = null;
   private acceptedTypes: string[] = [
     'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'text/csv'
+    'text/csv',
+    '',
   ];
+  private isFocused: Boolean = false;
 
   constructor(public uploadService: UploadService) { }
 
   ngOnInit() {
+    console.log(this.projectTag);
   }
-
-  private projectTag(tag) { this.projectTag$ = tag; console.log(this.projectTag$); }
 
   // Update UI on input change
   // Migrate to REACTIVE form later?
   private onChange(evt) {
+    console.log(evt.target.files[0]);
     if (evt.target.files.length) {
       if (this.acceptedTypes.indexOf(evt.target.files[0].type) !== -1) {
         this.file = evt.target.files[0];
@@ -45,7 +47,7 @@ export class XlsLoaderComponent implements OnInit {
   private onSubmit() {
 
     if (this.file) {
-      const upload = this.uploadService.upload([this.file], 'bom', this.projectTag$);
+      const upload = this.uploadService.upload([this.file], 'bom', this.projectTag);
 
       upload[this.file.name].progress.subscribe({
         next: v => console.log(`POST ${this.file.name}: ${v}%`),
