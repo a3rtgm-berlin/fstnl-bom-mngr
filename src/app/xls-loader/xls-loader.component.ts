@@ -32,6 +32,7 @@ export class XlsLoaderComponent implements OnInit {
   // Update UI on input change
   // Migrate to REACTIVE form later?
   private onChange(evt) {
+    console.log(evt.target.files[0].type);
     if (evt.target.files.length) {
       if (this.acceptedTypes.indexOf(evt.target.files[0].type) !== -1) {
         this.file = evt.target.files[0];

@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { MaterialList } from '../../materialListModel';
 import { Project } from '../../projectModel';
 import { Router } from '@angular/router';
+import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
 
 const url = 'http://localhost:8000/api/';
 
@@ -139,7 +140,7 @@ export class RestService {
     observable.subscribe(
       (val) => console.log('DELETE call successful value returned in body', val),
       err => console.error('DELETE call in error', err),
-      () => console.log('The DELETE observable is now completed.')
+      () => this.getAllProjects()
     );
   }
 

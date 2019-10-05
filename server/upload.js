@@ -9,24 +9,29 @@ const MaterialList = require("./models/list").MaterialListModel;
 const ArbMatrix = require('./models/arbMatrix');
 const Project = require('./models/project').ProjectModel;
 
-const reader = new FileReader();
-
 const uploadDir = "./user-upload/";
 
 async function bom(req, res) {
+    const reader = new FileReader();
     let form = new IncomingForm(),
         tag;
 
-    form.parse(req, (err, fields) => {
-        if (err) return console.error(err);
-        
-        tag = fields.field;
-    });
+    form.parse(req);
 
-    form.on('file', (field, file) => {
+    form.on('field', (name, field) => {
+        tag = field;
+    });
+    
+    form.on('error', (err) => {
+        console.error(err);
+        res.sendStatus(500);
+        throw err;
+    })
+
+    form.on('file', async (name, file) => {
         // Parse & Save to Disk
-        reader.readAsArrayBuffer(file)
-        reader.addEventListener('load', (evt) => {
+        reader.readAsArrayBuffer(file);
+        reader.onload = (evt) => {
             const view = new Uint8Array(reader.result);
 
             // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
@@ -54,13 +59,13 @@ async function bom(req, res) {
                         project.bomLists.push(data.id);
                         project.save(); 
                     });
-
-                    res.status(203).send([data.id]);
+                    
+                    res.sendStatus(203);
                 });
             });
-        });
+        };
     });
-};
+}
 
 async function addJson (datum) {
     // wait for the d3.dsv-handler to filter and convert the csv-string
@@ -73,6 +78,7 @@ async function addJson (datum) {
 }
 
 function matrix (req, res) {
+    const reader = new FileReader();
     let form = new IncomingForm();
 
     form.on('file', (field, file) => {
