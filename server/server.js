@@ -79,10 +79,27 @@ server.get('/api/master', (req, res) => {
  * @method
  */
 server.get('/api/master/id', (req, res) => {
-    MasterBom.findOne().sort('id').exec((err, data) => {
+    MasterBom.find((err, data) => {
         if (err) throw err;
-        if (data) return res.status(200).send([data.id]);
+        if (data) return res.status(200).send(
+            [data.map(d => d.id).sort((a, b) => {
+                if (a < b) return 1;
+                return -1;
+            })[0]]
+        );
         res.sendStatus(404);
+    });
+});
+
+/**
+ * @description returns all created Master BOMs
+ * @todo ... for a selected project?
+ * @returns {[MaterialList]}
+ */
+server.get('/api/master/all', (req, res, next) => {
+    MasterBom.find((err, data) => {
+        if (err) return console.error(err);
+        res.send(data);
     });
 });
 
@@ -166,11 +183,11 @@ server.post('/api/lists', (req, res, next) => {
  * @param {string} id2
  * @returns {comparison}
  */
-server.get('/api/lists/compare/:id1/:id2', (req, res, next) => {
+server.get('/api/master/compare/:id1/:id2', (req, res, next) => {
     const q = req.params;
     let comparison;
 
-    MaterialList.find({id: {$in: [q.id1, q.id2]}}, (err, data) => {
+    MasterBom.find({id: {$in: [q.id1, q.id2]}}, (err, data) => {
         if (err) return console.error(err);
         comparison = new Comparison(data);
         res.send(comparison);
@@ -238,10 +255,9 @@ server.delete('/api/projects/:tag', (req, res, next) => {
 });
 
 // Open Server Connection
-const handler = server.listen(port, () => {
+server.listen(port, () => {
     console.log(`server started @Port:${port}`);
 });
-handler.setTimeout(10000);
 
 
  

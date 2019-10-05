@@ -22,7 +22,7 @@ export class XlsLoaderComponent implements OnInit {
     'text/csv',
     '',
   ];
-  private isFocused: Boolean = false;
+  private isFocused = false;
 
   constructor(public uploadService: UploadService) { }
 

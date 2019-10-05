@@ -12,18 +12,25 @@ const createMasterBom = function (req, res) {
             throw err;
         }
 
-        const newMaster = combineLists(lists.map((list) => list.json.map((mat) => {
-            mat.list = list.id;
-            return mat;
-        })), id, lists[0].date);
+        const newMaster = combineLists(
+            lists.map((list) => list.json.map((mat) => {
+                mat.list = list.id;
+                return mat;
+            })), 
+            id, 
+            lists[0].date, 
+            lists.map(list => list.project));
         const dbModel = new MasterBom(newMaster);
 
-        MasterBom.findOne({id: {$lt: id}}).sort('id').exec((err, data) => {
+        MasterBom.findOne({id: {$lt: id}}).sort('id').exec(async (err, lastMaster) => {
             if (err) throw err;
             
-            if (data && data.id < id) {
-                console.log(id, data.id);
-                console.log(data, dbModel);
+            if (lastMaster && lastMaster.id < id) {
+                let compare = new Promise((res, rej) => {
+                    res(new Comparison([dbModel, lastMaster]));
+                });
+                const comparison = await compare;      
+                dbModel.comparison = comparison;       
             }
 
             dbModel.save((err) => {
@@ -38,7 +45,7 @@ const createMasterBom = function (req, res) {
     });
 };
 
-function combineLists(lists, id, date) {
+function combineLists(lists, id, date, projectTags) {
     const masterList = new Set([].concat(...lists));
 
     masterList.forEach((mat1, e1, i) => {
@@ -52,6 +59,7 @@ function combineLists(lists, id, date) {
 
     return {
         id: id,
+        projects: projectTags,
         json: Array.from(masterList),
         comparison: {},
         date: date,

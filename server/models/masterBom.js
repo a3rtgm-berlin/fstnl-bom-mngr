@@ -10,7 +10,8 @@ const masterBomSchema = new Schema({
     },
     comparison: Object,
     date: String,
-    uploadDate: Date
+    uploadDate: Date,
+    project: [String],
 }, {
     collection: 'master-bom'
 });

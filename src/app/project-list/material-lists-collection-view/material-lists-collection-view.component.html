@@ -1,13 +1,9 @@
 <div [class]="isSelected ? 'btn-group active' : 'btn-group inactive'">
-    <button type="button" class="btn btn-info label">ID</button>
+    <button type="button" class="btn btn-primary label">ID</button>
     <button type="button" class="btn btn-outline-secondary btn-block" aria-haspopup="true" aria-expanded="false">{{materialList$.id}}</button>
-    <button type="button" class="btn btn-info label">File Name</button>
+    <button type="button" class="btn btn-primary label">Projects</button>
     <button type="button" class="btn btn-outline-secondary btn-block" aria-haspopup="true" aria-expanded="false">{{materialList$.name}}</button>
-    <button type="button" class="btn btn-info label">Date</button>
+    <button type="button" class="btn btn-primary label">Date</button>
     <button type="button" class="btn btn-outline-secondary btn-block" aria-haspopup="true" aria-expanded="false">{{materialList$.date}}</button>
-    <button type="button" class="btn btn-info label">Uploaded</button>
-    <button type="button" class="btn btn-outline-secondary btn-block" aria-haspopup="true" aria-expanded="false">{{materialList$.uploadDate.getFullYear()}}/{{materialList$.uploadDate.getMonth()}}/{{materialList$.uploadDate.getDay()}}</button>
-    <button type="button" class="btn btn-info label">CSV</button>
-    <button type="button" class="btn btn-info label">JSON</button>
-    <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off" (click)="selectList()">Select</button>
+    <button type="button" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off" (click)="selectList()">Select</button>
 </div>

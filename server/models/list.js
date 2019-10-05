@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const materialListSchema = new Schema({
     id: String,
     name: String,
+    project: String,
     json: {
         type: Object,
         required: true,

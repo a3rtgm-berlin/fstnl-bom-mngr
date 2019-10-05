@@ -19,6 +19,7 @@ export class RestService {
   public allLists: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public comparison: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allProjects: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public allMaster: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public master: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public masterId: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -51,6 +52,14 @@ export class RestService {
       this.allProjects.next(val);
     } else {
       this.allProjects.next(null);
+    }
+  }
+
+  setAllMaster(val) {
+    if (val) {
+      this.allMaster.next(val);
+    } else {
+      this.allMaster.next(null);
     }
   }
 
@@ -107,7 +116,7 @@ export class RestService {
   }
 
   public async compareLists(id1: string, id2: string) {
-    const observable = this.http.get(`${url}lists/compare/${id1}/${id2}`);
+    const observable = this.http.get(`${url}master/compare/${id1}/${id2}`);
     const comparison = await observable.toPromise();
 
     this.setComparison(comparison);
@@ -177,6 +186,15 @@ export class RestService {
 
     if (masterId) {
       this.setMasterId(masterId);
+    }
+  }
+
+  public async getAllMaster() {
+    const observable = this.http.get<MaterialList[]>(url + 'master/all');
+    const masterLists = await observable.toPromise();
+
+    if (masterLists) {
+      this.setAllMaster(masterLists);
     }
   }
 }
