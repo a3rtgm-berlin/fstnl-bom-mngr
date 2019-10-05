@@ -24,6 +24,9 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   private listsToCombine: string[] = [];
   private masterId: string;
   private latestId: string;
+  public state: string;
+
+  public penisse: string;
 
   constructor(public modalService: ModalService, public restService: RestService) {
     this.restService.allProjects.subscribe((res) => {
