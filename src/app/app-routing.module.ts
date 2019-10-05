@@ -7,6 +7,7 @@ import { MasterViewComponent } from './master-view/master-view.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { Observable } from 'rxjs';
 import { MatrixFilesComponent } from './matrix-files/matrix-files.component';
+import { MasterlistviewComponent } from './masterlistview/masterlistview.component';
 
 const routes: Routes = [
   { path: '',  redirectTo: '/app/projects', pathMatch: 'full' },
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'app/lists', component: ProjectListComponent },
   { path: 'app/master/view/:id', component: MasterViewComponent },
   { path: 'app/lists/compare/:id1/:id2', component: CompareOrdersComponent },
-  { path: 'app/matrix', component: MatrixFilesComponent}
+  { path: 'app/matrix', component: MatrixFilesComponent},
+  { path: 'app/masterlistview', component: MasterlistviewComponent }
 ];
 
 @NgModule({

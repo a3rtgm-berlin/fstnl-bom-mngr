@@ -30,7 +30,19 @@
                 h3 {
                     font-size:100%;
                     font-weight:300;
+                    line-height:25px;
                     color:#888;
+
+                    strong {
+                        display:inline-block;
+                        height: 25px;
+                        width: 25px;
+                        line-height: 25px;
+                        text-align: center;
+                        margin-right: 5px;
+                        /* padding: 3px; */
+                        border: 1px solid #aaa;
+                    }
                 }
             }
         }
@@ -156,7 +168,8 @@
                 min-height:0;
                 margin:30px auto;
                 border:1px solid #ccc;
-                /*@include outershadow;*/
+                outline:none;
+                @include innershadow;
                 transition:0.2s;
                 z-index:3;
 
@@ -189,8 +202,8 @@
                         line-height:60px;
                         text-align:center;
                         padding:0;
-                        color:#222;
-                        opacity:0.4;
+                        color:#444;
+                        opacity:0.15;
                         font-size:110%;
                         font-weight:700;
                     }
@@ -208,11 +221,13 @@
                     }
                 }
                 &.active {
+                    border: 1px solid lawngreen;
                     button {
-                        background: #cc1140;
+                        background:$brightgreen;
 
                         a {
                             color:white;
+                            opacity:0.85;
 
                             &:before {
                                 filter:invert(1);
@@ -222,19 +237,38 @@
                     }
 
                     &:hover {
-                        transform:scale(1.01);
+                        transform:scale(1.005);
                         transition:0.3s;
+                        @include outershadow;
         
                         button {
-                            background:$brandblue;
-                            border:2px solid $brandblue;
+                           /* background:$brandblue;
+                            border:2px solid $brandblue;*/
                             a {
-                                color:whitesmoke;
+                                color:white;
                             }
         
                             a:before {
                                 filter:invert(1);
                                 opacity:0.95;
+                            }
+                        }
+                    }
+                }
+
+                &.done {
+                    button {
+                        background:$bluepaper !important;
+                    }
+
+                    &:hover {
+                        transform:scale(1.005);
+                        transition:0.3s;
+                        @include outershadow;
+
+                        button {
+                            a {
+                                opacity:0.85;
                             }
                         }
                     }

@@ -24,11 +24,15 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   private listsToCombine: string[] = [];
   private masterId: string;
   private latestId: string;
+  public state: string;
+  private count: any;
+  public penisse: string;
 
   constructor(public modalService: ModalService, public restService: RestService, public router: Router) {
     this.restService.allProjects.subscribe((res) => {
       this.allProjects = res;
       this.updateBrb();
+      this.updateProjectCount();
     });
 
     this.restService.masterId.subscribe((res) => {
@@ -58,6 +62,19 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
       this.restService.createMaster(this.latestId);
     }
   }
+
+  updateProjectCount() {
+    this.count = 0;
+    if(this.allProjects) {
+      this.allProjects.forEach((el) => {
+        if(el.active != false) {
+          this.count += 1;
+          console.log(this.count)
+        }
+      });
+    }
+  }
+  
 
   showBom() {
     this.router.navigate([`/app/master/view/${this.masterId}`]);

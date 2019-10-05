@@ -26,6 +26,7 @@ import { ProjectListViewComponent } from './manage-projects/project-list-view/pr
 import { ProjectSubSettingsComponent } from './manage-projects/project-sub-settings/project-sub-settings.component';
 import { DeleteProjectComponent } from './manage-projects/delete-project/delete-project.component';
 import { LoginComponent } from './login/login.component';
+import { MasterlistviewComponent } from './masterlistview/masterlistview.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { LoginComponent } from './login/login.component';
     ProjectSubSettingsComponent,
     DeleteProjectComponent,
     LoginComponent,
+    MasterlistviewComponent,
   ],
   entryComponents: [
     CreateProjectComponent,

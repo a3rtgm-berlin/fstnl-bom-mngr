@@ -13,7 +13,7 @@
                         <span class="input-group-text">Project Name</span>
                     </div>
                     <input type="text" class="form-control" placeholder="Vienna" #name (change)="update(name.value, tag.value, desc.value, trains.value, deadline.value)">
-                    <input type="text" class="form-control short" placeholder="VIE" #tag (change)="update(name.value, tag.value, desc.value, trains.value, deadline.value)">
+                    <input type="text" maxlength="3" class="form-control short" placeholder="VIE" #tag (change)="update(name.value, tag.value, desc.value, trains.value, deadline.value)">
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">

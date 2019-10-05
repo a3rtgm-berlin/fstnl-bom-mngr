@@ -25,6 +25,8 @@
                     border-radius:0px;
                     font-size:80%;
                     color:#aaa;
+                    border-bottom: none;
+                    @include innershadow;
 
                     &:after {
                         display:none;
@@ -35,15 +37,34 @@
 
         .input-group-append {
             flex: 1 0 100%;
+            margin:3px auto;
+
             button {
                 border-radius:0px;
-                border:1px solid $brandorange;
+                border:1px solid lightgrey;
                 line-height:30px;
                 height:30px;
                 padding:0;
-                color:$brandorange;
+                color:lightgrey;
                 font-size:80%;
+                background:rgba(0,0,0,0.35);
+
+                &:hover {
+                    cursor:default;
+                }
+            }
+
+            &.active {
+                button {
+                color:$brandorange;
+                border:1px solid $brandorange;
                 background:rgba(255,148,77,0.35);
+
+                &:hover { 
+                    cursor:pointer;
+                    background:rgba(255,148,77,0.55);
+                }
+                }
             }
         }
     }

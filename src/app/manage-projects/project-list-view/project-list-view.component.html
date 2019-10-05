@@ -1,8 +1,8 @@
 <div class="prjct" #ganzoben>
     <div class="prjct_tpbr">
         <div class="prjct_ttl">
+            <span>[ {{project$.tag}} ]</span>
             {{project$.name}}
-            <span>{{project$.tag}}</span>
         </div>
         <div class="prjct_sb_mn">
             <div class="menu" (click)="createComponent()">
@@ -16,7 +16,7 @@
     <div class="prjct_bdy">
         <div class="prjct_bom">
             <select class="bomlists">
-                <option class="act-lst" *ngFor="let bom of bomList$">{{bomList$}}</option>
+                <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
             </select>
         </div>
         <div class="prjct_vars">
@@ -29,7 +29,7 @@
                 </li>
                 <li class="date">
                     <div class="imgbx"></div>
-                    <div class="field">{{project$.deadline}}</div>
+                    <div class="field">{{totalDiff}}</div>
                     <div class="chg"><button></button></div>
                     <div class="txtbx"><p>weeks left</p></div>
                 </li>

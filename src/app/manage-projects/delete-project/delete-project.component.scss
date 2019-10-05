@@ -1,0 +1,43 @@
+@import "../../../variables";
+
+:host {
+    @include outershadow;
+    .dialog {
+        
+        .modal-content {
+            background:$brandblue;
+            border-radius:0px;
+
+            .modal-header {
+                width:90%;
+                margin:10px auto;
+                border:none;
+
+                h5 {
+                    color:whitesmoke;
+                    text-align:left;
+
+                    span {
+                        color:$red;
+                        background:whitesmoke;
+                        padding:3px 8px;
+                    }
+                }
+                p {}
+                button {}
+            }
+            .modal-footer {
+                border-top:1px solid $darkbrandblue;
+                button {
+                    color:whitesmoke;
+                    border-radius:0px;
+                    border:1px solid whitesmoke;
+                    background:rgba(0,0,0,0.1);
+                }
+                .btn-delete {
+                    background:$red;
+                }
+            }
+        }
+    }
+}
