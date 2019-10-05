@@ -8,9 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { XlsLoaderComponent } from './xls-loader/xls-loader.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { CompareOrdersComponent } from './compare-orders/compare-orders.component';
-import { ProjectComponent } from './project/project.component';
+import { MasterViewComponent } from './master-view/master-view.component';
 import { QueryFormComponent } from './query-form/query-form.component';
-import { MaterialListViewComponent } from './project/material-list-view/material-list-view.component';
+import { MaterialListViewComponent } from './master-view/material-list-view/material-list-view.component';
 import { MaterialListsCollectionViewComponent } from './project-list/material-lists-collection-view/material-lists-collection-view.component';
 import { ComparisonRowViewComponent } from './compare-orders/comparison-row-view/comparison-row-view.component';
 import { ComparisonMetaViewComponent } from './compare-orders/comparison-meta-view/comparison-meta-view.component';
@@ -33,7 +33,7 @@ import { LoginComponent } from './login/login.component';
     XlsLoaderComponent,
     ProjectListComponent,
     CompareOrdersComponent,
-    ProjectComponent,
+    MasterViewComponent,
     QueryFormComponent,
     MaterialListViewComponent,
     MaterialListsCollectionViewComponent,

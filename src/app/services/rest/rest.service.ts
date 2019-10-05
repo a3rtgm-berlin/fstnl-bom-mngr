@@ -5,6 +5,7 @@ import { MaterialList } from '../../materialListModel';
 import { Project } from '../../projectModel';
 import { Router } from '@angular/router';
 import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
+import { MasterBom } from 'src/app/masterBom';
 
 const url = 'http://localhost:8000/api/';
 
@@ -170,6 +171,17 @@ export class RestService {
       this.setMasterId(masterId);
     }
   }
+
+  public async getMasterById(id: string) {
+    const observable = this.http.get<MasterBom>(url + 'master/get/' + id);
+    const master = await observable.toPromise();
+
+    if (master) {
+      master.uploadDate = new Date(master.uploadDate);
+      this.setMaster(master);
+    }
+  }
+
 
   public async getLatestMaster() {
     const observable = this.http.get(url + 'master');

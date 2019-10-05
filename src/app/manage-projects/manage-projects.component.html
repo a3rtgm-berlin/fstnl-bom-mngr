@@ -24,8 +24,8 @@
 
         <ng-container *ngIf="masterId != '0000-00' && upToDate; else elseTemplate">
                 <li class="bigRedButton done" #brb>
-                        <button class="btn-success">
-                            <a href="/app/lists/{{masterId}}">View latest BOM</a>
+                        <button class="btn-success" (click)="showBom()">
+                            <a>View latest BOM</a>
                         </button>
                     </li>
         </ng-container>

@@ -5,23 +5,27 @@ import { Observable } from 'rxjs';
 import { RestService } from '../services/rest/rest.service';
 
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss']
+  selector: 'app-master-view',
+  templateUrl: './master-view.component.html',
+  styleUrls: ['./master-view.component.scss']
 })
-export class ProjectComponent implements OnInit {
+export class MasterViewComponent implements OnInit {
 
-  materialList: MaterialList;
+  private master: MaterialList;
+  private masterId: string;
 
   public observable;
 
   constructor(private route: ActivatedRoute, private router: Router, private restService: RestService) {
-
-    this.restService.singleList.subscribe(res => {
-      this.materialList = res;
+    route.params.subscribe(res => {
+      this.masterId = res.id;
+    });
+    this.restService.master.subscribe(res => {
+      this.master = res;
     });
   }
 
   ngOnInit() {
+    this.restService.getMasterById(this.masterId);
   }
 }

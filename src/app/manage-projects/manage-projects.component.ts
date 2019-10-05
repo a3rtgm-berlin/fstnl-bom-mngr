@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, ViewChild, Directive, AfterViewInit } from '@angular/core';
 import { CreateProjectComponent } from './create-project/create-project.component';
-//import { ProjectListViewComponent } from './create-project/project-list-view.component';
 import { ModalService } from '../services/modal/modal.service';
 import { RestService } from '../services/rest/rest.service';
 import { Project } from '../projectModel';
 import { Month } from '../dateModel';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -25,15 +25,14 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   private masterId: string;
   private latestId: string;
 
-  constructor(public modalService: ModalService, public restService: RestService) {
+  constructor(public modalService: ModalService, public restService: RestService, public router: Router) {
     this.restService.allProjects.subscribe((res) => {
       this.allProjects = res;
-      console.log(this.allProjects);
       this.updateBrb();
     });
 
     this.restService.masterId.subscribe((res) => {
-      this.masterId = res ? res[0] : '0000-00';
+      this.masterId = res ? res[0] : null;
       this.updateBrb();
     });
   }
@@ -61,6 +60,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   }
 
   showBom() {
+    this.router.navigate([`/app/master/view/${this.masterId}`]);
   }
 
   updateBrb() {

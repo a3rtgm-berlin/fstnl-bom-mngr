@@ -67,9 +67,15 @@ server.get('/api/master/create/:id', createMaster);
  * @method
  */
 server.get('/api/master', (req, res) => {
-    MasterBom.findOne().sort('id').exec((err, data) => {
+    MasterBom.find((err, data) => {
         if (err) throw err;
-        res.status(200).send(data);
+        if (data) return res.status(200).send(
+            [data.sort((a, b) => {
+                if (a.id < b.id) return 1;
+                return -1;
+            })[0]]
+        );
+        res.sendStatus(404);
     });
 });
 
@@ -87,7 +93,7 @@ server.get('/api/master/id', (req, res) => {
                 return -1;
             })[0]]
         );
-        res.sendStatus(404);
+        res.status(200).send(['0000-00']);
     });
 });
 
@@ -98,6 +104,20 @@ server.get('/api/master/id', (req, res) => {
  */
 server.get('/api/master/all', (req, res, next) => {
     MasterBom.find((err, data) => {
+        if (err) return console.error(err);
+        res.send(data);
+    });
+});
+
+/**
+ * @description returns one selected list by date
+ * @todo ... and project
+ * @returns {MaterialList}
+ */
+server.get('/api/master/get/:id', (req, res, next) => {
+    const q = req.params.id;
+
+    MasterBom.findOne({id: q}, (err, data) => {
         if (err) return console.error(err);
         res.send(data);
     });

@@ -6,8 +6,6 @@ module.exports = class Comparison {
         this.comparators = Config[this.client].comparators;
         this.quantitySelector = Config[this.client].quantity;
 
-        // console.log(lists.map(l => l.id));
-
         const sortedLists = lists.sort((a, b) => {
             return Date.parse(a.id) - Date.parse(b.id);
         });
@@ -40,7 +38,6 @@ module.exports = class Comparison {
     }
 
     compareLists() {
-        // console.log(this.currentList, this.lastList);
         const $added = new Set();
         const $removed = new Set();
         const comparedList = {
@@ -76,7 +73,6 @@ module.exports = class Comparison {
                     }
                 } else {
                     $added.add(currentItem);
-                    console.log($added);
                     return true;
                 }
             });
@@ -102,9 +98,6 @@ module.exports = class Comparison {
                 oldItem.status = $successors[0][this.quantitySelector] - oldItem[this.quantitySelector];
             }
         });
-
-        console.log($added, 'add');
-        console.log($removed, 'rm');
 
         $added.forEach((e, currentItem, s) => {
             const $ancestor = Array.from($removed).find(oldItem => oldItem.Material === currentItem.Material);
