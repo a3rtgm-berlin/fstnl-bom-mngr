@@ -55,12 +55,13 @@ async function bom(req, res) {
 
                     Project.findOne({tag: tag}, (err, project) => {
                         if (err) throw err;
-
-                        project.bomLists.push(data.id);
-                        project.save(); 
+                        if (project) {
+                            project.bomLists.push(data.id);
+                            project.save();
+                        }
                     });
-                    
-                    res.sendStatus(203);
+
+                    res.status(203).send([data.id]);
                 });
             });
         };

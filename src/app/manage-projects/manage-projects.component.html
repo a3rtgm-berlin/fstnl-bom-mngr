@@ -21,7 +21,7 @@
             </app-project-list-view>
         </li>
 
-        <ng-container *ngIf="masterId != '0000-00' && upToDate; else elseTemplate">
+        <ng-container *ngIf="masterId !== null && upToDate; else elseTemplate">
                 <li class="bigRedButton done" #brb>
                         <button class="btn-success" (click)="showBom()">
                             <a>View latest MASTER {{masterId}}</a>

@@ -87,7 +87,7 @@ server.get('/api/master', (req, res) => {
 server.get('/api/master/id', (req, res) => {
     MasterBom.find((err, data) => {
         if (err) throw err;
-        if (data) return res.status(200).send(
+        if (data.length > 0) return res.status(200).send(
             [data.map(d => d.id).sort((a, b) => {
                 if (a < b) return 1;
                 return -1;

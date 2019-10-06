@@ -38,8 +38,7 @@ export class UploadService {
 
           switch (service) {
             case 'bom':
-              this.restService.getList(`${event.body}`);
-              this.router.navigate([`app/lists/${event.body}`]);
+              this.restService.getAllProjects();
               break;
             case 'matrix':
               break;

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { UploadService } from '../services/upload/upload.service';
+import { RestService } from '../services/rest/rest.service';
 
 // Component to upload and interpret the BOM-xls file
 // and pass the object on to the related project.
@@ -24,7 +25,7 @@ export class XlsLoaderComponent implements OnInit {
   ];
   private isFocused = false;
 
-  constructor(public uploadService: UploadService) { }
+  constructor(public uploadService: UploadService, public restService: RestService) { }
 
   ngOnInit() {
     console.log(this.projectTag);
@@ -52,7 +53,7 @@ export class XlsLoaderComponent implements OnInit {
       upload[this.file.name].progress.subscribe({
         next: v => console.log(`POST ${this.file.name}: ${v}%`),
         error: err => console.error(`POST Error`, err),
-        complete: () => console.log(` POST ${this.file.name} has been successfully uploaded and stored in the database.`)
+        complete: () => console.log(`Successfully uploaded`)
       });
     } else {
       alert('Please select valid file!');
