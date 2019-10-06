@@ -122,7 +122,7 @@
 
             &.movedFrom, &.movedTo {
                 th {
-                    background:$honey;
+                    background:$yellowpaper;
                     span {
                         strong {
                             display:block;
@@ -137,17 +137,24 @@
                 }
             }
 
+            &.modified {
+                th {
+                    background:$darkpaper;
+                }
+            }
+
             &.remain {
                 th {
-                    background:$brightblue;
+                    background:$brightbluepaper;
                 }}
             &.removed {
                 th {
-                    background:$red;
+                    background:$redpaper;
                 }}
-            &.add {
+            &.added {
                 th {
-                    background:$brightgreen;
+                    color:#222;
+                    background:$greenpaper;
                 }}
         }
     }

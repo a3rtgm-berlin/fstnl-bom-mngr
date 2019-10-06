@@ -5,11 +5,18 @@ $brandorange: #ff6600;
 $brightbrandorange: #FF944D;
 $lightgrey: #fbfbfb;
 $red:#ed677a;
+$darkred:#BA5060;
 $brightgreen:#caf583;
+$green:#a1d75a;
 $honey:#f5d583;
+$brightyellow:#FAC643;
 $paper:linear-gradient(-45deg, white, #fbfbfb);
 $bluepaper: linear-gradient(45deg, $brandblue, $darkbrandblue);
-$darkpaper:linear-gradient(-45deg, #222, #666);
+$brightbluepaper: linear-gradient(45deg, $brightblue, $brandblue);
+$redpaper: linear-gradient(45deg, $red, $darkred);
+$darkpaper:linear-gradient(45deg, #222, #666);
+$yellowpaper:linear-gradient(45deg, $honey, $brightyellow);
+$greenpaper:linear-gradient(45deg, $brightgreen, $green);
 
 @mixin flex-standard {
     display:flex;
