@@ -5,7 +5,7 @@
     .dialog {
         
         .modal-content {
-            background:$brandblue;
+            background:white;
             border-radius:0px;
 
             .modal-header {
@@ -14,12 +14,12 @@
                 border:none;
 
                 h5 {
-                    color:whitesmoke;
+                    color:$brandblue;
                     text-align:left;
 
                     span {
                         color:$red;
-                        background:whitesmoke;
+                        background:$darkbrandblue;
                         padding:3px 8px;
                     }
                 }

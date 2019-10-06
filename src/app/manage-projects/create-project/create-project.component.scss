@@ -3,7 +3,7 @@
 :host {
     .modal-content {
         border-radius:0px;
-        background:$darkbrandblue;
+        background:white;
 
         .modal-header {
             border-radius:0px;
@@ -63,7 +63,7 @@
                             border:none;
                             border-radius:0px;
                             font-size:80%;
-                            color:whitesmoke;
+                            color:#aaa;
                             background:transparent;
                         }
                     }
@@ -71,8 +71,8 @@
                     input {
                         border-radius:0px;
                         border:none;
-                        color:whitesmoke;
-                        background:rgba(0,0,0,0.3);
+                        color:grey;
+                        background:rgba(0,0,0,0.025);
                         margin-left:10px;
                         flex-grow:1;
                         order:2;
@@ -88,8 +88,8 @@
                     textarea {
                         border-radius:0px;
                         flex-grow:1;
-                        color:whitesmoke;
-                        background:rgba(0,0,0,0.3);
+                        color:grey;
+                        background:rgba(0,0,0,0.025);
                         border:none;
                         font-size:80%;
                         margin-left:10px;
@@ -115,7 +115,7 @@
 
             .btn-secondary {
                 border-radius:0px;
-                background:transparent;
+                background:lightgrey;
                 border:1px solid whitesmoke;
                 transition:0.3s;
             }

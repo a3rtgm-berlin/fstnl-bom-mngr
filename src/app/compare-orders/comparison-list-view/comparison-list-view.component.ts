@@ -32,37 +32,40 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
 
   addSort(cat, evt) {
    if($(evt.target).siblings().hasClass("filter")) {
-      if($(evt.target).siblings().hasClass("filter-2")) {
+      if($(evt.target).siblings().hasClass("filter2")) {
         let cat1 = $(evt.target).siblings(".filter").data("sort");
-        let cat2 = $(evt.target).siblings(".filter-2").data("sort");
-        $(evt.target).addClass("filter-3");
+        let cat2 = $(evt.target).siblings(".filter2").data("sort");
+        $(evt.target).addClass("filter3");
         this.bom$.sort(this.dynamicSort(cat1, cat2, cat));
 
       } else {
         let cat1 = $(evt.target).siblings(".filter").data("sort");
-        $(evt.target).addClass("filter-2");
+        $(evt.target).addClass("filter2");
         $(evt.target).data("sort", cat);
         this.bom$.sort(this.dynamicSort(cat1, cat));
 
       }
-    } else if ($(evt.target).hasClass("filter") || $(evt.target).hasClass("filter-2") || $(evt.target).hasClass("filter-3")) {
+    } else if ($(evt.target).hasClass("filter2") || $(evt.target).hasClass("filter") || $(evt.target).hasClass("filter3")) {
+        alert("I Have alrey a filter class");
         if ($(evt.target).hasClass("filter")) {
           $(evt.target).removeClass("filter");
-          $(evt.target).siblings(".filter-2").addClass("filter").removeClass("filter-2");
-          $(evt.target).siblings(".filter-3").addClass("filter-2").removeClass("filter-3");
+          $(evt.target).siblings(".filter2").addClass("filter").removeClass("filter2");
+          $(evt.target).siblings(".filter3").addClass("filter2").removeClass("filter3");
           let cat1 = $(evt.target).siblings("filter").data("sort");
-          let cat = $(evt.target).siblings("filter-2").data("sort");
+          let cat = $(evt.target).siblings("filter2").data("sort");
           this.bom$.sort(this.dynamicSort(cat1, cat));
-        } if ($(evt.target).hasClass("filter-2")) {
-            $(evt.target).removeClass("filter-2");
-            $(evt.target).siblings(".filter-3").addClass("filter-2").removeClass("filter-3");
+          
+        } else if ($(evt.target).hasClass("filter2")) {
+            $(evt.target).removeClass("filter2");
+            $(evt.target).siblings(".filter3").addClass("filter2").removeClass("filter3");
             let cat1 = $(evt.target).siblings("filter").data("sort");
-            let cat = $(evt.target).siblings("filter-2").data("sort");
+            let cat = $(evt.target).siblings("filter2").data("sort");
             this.bom$.sort(this.dynamicSort(cat1, cat));
-        } if($(evt.target).hasClass("filter-3")) {
-            $(evt.target).removeClass("filter-3");
+
+        } else if($(evt.target).hasClass("filter3")) {
+            $(evt.target).removeClass("filter3");
             let cat1 = $(evt.target).siblings("filter").data("sort");
-            let cat = $(evt.target).siblings("filter-2").data("sort");
+            let cat = $(evt.target).siblings("filter2").data("sort");
             this.bom$.sort(this.dynamicSort(cat1, cat));
         }
 
