@@ -38,9 +38,8 @@ class Item {
         if (!station) return "No Location";
         if (!arbMatrix) return station;
 
-        const map = arbMatrix.find((map) => map.ArbPlatz === station).Area;
+        const map = arbMatrix.find((map) => map.ArbPlatz === station) ? arbMatrix.find((map) => map.ArbPlatz === station).Area : "Unmatched Area";
 
-        if (!map) return "Unmatched Area";
         if (map === "Not Valid" || map === "(Leer)") return "No Location";
         return map;
     }
