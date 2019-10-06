@@ -21,11 +21,6 @@
             </app-project-list-view>
         </li>
 
-        <div [ngSwitch]="conditionExpression">
-            <div *ngSwitchCase="expression">output</div>
-            <div *ngSwitchDefault>output2</div>
-        </div>
-
         <ng-container *ngIf="masterId != '0000-00' && upToDate; else elseTemplate">
                 <li class="bigRedButton done" #brb>
                         <button class="btn-success" (click)="showBom()">
