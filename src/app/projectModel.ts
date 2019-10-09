@@ -7,5 +7,6 @@ export interface Project {
     trainsCount: number;
     deadline: Date;
     bomLists: string[];
+    multiBom: boolean;
     active: boolean
 };

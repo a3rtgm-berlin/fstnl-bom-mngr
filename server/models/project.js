@@ -11,6 +11,10 @@ const projectSchema = new Schema({
     trainsCount: Number,
     deadline: Date,
     bomLists: [String],
+    multiBom: {
+        type: Boolean,
+        default: false,
+    },
     active: {
         type: Boolean,
         default: true,

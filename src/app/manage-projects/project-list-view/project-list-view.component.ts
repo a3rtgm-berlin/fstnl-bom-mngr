@@ -16,6 +16,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   bomList$: any;
   totalDiff: any;
   modalController = true;
+  multiBom: any;
 
   @Input() set project(project) {
     this.project$ = project;

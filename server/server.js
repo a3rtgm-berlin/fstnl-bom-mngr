@@ -54,6 +54,7 @@ server.post('/api/upload/matrix', upload.matrix);
  */
 server.post('/api/upload/bom', upload.bom);
 
+
 /**
  * @description todo
  * @param
@@ -187,6 +188,17 @@ server.put('/api/lists/:id', (req, res, next) => {
         res.send(200);
     });
 });
+
+server.post('/api/projects/:tag'), (req, res, next) => {
+    const q = req.params.tag
+    Project.FindOneAndUpdate({tag: q}, req.body, (err, data) => {
+        if (err) {
+            res.send(418);
+        } else {
+            res.sendStatus(200);
+        }
+    });
+};
 
 /**
  * @description manually adds a list (not necessary?)

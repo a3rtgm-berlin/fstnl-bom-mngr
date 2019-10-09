@@ -1,15 +1,98 @@
-.single-list {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #CCC;
-    .btn-group {
-        margin: 1px 0;
-        .label {
-            flex-basis: 20%;
+@import "../../../variables";
+
+:host {
+    display:block;
+    position:relative;
+    width:100%;
+
+    .single-list {
+        @include flex-standard;
+        align-items:flex-start;
+        width:100%;
+
+        label {
+            display:block;
+            background:white;
+            padding:10px 20px;
+            margin:5px auto 5px 0px;
+            font-size:60%;
+            color:#aaa;
+            @include outershadow;
+
+            strong {
+                color:$brandorange;
+                font-size:150%;
+                margin-right:5px;
+            }
         }
-        button {
-            &.dropdown-toggle {
-                text-align: right;
+        .btn-group {
+            border-radius:0px;
+            border:none;
+            margin:2px auto 2px 0px;
+
+            .btn-primary {
+                min-width:140px;
+                padding:10px;
+                text-align:left;
+                background:$bluepaper;
+                border:none;
+                border-radius:0px;
+                font-size:90%;
+                color:whitesmoke;
+            }
+
+            .btn-outline-secondary {
+                min-width:200px;
+                background:white;
+                font-size:90%;
+                border:none !important;
+                outline:1px solid #aaa;
+                border-radius:0px;
+
+                &:hover {
+                    color:$brandblue;
+                }
+            }
+
+        }
+
+        .btn-group.tabspanel {
+            width:100%;
+            margin:10px auto;
+            justify-content:flex-start;
+
+            .btn-primary {
+                flex:0 0 140px;
+                min-width:0px;
+                font-size:78%;
+                background:#222;
+                height:30px;
+                padding:0px 10px;
+                line-height:30px;
+                text-align:right;
+            }
+
+            .btn-outline-primary {
+                min-width:0px;
+                flex:0 0 140px;
+                font-size:78%;
+                border-radius:0px;
+                border:none;
+                height:30px;
+                padding:0px 10px;
+                line-height:30px;
+                outline:1px solid #222;
+                color:#222;
+                transition:0.2s;
+                text-align:left;
+
+                &:hover {
+                    transform:scale(1.01);
+                    background:white;
+                    @include outershadow;
+                    cursor:pointer;
+                    transition:0.2s;
+                }
             }
         }
     }

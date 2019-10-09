@@ -6,6 +6,7 @@ import { Project } from '../../projectModel';
 import { Router } from '@angular/router';
 import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
 import { MasterBom } from 'src/app/masterBom';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 const url = 'http://localhost:8000/api/';
 
@@ -150,6 +151,15 @@ export class RestService {
     observable.subscribe(
       (val) => console.log('DELETE call successful value returned in body', val),
       err => console.error('DELETE call in error', err),
+      () => this.getAllProjects()
+    );
+  }
+
+  public updateProjectVal(project: any) {
+    const observable = this.http.post(url + 'projects/' + project.tag, project);
+    observable.subscribe(
+      (val) => console.log('Update call successful value', val),
+      err => console.error('Error in Update Call', err),
       () => this.getAllProjects()
     );
   }

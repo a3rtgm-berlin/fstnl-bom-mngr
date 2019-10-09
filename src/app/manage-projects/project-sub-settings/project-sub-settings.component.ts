@@ -11,6 +11,7 @@ import { DeleteProjectComponent } from '../delete-project/delete-project.compone
 export class ProjectSubSettingsComponent implements OnInit, OnChanges {
 
   private project$: any;
+  multiBom: any;
 
   @Input() set project(project: any) {
     this.project$ = project;
@@ -32,6 +33,21 @@ export class ProjectSubSettingsComponent implements OnInit, OnChanges {
 
   close() {
     this.modalService.destroy('.prjctsb');
+  }
+
+  toggleMultiBom() {
+    const val = this.project$.multiBom = !this.project$.multiBom;
+    this.restService.updateProjectVal(this.project$);
+  }
+
+  toggleActive(){
+    this.project$.active = !this.project$.active;
+    this.restService.updateProjectVal(this.project$);
+  }
+
+  giveMeInfo() {
+    console.log(this.project$.tag);
+    console.log(this.project$.multiBom);
   }
 
 
