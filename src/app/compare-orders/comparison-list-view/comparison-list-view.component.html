@@ -1,13 +1,21 @@
+<div class="input-group">
+    <input type="text" class="form-control" disabled value="{{processedBom ? processedBom.length : '-'}}">
+    <input class="form-control" type="text" placeholder="filter BOM table" #filter (change)="filterBom(filter.value)">
+    <select class="form-control" #filterCol>
+        <option *ngFor="let col of cols" value="{{col}}">{{col}}</option>
+    </select>
+</div>
 <table class="table table-sm" id="BOM">
     <thead class="thead-dark">
         <th (click)="addSort('status', $event)" scope="col">Status</th>
         <th (click)="addSort('Station', $event)" scope="col">Station</th>
         <th (click)="addSort('Material', $event)" scope="col">Part#</th>
         <th (click)="addSort('Objektkurztext', $event)" scope="col">Part</th>
+        <th (click)="addSort('ME', $event)" scope="col">Unit</th>
         <th (click)="addSort('Menge', $event)" scope="col">Quantity</th>
         <th (click)="addSort('change', $event)" scope="col">Change</th>
     </thead>
-    <ng-container *ngFor="let item of bom$">
+    <ng-container *ngFor="let item of processedBom">
         <tr class="{{item.status}}">
             <th>
                 <span [ngSwitch]="item.status">
@@ -25,6 +33,7 @@
             <td>{{item.Station}}</td>
             <td>{{item.Material}}</td>
             <td>{{item.Objektkurztext}}</td>
+            <td>{{item.ME}}</td>
             <td>{{item.Menge}}</td>
             <td>{{item.change}}</td>
         </tr>

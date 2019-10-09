@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import $ from 'jquery';
 
 @Component({
@@ -9,12 +9,16 @@ import $ from 'jquery';
 export class ComparisonListViewComponent implements OnInit, OnChanges {
 
   public bom$: any;
+  public processedBom: any;
   public sorted: any;
+  public cols: string[] = [];
 
+
+  @ViewChild('filterCol', {static: false}) filterCol: any;
   @Output() selection: EventEmitter<any> = new EventEmitter();
-
   @Input() set bom(bom) {
     this.bom$ = bom;
+    this.processedBom = this.bom$;
   }
 
   get bom(): object {
@@ -28,52 +32,68 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.bom$ = changes.bom.currentValue;
+    this.processedBom = this.bom$;
+    this.cols = Object.keys(this.bom$[0]);
+  }
+
+  filterBom(val) {
+    if (val !== '' && this.bom$) {
+      this.processedBom = this.bom$.filter((row) => {
+        return row[this.filterCol.nativeElement.value].toString().includes(val);
+      });
+    } else {
+      this.processedBom = this.bom$;
+    }
   }
 
   addSort(cat, evt) {
-   if($(evt.target).siblings().hasClass("filter")) {
-      if($(evt.target).siblings().hasClass("filter2")) {
-        let cat1 = $(evt.target).siblings(".filter").data("sort");
-        let cat2 = $(evt.target).siblings(".filter2").data("sort");
-        $(evt.target).addClass("filter3");
+    if ($(evt.target).siblings().hasClass('filter')) {
+      if ($(evt.target).siblings().hasClass('filter2')) {
+        const cat1 = $(evt.target).siblings('.filter').data('sort');
+        const cat2 = $(evt.target).siblings('.filter2').data('sort');
+
+        $(evt.target).addClass('filter3');
         this.bom$.sort(this.dynamicSort(cat1, cat2, cat));
 
       } else {
-        let cat1 = $(evt.target).siblings(".filter").data("sort");
-        $(evt.target).addClass("filter2");
-        $(evt.target).data("sort", cat);
+        const cat1 = $(evt.target).siblings('.filter').data('sort');
+        $(evt.target).addClass('filter2');
+        $(evt.target).data('sort', cat);
         this.bom$.sort(this.dynamicSort(cat1, cat));
 
       }
-    } else if ($(evt.target).hasClass("filter2") || $(evt.target).hasClass("filter") || $(evt.target).hasClass("filter3")) {
-        alert("I Have alrey a filter class");
-        if ($(evt.target).hasClass("filter")) {
-          $(evt.target).removeClass("filter");
-          $(evt.target).siblings(".filter2").addClass("filter").removeClass("filter2");
-          $(evt.target).siblings(".filter3").addClass("filter2").removeClass("filter3");
-          let cat1 = $(evt.target).siblings("filter").data("sort");
-          let cat = $(evt.target).siblings("filter2").data("sort");
-          this.bom$.sort(this.dynamicSort(cat1, cat));
-          
-        } else if ($(evt.target).hasClass("filter2")) {
-            $(evt.target).removeClass("filter2");
-            $(evt.target).siblings(".filter3").addClass("filter2").removeClass("filter3");
-            let cat1 = $(evt.target).siblings("filter").data("sort");
-            let cat = $(evt.target).siblings("filter2").data("sort");
-            this.bom$.sort(this.dynamicSort(cat1, cat));
+    } else if ($(evt.target).hasClass('filter2') || $(evt.target).hasClass('filter') || $(evt.target).hasClass('filter3')) {
+        alert('I Have alrey a filter class');
+        if ($(evt.target).hasClass('filter')) {
+          $(evt.target).removeClass('filter');
+          $(evt.target).siblings('.filter2').addClass('filter').removeClass('filter2');
+          $(evt.target).siblings('.filter3').addClass('filter2').removeClass('filter3');
 
-        } else if($(evt.target).hasClass("filter3")) {
-            $(evt.target).removeClass("filter3");
-            let cat1 = $(evt.target).siblings("filter").data("sort");
-            let cat = $(evt.target).siblings("filter2").data("sort");
-            this.bom$.sort(this.dynamicSort(cat1, cat));
+          const cat1 = $(evt.target).siblings('filter').data('sort');
+          const cat2 = $(evt.target).siblings('filter2').data('sort');
+          this.bom$.sort(this.dynamicSort(cat1, cat2));
+
+        } else if ($(evt.target).hasClass('filter2')) {
+            $(evt.target).removeClass('filter2');
+            $(evt.target).siblings('.filter3').addClass('filter2').removeClass('filter3');
+            const cat1 = $(evt.target).siblings('filter').data('sort');
+            const cat2 = $(evt.target).siblings('filter2').data('sort');
+            this.bom$.sort(this.dynamicSort(cat1, cat2));
+
+        } else if ($(evt.target).hasClass('filter3')) {
+            $(evt.target).removeClass('filter3');
+            const cat1 = $(evt.target).siblings('filter').data('sort');
+            const cat2 = $(evt.target).siblings('filter2').data('sort');
+            this.bom$.sort(this.dynamicSort(cat1, cat2));
         }
 
     } else {
-      $(evt.target).addClass("filter");
-      $(evt.target).data("sort", cat);
+      $(evt.target).addClass('filter');
+      $(evt.target).data('sort', cat);
       this.bom$.sort(this.dynamicSort(cat));
-    } 
+    }
+
+    this.processedBom = this.bom$;
   }
 
   dynamicSort(...props) {
