@@ -16,7 +16,7 @@ class Item {
         // relevant rows from csv
         this.Material = d["MaterialP"];
         this.Objektkurztext = d["Objektkurztext"];
-        this.Menge = parseInt(d["Menge"]);
+        this.Menge = this.convertLocaleStringToNumber(d["Menge"]);
         this.ME = d["ME"];
         this.MArt = d["MArt"];
         this.Station = d["ArbPlatz"] ? this.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location";
@@ -38,10 +38,14 @@ class Item {
         if (!station) return "No Location";
         if (!arbMatrix) return station;
 
-        const map = arbMatrix.find((map) => map.ArbPlatz === station) ? arbMatrix.find((map) => map.ArbPlatz === station).Area : "Unmatched Area";
+        const map = arbMatrix.find((map) => map.ArbPlatz === station) ? arbMatrix.find((map) => map.ArbPlatz === station).Area : '!' + station;
 
         if (map === "Not Valid" || map === "(Leer)") return "No Location";
         return map;
+    }
+
+    convertLocaleStringToNumber (x) {
+        return parseFloat(x.trim().replace('.', '').replace(',', '.'));
     }
 }
 

@@ -46,23 +46,23 @@ async function bom(req, res) {
             // return the new data-object
             // send the json back to the client as response
             addJson(newDatum).then((data) => {
-                dbModel = new MaterialList(data);
-                dbModel.save((err) => {
-                    if (err) {
-                        res.status(500).send(err);
-                        return console.error(err);
-                    }
+                // dbModel = new MaterialList(data);
+                // dbModel.save((err) => {
+                //     if (err) {
+                //         res.status(500).send(err);
+                //         return console.error(err);
+                //     }
 
-                    Project.findOne({tag: tag}, (err, project) => {
-                        if (err) throw err;
-                        if (project) {
-                            project.bomLists.push(data.id);
-                            project.save();
-                        }
-                    });
+                //     Project.findOne({tag: tag}, (err, project) => {
+                //         if (err) throw err;
+                //         if (project) {
+                //             project.bomLists.push(data.id);
+                //             project.save();
+                //         }
+                //     });
 
-                    res.status(203).send([data.id]);
-                });
+                //     res.status(203).send([data.id]);
+                // });
             });
         };
     });

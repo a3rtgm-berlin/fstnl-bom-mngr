@@ -4,7 +4,7 @@ const rangeToIgnore = {c:1, r:3};
 
 function xlsParser(input, tag) {
     // load from buffer, 
-    const wb = XLSX.read(input, {type:"array"});
+    const wb = XLSX.read(input, {type:"array", cellNF: true});
     const ws = wb.Sheets[wb.SheetNames[0]];
 
     // Get range of BOM File
@@ -21,7 +21,7 @@ function xlsParser(input, tag) {
     const newRange = XLSX.utils.encode_range(range);
 
     // Create new Worksheet from range
-    const dataAsJson = XLSX.utils.sheet_to_json(ws, {range: newRange});
+    const dataAsJson = XLSX.utils.sheet_to_json(ws, {range: newRange, raw: false});
     const newWs = XLSX.utils.json_to_sheet(dataAsJson);
 
     // encode as CSV
