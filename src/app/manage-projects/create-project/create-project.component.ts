@@ -30,8 +30,11 @@ export class CreateProjectComponent implements OnInit {
       trainsCount,
       deadline,
       bomLists: [],
-      multiBom: false,
       active: true,
+      createdBy: 'dev',
+      created:this.dateToday,
+      multiBom: 1,
+      isArchived: true,
     };
   }
 
@@ -39,13 +42,15 @@ export class CreateProjectComponent implements OnInit {
     if (this.projectData) {
       for (const prop in this.projectData) {
         if (!this.projectData[prop] || this.projectData[prop] === '') {
-          alert(`please enter a valid ${prop}`);
-          return;
+            alert(`please enter a valid ${prop}`);
+            return;
         }
       }
 
+      this.projectData.multiBom = 0;
+      this.projectData.isArchived = false;
       this.restService.createProject(this.projectData);
-
+      
       this.close();
     } else {
       alert(`please enter project information`);

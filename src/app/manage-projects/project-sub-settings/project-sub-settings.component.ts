@@ -36,8 +36,15 @@ export class ProjectSubSettingsComponent implements OnInit, OnChanges {
   }
 
   toggleMultiBom() {
-    const val = this.project$.multiBom = !this.project$.multiBom;
+    if (this.project$.multiBom === 0) {
+    this.project$.multiBom += 1;
+    console.log("I was 0 and now I am 1");
     this.restService.updateProjectVal(this.project$);
+    } else {
+      this.project$.multiBom = 0;
+      console.log("I was something and now I am 0");
+      this.restService.updateProjectVal(this.project$);
+    }
   }
 
   toggleActive(){
@@ -48,6 +55,9 @@ export class ProjectSubSettingsComponent implements OnInit, OnChanges {
   giveMeInfo() {
     console.log(this.project$.tag);
     console.log(this.project$.multiBom);
+    console.log(this.project$.isArchived);
+    console.log(this.project$.active);
+    console.log(this.project$.created);
   }
 
 

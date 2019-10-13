@@ -189,7 +189,7 @@ server.put('/api/lists/:id', (req, res, next) => {
     });
 });
 
-server.put('/api/projects/:tag', (req, res, next) => {
+server.post('/api/projects/:tag', (req, res, next) => {
     const q = req.params.tag
 
     Project.findOneAndUpdate({tag: q}, req.body, (err, data) => {
