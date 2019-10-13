@@ -2,6 +2,8 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild, AfterVie
 import { ProjectSubSettingsComponent } from '../project-sub-settings/project-sub-settings.component';
 import { XlsLoaderComponent } from '../../xls-loader/xls-loader.component';
 import { ModalService } from '../../services/modal/modal.service';
+import { RestService } from '../../services/rest/rest.service';
+import $ from 'jquery';
 
 @Component({
   selector: 'app-project-list-view',
@@ -17,15 +19,18 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   totalDiff: any;
   modalController = true;
   multiBom: any;
+  mltBmArray = [];
+  tglSwitch: any;
 
   @Input() set project(project) {
     this.project$ = project;
   }
 
-  constructor(public modalService: ModalService) {
+  constructor(public modalService: ModalService, public restService: RestService) {
   }
 
   ngOnInit() {
+    this.tglSwitch = 'overview';
     this.bomList$ = this.project$.bomLists;
 
     let date1 = new Date(this.project$.deadline);
@@ -34,6 +39,12 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     diffInWeeks /= (60 * 60 * 24 * 7);
     console.log(diffInWeeks);
     this.totalDiff = Math.abs(Math.round(diffInWeeks));
+
+    let i;
+    for (i = 0; i < this.project$.multiBom; i++) {
+      let count = String.fromCharCode(66 + i);
+      this.mltBmArray.push(count);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -45,5 +56,26 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   createComponent() {
     this.modalService.init(ProjectSubSettingsComponent, {project: this.project$}, {}, this.injector, false);
+  }
+
+  setSwitch(targ, evt) {
+    this.tglSwitch = targ;
+    $(evt.target).addClass("active");
+    $(evt.target).siblings().removeClass("active");
+  }
+
+
+  increaseMultiBom() {
+    this.project$.multiBom += 1;
+    this.restService.updateProjectVal(this.project$);
+  }
+
+  decreaseMultiBom() {
+    this.project$.multiBom -= 1;
+    this.restService.updateProjectVal(this.project$);
+  }
+
+  consoleLog() { 
+    console.log(this.mltBmArray);
   }
 }

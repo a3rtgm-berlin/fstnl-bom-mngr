@@ -12,13 +12,20 @@ const projectSchema = new Schema({
     deadline: Date,
     bomLists: [String],
     multiBom: {
-        type: Boolean,
-        default: false,
+        type: Number,
+        default: 0
     },
     active: {
         type: Boolean,
-        default: true,
+        default: true
     },
+    isArchived: {
+        type: Boolean,
+        default: false
+    },
+    createdBy: String,
+    created: Date
+
 }, {
     collection: 'project-data'
 });

@@ -21,11 +21,35 @@
             width:100%;
 
             .prjct_ttl {
+                @include flex-standard;
                 color:whitesmoke;
                 line-height:40px;
                 font-weight:400;
                 margin-left:10px;
                 transition:0.2s;
+
+                span {
+                    margin-right:5px;
+                }
+
+                ul {
+                    @include flex-standard;
+                    margin-left:10px;
+                    list-style:none;
+
+                    li {
+                        height:30px;
+                        line-height:30px;
+                        margin:5px auto;
+                        padding:0px 6px;
+                        font-size:70%;
+                    }
+
+                    li.active {
+                        border:1px solid white;
+                        @include innershadow;
+                    }
+                }
             }
 
             .prjct_sb_mn {
@@ -75,6 +99,10 @@
                     transition:0.3s;
                 }
             }
+        }
+
+        .prjct_tpbr.mltBm {
+            background:linear-gradient(45deg, $brandblue, $brandorange);
         }
 
         .prjct_bdy {
@@ -179,6 +207,106 @@
                             background-size:60%;
                         }
                     }
+                }
+            }
+        }
+
+        .mltBm_prjct_bdy {
+
+            li {
+
+                .prjct_vars {
+                    width:90%;
+                    margin:5px auto 3px auto;
+                    ul {
+                        @include flex-standard;
+                        justify-content:space-between;
+                        list-style:none;
+    
+                        li {
+                            @include flex-standard;
+                            flex:0 0 49%;
+                            .imgbx {
+                                position:relative;
+                                height:30px;
+                                width:30px;
+                                /*background-color:#444;*/
+                            }
+                            .field {
+                                flex-basis:calc(100% - 60px);
+                                height:30px;
+                                line-height:30px;
+                                border:1px solid #ddd;
+                                @include innershadow;
+                                text-align:center;
+                                font-size:90%;
+                                overflow:hidden;
+                            }
+    
+                            .chg {
+                                height:30px;
+                                width:30px;
+                                background:#444;
+    
+                                button {
+                                    width:100%;
+                                    height:100%;
+                                    background:url("../../../assets/img/chg.png");
+                                    filter:invert(1);
+                                    @include background-cover;
+                                    background-size:40%;
+                                    transition:0.2s;
+                                }
+    
+                                button:hover {
+                                    background-size:35%;
+                                    transition:0.3s;
+                                }
+                            }
+                            .txtbx {
+                                flex:1 0 100%;
+                                p {
+                                    margin-right: 1px;
+                                    margin-left: auto;
+                                    margin-bottom:0px;
+                                    text-align: right;
+                                    font-size: 70%;
+                                    color: #003b69;
+                                }
+                            }
+                        }
+                        li.trains {
+                            .imgbx:after {
+                                content:'';
+                                @include absolute-full;
+                                opacity:0.5;
+                                @include background-cover;
+                                background-image:url("../../../assets/img/train.png");
+                                background-size:50%;
+                            }
+                        }
+                        li.date {
+                            .imgbx:after {
+                                content:'';
+                                @include absolute-full;
+                                opacity:0.5;
+                                @include background-cover;
+                                background-image:url("../../../assets/img/week.png");
+                                background-size:60%;
+                            }
+                        }
+                    }
+                }
+
+                .addMltBm {
+                    display:none;
+                }
+            }
+
+            li.mltBm_last {
+
+                .addMltBm {
+                    display:block;
                 }
             }
         }

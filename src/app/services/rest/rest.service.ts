@@ -3,6 +3,7 @@ import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/c
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MaterialList } from '../../materialListModel';
 import { Project } from '../../projectModel';
+import { User } from '../../userModel';
 import { Router } from '@angular/router';
 import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
 import { MasterBom } from 'src/app/masterBom';
@@ -146,6 +147,21 @@ export class RestService {
     });
   }
 
+  public createUser(userData: User) {
+    const formData: FormData = new FormData();
+
+    for (const prop in userData) {
+        formData.append(prop, userData[prop]);
+      }
+
+      const observable = this.http.post<User>(url + 'users/', userData);
+      observable.subscribe(
+        (val) => console.log('User successfully created'),
+        err => console.error('Error in User Creation', err),
+        () => console.log('User created')
+      );
+  }
+
   public deleteProject(tag: string) {
     const observable = this.http.delete<string>(url + 'projects/' + tag);
     observable.subscribe(
@@ -159,7 +175,7 @@ export class RestService {
     const observable = this.http.post(url + 'projects/' + project.tag, project);
     observable.subscribe(
       (val) => console.log('Update call successful value', val),
-      err => console.error('Error in Update Call', err),
+      err => {console.error('Error in Update Call', err); this.getAllProjects()},
       () => this.getAllProjects()
     );
   }
