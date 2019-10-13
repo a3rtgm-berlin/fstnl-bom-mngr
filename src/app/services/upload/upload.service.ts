@@ -13,7 +13,7 @@ export class UploadService {
 
   constructor(private http: HttpClient, private router: Router, private restService: RestService) {}
 
-  public upload(files: [File], service: string, projectTag?: string): {[key: string]: {progress: Observable<number>}} {
+  public upload(files: File[], service: string, projectTag?: string): {[key: string]: {progress: Observable<number>}} {
 
     const status: { [key: string]: { progress: Observable<number> } } = {};
 

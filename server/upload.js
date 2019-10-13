@@ -8,11 +8,12 @@ const csvHandler = require('./csvHandler');
 const MaterialList = require("./models/list").MaterialListModel;
 const ArbMatrix = require('./models/arbMatrix');
 const Project = require('./models/project').ProjectModel;
+const MultiBom = require('./multiBom');
 
 const uploadDir = "./user-upload/";
 
 async function bom(req, res) {
-    const reader = new FileReader();
+    const processedBoms = [];
     let form = new IncomingForm(),
         tag;
 
@@ -29,42 +30,43 @@ async function bom(req, res) {
     })
 
     form.on('file', async (name, file) => {
+        const reader = new FileReader();
+
         // Parse & Save to Disk
         reader.readAsArrayBuffer(file);
-        reader.onload = (evt) => {
-            const view = new Uint8Array(reader.result);
 
-            // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
-            let newDatum = parser.xlsParser(reader.result, tag);
-            newDatum.name = file.name;
+        const readFile = new Promise((res, rej) => {
+            reader.onload = async (evt) => {
+                const view = new Uint8Array(reader.result);
+    
+                // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
+                let newDatum = parser.xlsParser(reader.result, tag);
+                newDatum.name = file.name;
+    
+                // save files to server dir
+                fs.writeFile(path.join(uploadDir, file.name), view);
+                fs.writeFile(path.join(uploadDir, `${file.name}.csv`), newDatum.csv);
+    
+                // send csv to csvHandler and wait for resolution
+                // return the new data-object
+                // send the json back to the client as response
+                res(await addJson(newDatum));
+    
+                // addJson(newDatum).then(async (data) => {
+                //     processedBoms.push(data);
+    
+                //     console.log(processedBoms.length);
+    
+                //     const success = await saveBomAndUpdateProject(data);
+                // });
+            };
+        });
 
-            // save files to server dir
-            fs.writeFile(path.join(uploadDir, file.name), view);
-            fs.writeFile(path.join(uploadDir, `${file.name}.csv`), newDatum.csv);
+        console.log(processedBoms.length);
+    });
 
-            // send csv to csvHandler and wait for resolution
-            // return the new data-object
-            // send the json back to the client as response
-            addJson(newDatum).then((data) => {
-                dbModel = new MaterialList(data);
-                dbModel.save((err) => {
-                    if (err) {
-                        res.status(500).send(err);
-                        return console.error(err);
-                    }
-
-                    Project.findOne({tag: tag}, (err, project) => {
-                        if (err) throw err;
-                        if (project) {
-                            project.bomLists.push(data.id);
-                            project.save();
-                        }
-                    });
-
-                    res.status(203).send([data.id]);
-                });
-            });
-        };
+    form.on('end', () => {
+        res.json();
     });
 }
 
@@ -125,6 +127,31 @@ function matrix (req, res) {
     });
 
     form.parse(req);
+}
+
+async function saveBomAndUpdateProject(bom) {
+    dbModel = new MaterialList(bom);    
+    
+    const success = new Promise((res) => {
+        dbModel.save((err) => {
+            if (err) {
+                console.error(err);
+                res(false);
+            }
+    
+            Project.findOne({tag: bom.project}, (err, project) => {
+                if (err) throw err;
+                if (project) {
+                    project.bomLists.push(bom.id);
+                    project.save();
+                }
+            });
+    
+            res(true);
+        });
+    });
+
+    return await success;
 }
 
 module.exports = {bom, matrix};
