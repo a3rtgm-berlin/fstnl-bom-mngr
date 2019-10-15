@@ -33,29 +33,25 @@ const createMasterBom = function (req, res) {
                 dbModel.comparison = comparison;       
             }
 
-            dbModel.save((err) => {
-                if (err) {
-                    res.sendStatus(500);
-                    throw err;
-                }
+            res.sendStatus(200);
+            // dbModel.save((err) => {
+            //     if (err) {
+            //         res.sendStatus(500);
+            //         throw err;
+            //     }
     
-                res.status(201).send([id]);
-            });
+            //     res.status(201).send([id]);
+            // });
         });
     });
 };
 
 function combineLists(lists, id, date, projectTags) {
-    const masterList = new Set([].concat(...lists));
-
-    masterList.forEach((mat1, e1, i) => {
-        masterList.forEach((mat2, e2, j) => {
-            if (mat1.Station === mat2.Station && mat1.Material === mat2.Material && mat1.list !== mat2.list) {
-                mat1.Menge += mat2.Menge;
-                masterList.delete(mat2);
-            }
-        });
-    });
+    let masterList = lists[0];
+    
+    for (let i = 1; i < lists.length; i++) {
+        masterList = addList(masterList, lists[i]);
+    }
 
     return {
         id: id,
@@ -66,5 +62,41 @@ function combineLists(lists, id, date, projectTags) {
         uploadDate: new Date()
     };
 }
+
+function addList (masterList, newList) {
+    masterList.forEach((part) => {
+        newList.forEach(_part => {
+            if (_part.Station === part.Station && _part.Material === part.Material) {
+                part.Menge += _part.Menge;
+                _part.delete = true;
+            }
+        });
+    });
+    const newItems = newList.filter(part => !part.delete);
+    return [...masterList, ...newItems];
+}
+// function combineLists(lists, id, date, projectTags) {
+//     const masterList = new Set([].concat(...lists));
+
+//     masterList.forEach((mat1, e1, i) => {
+//         masterList.forEach((mat2, e2, j) => {
+//             if (mat1.Station === mat2.Station && mat1.Material === mat2.Material && mat1.list !== mat2.list) {
+//                 mat1.Menge += mat2.Menge;
+//                 masterList.delete(mat2);
+//             }
+//         });
+//     });
+
+//     console.log(lists, masterList, projectTags);
+
+//     return {
+//         id: id,
+//         projects: projectTags,
+//         json: Array.from(masterList),
+//         comparison: {},
+//         date: date,
+//         uploadDate: new Date()
+//     };
+// }
 
 module.exports = createMasterBom;

@@ -12,8 +12,11 @@ const MultiBom = require('./multiBom');
 
 const uploadDir = "./user-upload/";
 
+const processedBoms = new Set();
+
 async function bom(req, res) {
-    const processedBoms = [];
+    processedBoms.clear();
+
     let form = new IncomingForm(),
         tag;
 
@@ -51,18 +54,13 @@ async function bom(req, res) {
                 // return the new data-object
                 // send the json back to the client as response
                 res(await addJson(newDatum));
-    
-                // addJson(newDatum).then(async (data) => {
-                //     processedBoms.push(data);
-    
-                //     console.log(processedBoms.length);
-    
-                //     const success = await saveBomAndUpdateProject(data);
-                // });
             };
         });
 
-        console.log(processedBoms.length);
+        const processedBom = await readFile;
+        processedBoms.add(processedBom);
+
+        saveBomAndUpdateProject(await readFile);
     });
 
     form.on('end', () => {
@@ -130,8 +128,9 @@ function matrix (req, res) {
 }
 
 async function saveBomAndUpdateProject(bom) {
-    dbModel = new MaterialList(bom);    
-    
+    const dbModel = new MaterialList(await updateListId(bom));
+    console.log(dbModel);
+
     const success = new Promise((res) => {
         dbModel.save((err) => {
             if (err) {
@@ -152,6 +151,25 @@ async function saveBomAndUpdateProject(bom) {
     });
 
     return await success;
+}
+
+async function updateListId (list) {
+    
+    const updateListId = new Promise((res, rej) => {
+        MaterialList.find({id: { $regex: `.*${list.id}.*`}}, (err, data) => {
+            if (err) return console.error(err);
+
+            console.log(list.id);
+            if (data && data.length > 0) {
+                list.id = list.id + '-' + data.length;
+            }
+
+            console.log(list.id);
+            res(list);
+        });
+    });
+
+    return await updateListId;
 }
 
 module.exports = {bom, matrix};

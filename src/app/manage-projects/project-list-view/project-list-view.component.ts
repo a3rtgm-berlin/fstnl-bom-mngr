@@ -75,7 +75,11 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     this.restService.updateProjectVal(this.project$);
   }
 
-  consoleLog() { 
+  mergeMultiBoms() {
+    this.restService.createMultiBomFromIds(['TES-2019-09', 'TES-2019-09-1']);
+  }
+
+  consoleLog() {
     console.log(this.mltBmArray);
   }
 }

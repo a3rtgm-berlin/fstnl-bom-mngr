@@ -11,6 +11,7 @@ const createMaster = require('./createMaster');
 
 // Classes
 const Comparison = require('./compareLists');
+const MultiBom = require('./multiBom');
 
 // DB Models
 const MaterialList = require("./models/list").MaterialListModel;
@@ -28,8 +29,8 @@ const corsOptions = {
 }
 
 // Connect DB
-// mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false });
-mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false });
+mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false });
+// mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false });
 
 // Set server options
 server.use(cors(corsOptions));
@@ -159,6 +160,13 @@ server.get('/api/lists/:id', (req, res, next) => {
 server.delete('/api/lists/:id', (req, res, next) => {
     const q = req.params.id;
 
+    if (q === 'delete-all') {
+        MaterialList.deleteMany({}, (err) => {
+            if (err) return console.error(err);
+            res.sendStatus(204);
+        })
+    }
+
     MaterialList.findOneAndDelete({id: q}, (err) => {
         if (err) return console.error(err);
         console.log(q + ' deleted.');
@@ -187,6 +195,37 @@ server.put('/api/lists/:id', (req, res, next) => {
 
     MaterialList.findOneAndUpdate({id: q}, req.body, (err) => {
         res.send(200);
+    });
+});
+
+server.post('/api/lists/multibom', (req, res) => {
+    MaterialList.find({id: {$in: req.body.lists}}, (err, data) => {
+        if (err) {
+            res.send(503);
+            return console.error(err);
+        }
+
+        if (data) {
+            multiBom = new MultiBom(data);
+            const dbModel = new MaterialList(multiBom.list);
+            dbModel.save((err) => {
+                if (err) {
+                    console.error(err);
+                    res.sendStatus(500);
+                }
+        
+                Project.findOne({tag: multiBom.list.project}, (err, project) => {
+                    if (err) throw err;
+                    if (project) {
+                        project.bomLists = project.bomLists.filter(id => !req.body.lists.includes(id));
+                        project.bomLists.push(bom.id);
+                        project.save();
+                    }
+                });
+            });
+
+            res.sendStatus(201);
+        }
     });
 });
 

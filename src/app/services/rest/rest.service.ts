@@ -118,6 +118,15 @@ export class RestService {
     return this.http.put<void>(url + 'lists/' + materialList.id, materialList);
   }
 
+  public async createMultiBomFromIds(ids: string[]) {
+    const observable = this.http.post(url + 'lists/multibom', {lists: ids});
+
+    observable.subscribe({
+      error: err => console.log(err),
+      complete: () => console.log('merged'),
+    });
+  }
+
   public async compareLists(id1: string, id2: string) {
     const observable = this.http.get(`${url}master/compare/${id1}/${id2}`);
     const comparison = await observable.toPromise();
