@@ -1,4 +1,5 @@
 const MaterialList = require('./models/list').MaterialListModel;
+const mongoose = require('../node_modules/mongoose');
 
 module.exports = class MultiBom {
     constructor(boms) {
@@ -20,6 +21,8 @@ module.exports = class MultiBom {
             });
         });
         const newItems = bom.json.filter(part => !part.delete);
-        this.list.json = [...this.list.json, ...newItems];  
+        this.list.json = [...this.list.json, ...newItems];
+
+        bom.remove();
     }
 }

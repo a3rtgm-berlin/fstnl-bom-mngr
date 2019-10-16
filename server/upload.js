@@ -92,7 +92,6 @@ function matrix (req, res) {
                 'json': newMatrix,
                 'uploadDate': new Date()
             };
-            const dbModel = new ArbMatrix(matrixObj);
 
             fs.writeFile(path.join(uploadDir, '/arb-matrix/', file.name), view);
             fs.writeFile(path.join(uploadDir, '/arb-matrix/', 'arbMatrix.json'), JSON.stringify(newMatrix));
@@ -104,7 +103,7 @@ function matrix (req, res) {
                 }
 
                 if (data.length > 0) {
-                    ArbMatrix.findOneAndUpdate({}, dbModel, {}, (err) => {
+                    ArbMatrix.findOneAndUpdate({}, matrixObj, {}, (err) => {
                         if (err) {
                             res.status(500).send(err);
                             return console.error(err);
@@ -112,6 +111,7 @@ function matrix (req, res) {
                         res.status(203).send([file.name]);
                     });
                 } else {
+                    const dbModel = new ArbMatrix(matrixObj);
                     dbModel.save((err) => {
                         if (err) {
                             res.status(500).send(err);

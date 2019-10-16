@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UploadService } from '../services/upload/upload.service';
+import { ModalService } from '../services/modal/modal.service';
 
 @Component({
   selector: 'app-matrix-files',
@@ -17,7 +18,7 @@ export class MatrixFilesComponent implements OnInit {
     'text/csv'
   ];
 
-  constructor(public uploadService: UploadService) { }
+  constructor(public uploadService: UploadService, public modalService: ModalService) { }
 
   ngOnInit() {
   }
@@ -39,6 +40,8 @@ export class MatrixFilesComponent implements OnInit {
     if (this.file) {
       const upload = this.uploadService.upload([this.file], 'matrix');
 
+      this.close();
+
       upload[this.file.name].progress.subscribe({
         next: v => console.log(`POST ${this.file.name}: ${v}%`),
         error: err => console.error(`POST Error`, err),
@@ -47,5 +50,9 @@ export class MatrixFilesComponent implements OnInit {
     } else {
       alert('Please select valid file!');
     }
+  }
+
+  public close() {
+    this.modalService.destroy();
   }
 }

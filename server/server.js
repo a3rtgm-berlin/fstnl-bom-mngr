@@ -165,23 +165,23 @@ server.delete('/api/lists/:id', (req, res, next) => {
             if (err) return console.error(err);
             res.sendStatus(204);
         })
-    }
-
-    MaterialList.findOneAndDelete({id: q}, (err) => {
-        if (err) return console.error(err);
-        console.log(q + ' deleted.');
-
-        Project.findOne({tag: q.slice(0, q.indexOf('-'))}, (err, data) => {
+    } else {
+        MaterialList.findOneAndDelete({id: q}, (err) => {
             if (err) return console.error(err);
-            
-            if (data) {
-                data.bomLists = data.bomLists.filter(id => id !== q);
-                data.save();
-            }
+            console.log(q + ' deleted.');
+    
+            Project.findOne({tag: q.slice(0, q.indexOf('-'))}, (err, data) => {
+                if (err) return console.error(err);
+                
+                if (data) {
+                    data.bomLists = data.bomLists.filter(id => id !== q);
+                    data.save();
+                }
+            });
+    
+            res.sendStatus(204);
         });
-
-        res.sendStatus(204);
-    });
+    }
 });
 
 /**
@@ -207,6 +207,7 @@ server.post('/api/lists/multibom', (req, res) => {
 
         if (data) {
             multiBom = new MultiBom(data);
+
             const dbModel = new MaterialList(multiBom.list);
             dbModel.save((err) => {
                 if (err) {
@@ -218,7 +219,7 @@ server.post('/api/lists/multibom', (req, res) => {
                     if (err) throw err;
                     if (project) {
                         project.bomLists = project.bomLists.filter(id => !req.body.lists.includes(id));
-                        project.bomLists.push(bom.id);
+                        project.bomLists.push(multiBom.list.id);
                         project.save();
                     }
                 });

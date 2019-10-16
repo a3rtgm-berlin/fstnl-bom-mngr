@@ -65,16 +65,15 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
   updateProjectCount() {
     this.count = 0;
-    if(this.allProjects) {
+    if (this.allProjects) {
       this.allProjects.forEach((el) => {
-        if(el.active != false) {
+        if (el.active !== false) {
           this.count += 1;
           console.log(this.count)
         }
       });
     }
   }
-  
 
   showBom() {
     this.router.navigate([`/app/master/view/${this.masterId}`]);
@@ -90,7 +89,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
           const thisId = project.bomLists[project.bomLists.length - 1];
           const thisId$ = thisId.substring(thisId.indexOf('-') + 1);
 
-          console.log(project.bomLists[project.bomLists.length - 1], thisId$, this.masterId);
+          // console.log(project.bomLists[project.bomLists.length - 1], thisId$, this.masterId);
 
           if (thisId$ > this.masterId) {
             this.latestId = thisId$;
@@ -99,7 +98,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
         }
       });
 
-      console.log(this.upToDate, this.listsToCombine.length, this.allProjects.length);
+      // console.log(this.upToDate, this.listsToCombine.length, this.allProjects.length);
       this.upToDate = this.listsToCombine.length >= this.allProjects.length ? false : true;
     }
   }

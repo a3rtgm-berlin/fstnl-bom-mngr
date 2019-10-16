@@ -80,7 +80,7 @@
             </li>
             <li class="mltBm_A" *ngIf="tglSwitch === 'A'">
                 <div class="prjct_bom">
-                    <select class="bomlists">
+                    <select class="bomlists" (change)="selectMultiBoms($event, 0)">
                         <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
                     </select>
                 </div>
@@ -89,12 +89,12 @@
                 </div>
                
             </li>
-            <ng-container *ngFor="let i of mltBmArray ; let last = last">
+            <ng-container *ngFor="let i of mltBmArray; index as j; let last = last">
                 <li *ngIf="tglSwitch === i"  [ngClass]="{mltBm_mid : true, mltBm_last: last }">
                         <div class="prjct_bom">
-                                <select class="bomlists">
-                                    <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
-                                </select>
+                            <select class="bomlists" (change)="selectMultiBoms($event, j + 1)">
+                                <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
+                            </select>
                         </div>
                         <div class="prjct_upl">
                                 <app-xls-loader [projectTag]="project$.tag"></app-xls-loader>

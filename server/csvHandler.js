@@ -18,9 +18,19 @@ async function csvToJson (csv) {
 
     arbMatrix = await promise;
 
-    return dsv.parse(csv, (d) => {
+    const json = dsv.parse(csv, (d) => {
         return filterData(d, arbMatrix.json);
     });
+
+    return json.reduce((cleanJson, part) => {
+        match = cleanJson.find(_part => _part.id === part.id);
+        if (match) {
+            match.Menge += part.Menge;
+            return cleanJson;
+        } else {
+            return [...cleanJson, part];
+        }
+    }, []);
 }
 
 function filterData (d, arbMatrix) {

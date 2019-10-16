@@ -20,6 +20,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   modalController = true;
   multiBom: any;
   mltBmArray = [];
+  mltBmToMerge = [];
   tglSwitch: any;
 
   @Input() set project(project) {
@@ -64,7 +65,6 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     $(evt.target).siblings().removeClass("active");
   }
 
-
   increaseMultiBom() {
     this.project$.multiBom += 1;
     this.restService.updateProjectVal(this.project$);
@@ -76,10 +76,11 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   mergeMultiBoms() {
-    this.restService.createMultiBomFromIds(['TES-2019-09', 'TES-2019-09-1']);
+    this.restService.createMultiBomFromIds(this.mltBmToMerge);
   }
 
-  consoleLog() {
-    console.log(this.mltBmArray);
+  selectMultiBoms(evt: any, i: any) {
+    this.mltBmToMerge[i] = evt.target.value;
+    console.log(this.mltBmToMerge);
   }
 }
