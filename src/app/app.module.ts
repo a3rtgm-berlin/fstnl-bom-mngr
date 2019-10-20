@@ -31,6 +31,7 @@ import { CreateuserComponent } from './login/createuser/createuser.component';
 import { SettingsComponent } from './settings/settings.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ProjectRemainNeedComponent } from './project-remain-need/project-remain-need.component';
+import { RoundDecimalsPipe } from './pipes/round-decimals.pipe';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ProjectRemainNeedComponent } from './project-remain-need/project-remain
     CreateuserComponent,
     SettingsComponent,
     ProjectRemainNeedComponent,
+    RoundDecimalsPipe,
   ],
   entryComponents: [
     CreateProjectComponent,

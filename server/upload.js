@@ -9,6 +9,7 @@ const MaterialList = require("./models/list").MaterialListModel;
 const ArbMatrix = require('./models/arbMatrix');
 const Project = require('./models/project').ProjectModel;
 const MultiBom = require('./multiBom');
+const ExcludeList = require('./models/excludeList');
 
 const uploadDir = "./user-upload/";
 
@@ -18,19 +19,19 @@ async function bom(req, res) {
     processedBoms.clear();
 
     let form = new IncomingForm(),
-        tag;
+        tag, suffix;
 
     form.parse(req);
 
     form.on('field', (name, field) => {
-        tag = field;
+        if (name === 'tag') return tag = field;
+        if (name === 'suffix') return suffix = field; 
     });
-    
     form.on('error', (err) => {
         console.error(err);
         res.sendStatus(500);
         throw err;
-    })
+    });
 
     form.on('file', async (name, file) => {
         const reader = new FileReader();
@@ -43,7 +44,7 @@ async function bom(req, res) {
                 const view = new Uint8Array(reader.result);
     
                 // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
-                let newDatum = parser.xlsParser(reader.result, tag);
+                let newDatum = parser.xlsParser(reader.result, tag, suffix, file.type);
                 newDatum.name = file.name;
     
                 // save files to server dir
@@ -60,11 +61,11 @@ async function bom(req, res) {
         const processedBom = await readFile;
         processedBoms.add(processedBom);
 
-        saveBomAndUpdateProject(await readFile);
-    });
-
-    form.on('end', () => {
-        res.json();
+        if (await saveBomAndUpdateProject(await readFile)) {
+            res.json();
+        } else {
+            res.sendStatus(500);
+        }
     });
 }
 
@@ -127,9 +128,54 @@ function matrix (req, res) {
     form.parse(req);
 }
 
+function excludeList(req, res) {
+    const reader = new FileReader();
+    let form = new IncomingForm();
+
+    form.on('file', (field, file) => {
+        // Parse & save to disk
+        reader.readAsArrayBuffer(file);
+        reader.addEventListener('load', (evt) => {
+            const view = new Uint8Array(reader.result);
+            const excludeList = parser.excludeListParser(reader.result);
+
+            console.log(excludeList);
+            fs.writeFile(path.join(uploadDir, '/arb-matrix/', file.name), view);
+            fs.writeFile(path.join(uploadDir, '/arb-matrix/', 'excludeList.json'), JSON.stringify(excludeList));
+
+            ExcludeList.find((err, data) => {
+                if (err) {
+                    res.status(500).send(err);
+                    return console.error(err);
+                }
+
+                if (data.length > 0) {
+                    ExcludeList.findOneAndUpdate({}, {exclude: excludeList}, {}, (err) => {
+                        if (err) {
+                            res.status(500).send(err);
+                            return console.error(err);
+                        }
+                        res.status(203).send([file.name]);
+                    });
+                } else {
+                    const dbModel = new ExcludeList({exclude: excludeList});
+                    dbModel.save((err) => {
+                        if (err) {
+                            res.status(500).send(err);
+                            return console.error(err);
+                        }
+                        res.status(203).send([file.name]);
+                    });
+                }
+            });
+        });
+    });
+
+    form.parse(req);
+}
+
 async function saveBomAndUpdateProject(bom) {
     const dbModel = new MaterialList(await updateListId(bom));
-    console.log(dbModel);
 
     const success = new Promise((res) => {
         dbModel.save((err) => {
@@ -172,4 +218,4 @@ async function updateListId (list) {
     return await updateListId;
 }
 
-module.exports = {bom, matrix};
+module.exports = {bom, matrix, excludeList};

@@ -14,6 +14,7 @@ export class AuthserviceService {
   user: any;
 
   loggedIn: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  
   setLoginState(val) {
     if (val) {
       this.loggedIn.next(val);

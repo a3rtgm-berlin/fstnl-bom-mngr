@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/cor
 import { ActivatedRoute } from '@angular/router';
 import { RestService } from '../services/rest/rest.service';
 import { MetaData } from '../metaDataModel';
+import { LoaderService } from '../services/loader/loader.service';
 
 @Component({
   selector: 'app-compare-orders',

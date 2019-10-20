@@ -1,14 +1,14 @@
 const d3 = require('../node_modules/d3');
 const ArbMatrix = require('./models/arbMatrix');
+const ExcludeList = require('./models/excludeList');
 const mat = require('./models/material');
 const dsv = d3.dsvFormat(";");
 
 async function csvToJson (csv) {
-    var catId = "",
-        catName = "",
-        arbMatrix = null;
+    var arbMatrix = null,
+        excludeList = [];
 
-    let promise = new Promise((res, rej) => {
+    let promiseMatrix = new Promise((res, rej) => {
         ArbMatrix.findOne({}, (err, data) => {
             if (err) return console.error(err);
     
@@ -16,10 +16,19 @@ async function csvToJson (csv) {
         });
     });
 
-    arbMatrix = await promise;
+    let promiseExcludeList = new Promise((res, rej) => {
+        ExcludeList.findOne({}, (err, data) => {
+            if (err) return console.error(err);
+            res(data);
+        });
+    });
+
+    arbMatrix = await promiseMatrix;
+    excludeList = await promiseExcludeList;
+
 
     const json = dsv.parse(csv, (d) => {
-        return filterData(d, arbMatrix.json);
+        return filterData(d, arbMatrix.json, excludeList.exclude);
     });
 
     return json.reduce((cleanJson, part) => {
@@ -33,14 +42,19 @@ async function csvToJson (csv) {
     }, []);
 }
 
-function filterData (d, arbMatrix) {
+function filterData (d, arbMatrix, excludeList) {
+    var catId = "",
+        catName = "";
+
     if (d.ArbPlatz === "INV") {
         catId = d["MaterialP"];
         catName = d["Objektkurztext"];
     } else {
-        if (d.SchGut === "X") {
-            if (d.MArt === "ROH" || d.MArt === "HALB") {
-                return new mat.Item(d, catId, catName, arbMatrix);
+        if (!excludeList.includes(d["MaterialP"])) {
+            if (d.SchGut === "X") {
+                if (d.MArt === "ROH" || d.MArt === "HALB") {
+                    return new mat.Item(d, catId, catName, arbMatrix);
+                }
             }
         }
     }

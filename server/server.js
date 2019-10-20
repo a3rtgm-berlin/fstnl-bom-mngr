@@ -89,6 +89,7 @@ server.get('/', (req, res) => {
  * @method POST
  */
 server.post('/api/upload/matrix', upload.matrix);
+server.post('/api/upload/exclude', upload.excludeList);
 
 /**
  * @description Handles uploaded BOM files

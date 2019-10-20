@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { UploadService } from '../services/upload/upload.service';
 import { RestService } from '../services/rest/rest.service';
 import { forkJoin } from 'rxjs';
+import { LoaderService } from '../services/loader/loader.service';
 
 // Component to upload and interpret the BOM-xls file
 // and pass the object on to the related project.
@@ -14,6 +15,7 @@ import { forkJoin } from 'rxjs';
 export class XlsLoaderComponent implements OnInit {
 
   @Input() projectTag: string;
+  @Input() suffix: string;
 
   public data: object;
 
@@ -26,10 +28,9 @@ export class XlsLoaderComponent implements OnInit {
   ];
   private isFocused = false;
 
-  constructor(public uploadService: UploadService, public restService: RestService) { }
+  constructor(public uploadService: UploadService, public restService: RestService, private loader: LoaderService) { }
 
   ngOnInit() {
-    console.log(this.projectTag);
   }
 
   // Update UI on input change
@@ -52,7 +53,7 @@ export class XlsLoaderComponent implements OnInit {
   private onSubmit() {
 
     if (this.files) {
-      const upload = this.uploadService.upload(this.files, 'bom', this.projectTag);
+      const upload = this.uploadService.upload(this.files, 'bom', this.projectTag, this.suffix);
       const allProgressObservables = [];
 
       for (const key in upload) {
@@ -64,7 +65,7 @@ export class XlsLoaderComponent implements OnInit {
       forkJoin(allProgressObservables).subscribe({
         next: v => console.log(`POST: ${v}%`),
         error: err => console.error(`POST Error`, err),
-        complete: () => console.log(`Successfully uploaded`)
+        complete: () => console.log('success')
       });
     } else {
       alert('Please select valid file!');
