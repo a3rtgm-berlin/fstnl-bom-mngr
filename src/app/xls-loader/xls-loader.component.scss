@@ -5,6 +5,11 @@
     margin:10px auto;
     width:90%;
     height:auto;
+    
+    
+    &:hover {
+        cursor:pointer;
+    }
 
     form {
         @include flex-standard;
@@ -32,6 +37,15 @@
                         display:none;
                     }
                 }
+
+                &:hover {
+                    cursor:pointer !important;
+                    outline:1px solid $brandblue;
+                }
+            }
+
+            &:hover {
+                cursor:pointer;
             }
         }
 

@@ -83,4 +83,12 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     this.mltBmToMerge[i] = evt.target.value;
     console.log(this.mltBmToMerge);
   }
+
+  updateTrains() {
+    alert("this shall be eu");
+  }
+
+  updateDeadline() {
+
+  }
 }

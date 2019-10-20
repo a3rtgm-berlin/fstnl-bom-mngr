@@ -7,6 +7,8 @@ const userSchema = new Schema({
     password: String,
     admin: Boolean,
     dev: {type: Boolean, default: false},
+}, {
+    collection: 'fe-users'
 });
 
 const UserModel = mongoose.model('User', userSchema);

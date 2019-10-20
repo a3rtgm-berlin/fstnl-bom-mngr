@@ -1,5 +1,6 @@
 <form (submit)="loginUser($event)">
-    <input type="text" placeholder="Username" id="user">
-    <input type="password" placeholder="Password" id="pass">
+    <input type="text" placeholder="Username" id="user" [(ngModel)]="username" name="username">
+    <input type="password" placeholder="Password" id="pass" [(ngModel)]="password" name="password">
     <input type="submit" value="Log In">
 </form>
+<button (click)="logOut()" value="Log Out">Log Out</button>

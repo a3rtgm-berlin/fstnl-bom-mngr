@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MaterialList } from '../../materialListModel';
 import { Project } from '../../projectModel';
@@ -15,6 +15,9 @@ const url = 'http://localhost:8000/api/';
   providedIn: 'root'
 })
 export class RestService {
+
+  authToken: any;
+  user: any; 
 
   constructor(private http: HttpClient) { }
 

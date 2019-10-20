@@ -30,13 +30,13 @@
                 <li class="trains">
                     <div class="imgbx"></div>
                     <div class="field">{{project$.trainsCount}}</div>
-                    <div class="chg"><button></button></div>
+                    <div class="chg"><button (click)="updateTrains()"></button></div>
                     <div class="txtbx"><p>trains pending</p></div>
                 </li>
                 <li class="date">
                     <div class="imgbx"></div>
                     <div class="field">{{totalDiff}}</div>
-                    <div class="chg"><button></button></div>
+                    <div class="chg"><button (click)="updateDeadline()"></button></div>
                     <div class="txtbx"><p>weeks left</p></div>
                 </li>
 
@@ -53,7 +53,11 @@
     <div *ngIf="project$.multiBom > 0" class="mltBm_prjct_bdy">
         <ul>
             <li class="overview" *ngIf="tglSwitch === 'overview'">
-
+                <div class="prjct_ovw">
+                    <select class="bomlists">
+                        <option class="act-lst" *ngFor="let multibom of multibomList$">{{multibom}}</option>
+                    </select>
+                </div>
                 <div class="prjct_bom">
                     <button class="mrgMltBm" (click)="mergeMultiBoms()">Merge Multi BOM Files</button>
                 </div>

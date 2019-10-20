@@ -11,7 +11,7 @@ export class MaterialListViewComponent implements OnInit, OnChanges {
 
   private master$: MaterialList;
   private tab: any = 'MasterBOM';
-  private tabs: string[] = ['MasterBOM', 'Comparison'];
+  private tabs: string[] = ['MasterBOM', 'Comparison', 'RMN'];
 
   @ViewChild('tabsPanel', {static: false}) tabsPanel: ElementRef;
 

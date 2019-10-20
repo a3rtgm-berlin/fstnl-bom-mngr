@@ -3,6 +3,11 @@ const express = require('../node_modules/express');
 const cors = require('../node_modules/cors');
 const bodyParser = require("../node_modules/body-parser");
 const mongoose = require("../node_modules/mongoose");
+const flash = require("./node_modules/connect-flash");
+const session = require("./node_modules/express-session");
+const passport = require("passport");
+const jwt = require("./node_modules/jsonwebtoken");
+const fs = require("fs");
 
 // Server Modules
 const upload = require('./upload');
@@ -27,6 +32,43 @@ const corsOptions = {
     origin: '*',
     optionsSuccessStatus: 200,
 }
+
+// Expess Session
+server.use(session({
+    secret:'secret',
+    resave: true,
+    saveUninitialized: true
+}));
+
+//Passport config
+require('./passport')(passport);
+server.use(passport.initialize());
+server.use(passport.session());
+const privateKey = fs.readFileSync('./keys/private.key', 'utf8');
+const publicKey = fs.readFileSync('./keys/public.key', 'utf8');
+
+// const publicKey = '-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAO63hsHDV1r6jsAGxCrg3mu++WKtaygE6+idFlH1fd77z92c2ME4dQgtKL6NmJO66+MZYgPFzfaCGTCiX3fmKU8CAwEAAQ==-----END PUBLIC KEY-----';
+// const privateKey = '-----BEGIN PRIVATE KEY-----MIIBUwIBADANBgkqhkiG9w0BAQEFAASCAT0wggE5AgEAAkEA7reGwcNXWvqOwAbEKuDea775Yq1rKATr6J0WUfV93vvP3ZzYwTh1CC0ovo2Yk7rr4xliA8XN9oIZMKJfd+YpTwIDAQABAkAzMPwe9Sr4gZ63IzxSDaLk7DFCrfm6vUNxwK4WqVRyypc0cZWJx4T3xssPE5ifeDq3aegYv+MgXsJGcHITEgehAiEA/83ZLpciDWXbUAFjHXoCdrU5R3tqJ3Am7PjveD/CHekCIQDu5lP3xhoSG2uf32YpAJFT2fazITjvIH9WPK0/PsTydwIgcRFj9hwHiTSEhBCY5uaPQDlKYDZE7bm8+vHtp5FHFEECIA6g4fFhGwWS0kNG3a2TEFMPHLEZTrAt0D5Klt0xjcO/AiA6ybCpTlZVfzrAUfE+y3Hs9eS10oeiiGstswwmVCErtg==-----END PRIVATE KEY-----'
+
+const signOptions = {
+    expiresIn: '3h', //3 hours
+    algorithm: 'HS512',
+};
+const verifyOptions = {
+    expiresIn: '3h', //3 hours
+    algorithms: ['HS512'],
+};
+
+// Connect Flash
+server.use(flash());
+
+//Global Variables 
+server.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error')
+    next();
+});
 
 // Connect DB
 mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false });
@@ -240,6 +282,51 @@ server.post('/api/projects/:tag', (req, res, next) => {
             res.sendStatus(200);
         }
     });
+});
+
+server.post('/api/token/verify', (req, res) => {
+    if (req.body.token) {
+        decoded = jwt.verify(req.body.token, privateKey, verifyOptions, (err, decoded) => {
+            if (err) return res.status(401).send(false);
+            return res.status(200).send(true);
+        });
+    } else {
+        return res.status(204).send(false);
+    }
+});
+
+server.post('/api/users/authenticate', passport.authenticate('local', {
+    successMessage: 'you are now logged in',
+    failureMessage: 'something went wrong',
+    failureFlash: true
+}), (req, res) => {
+    
+    // console.log(privateKey, publicKey);
+    const token = jwt.sign({
+        "admin": req.user.admin,
+        "dev": req.user.dev,
+    }, privateKey, {
+        expiresIn: '3h',
+        algorithm: 'HS512',
+        header: {
+            alg: "HS512",
+            typ: "JWT"
+        }
+    });
+
+    // const valid = jwt.verify(token, 'abcdefg', {
+    //     algorithms: ['HS512']
+    // });
+
+    res.json({
+        success: true,
+        token: token,
+        user: {
+            id:req.user._id,
+            username: req.user.username,
+            email: req.user.email
+        }
+    })
 });
 
 /**

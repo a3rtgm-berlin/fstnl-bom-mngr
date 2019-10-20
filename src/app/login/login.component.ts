@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../services/auth/auth.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { AuthserviceService} from '../services/auth/authservice.service';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -8,19 +10,25 @@ import {AuthService} from '../services/auth/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private Auth: AuthService) { }
+  username: String;
+  password: String;
+
+  constructor(private authService: AuthserviceService, private router: Router) { }
 
   ngOnInit() {
   }
 
   loginUser(event) {
-    event.preventDefault();
-    const target = event.target;
-    const username = target.querySelector("#user").value;
-    const password = target.querySelector("pass").value;
+    const user = {
+      username: this.username,
+      password: this.password,
+    }
+    this.authService.authenticateUser(user);
 
-    //this.Auth.getUserDetails(username, password);
-
+  }
+  
+  logOut() {
+    this.authService.logoutUser();
   }
 
 }

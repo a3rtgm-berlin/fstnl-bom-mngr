@@ -25,8 +25,11 @@
                     <app-masterlistview></app-masterlistview>
                 </ng-template>
                 <ng-template [ngSwitchCase]="'Comparison'">
-                        <app-compare-orders [comparison]="master$.comparison ? master.comparison : null"></app-compare-orders>
-                    </ng-template>
+                    <app-compare-orders [comparison]="master$.comparison ? master.comparison : null"></app-compare-orders>
+                </ng-template>
+                <ng-template [ngSwitchCase]="'RMN'">
+                    <app-project-remain-need></app-project-remain-need>
+                </ng-template>
                 <ng-template ngSwitchDefault>
                     <p>No Tab Selected.</p>
                 </ng-template>

@@ -29,6 +29,8 @@ import { LoginComponent } from './login/login.component';
 import { MasterlistviewComponent } from './masterlistview/masterlistview.component';
 import { CreateuserComponent } from './login/createuser/createuser.component';
 import { SettingsComponent } from './settings/settings.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { ProjectRemainNeedComponent } from './project-remain-need/project-remain-need.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,7 @@ import { SettingsComponent } from './settings/settings.component';
     MasterlistviewComponent,
     CreateuserComponent,
     SettingsComponent,
+    ProjectRemainNeedComponent,
   ],
   entryComponents: [
     CreateProjectComponent,
