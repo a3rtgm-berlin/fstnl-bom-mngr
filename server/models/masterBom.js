@@ -11,7 +11,7 @@ const masterBomSchema = new Schema({
     comparison: Object,
     date: String,
     uploadDate: Date,
-    project: [String],
+    projects: [String],
 }, {
     collection: 'master-bom'
 });

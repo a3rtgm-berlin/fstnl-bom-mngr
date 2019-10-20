@@ -43,7 +43,7 @@
             </ul>
         </div>
         <div class="prjct_upl">
-                <app-xls-loader [projectTag]="project$.tag"></app-xls-loader>
+            <app-xls-loader [projectTag]="project$.tag" [suffix]="null"></app-xls-loader>
         </div>
         <div class="prjct_state">
 
@@ -85,7 +85,7 @@
                     </select>
                 </div>
                 <div class="prjct_upl">
-                        <app-xls-loader [projectTag]="project$.tag"></app-xls-loader>
+                        <app-xls-loader [projectTag]="project$.tag" [suffix]="'A'"></app-xls-loader>
                 </div>
                
             </li>
@@ -97,7 +97,7 @@
                             </select>
                         </div>
                         <div class="prjct_upl">
-                                <app-xls-loader [projectTag]="project$.tag"></app-xls-loader>
+                                <app-xls-loader [projectTag]="project$.tag" [suffix]="i"></app-xls-loader>
                         </div>
                         <div class="addMltBm">
                                 <button class="decMltBmBtn" (click)="decreaseMultiBom()">Remove this BOM List</button>

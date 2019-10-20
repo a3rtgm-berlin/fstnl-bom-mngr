@@ -38,13 +38,13 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     let date2 = new Date();
     let diffInWeeks =(date2.getTime() - date1.getTime()) / 1000;
     diffInWeeks /= (60 * 60 * 24 * 7);
-    console.log(diffInWeeks);
     this.totalDiff = Math.abs(Math.round(diffInWeeks));
 
     let i;
     for (i = 0; i < this.project$.multiBom; i++) {
       let count = String.fromCharCode(66 + i);
       this.mltBmArray.push(count);
+      this.autoSelectMultiBom();
     }
   }
 
@@ -53,6 +53,8 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   ngOnChanges(changes: SimpleChanges) {
     this.project$ = changes.project.currentValue;
+    this.bomList$ = this.project$.bomLists;
+    this.autoSelectMultiBom();
   }
 
   createComponent() {
@@ -76,11 +78,18 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   mergeMultiBoms() {
+    alert(`Creating new MultiBom File from ${this.mltBmToMerge}`);
     this.restService.createMultiBomFromIds(this.mltBmToMerge);
   }
 
   selectMultiBoms(evt: any, i: any) {
     this.mltBmToMerge[i] = evt.target.value;
-    console.log(this.mltBmToMerge);
+  }
+
+  autoSelectMultiBom() {
+    this.mltBmToMerge = [];
+    ['A', ...this.mltBmArray].forEach(i => {
+      this.mltBmToMerge.push(this.bomList$.find(id => id.includes(i)));
+    });
   }
 }

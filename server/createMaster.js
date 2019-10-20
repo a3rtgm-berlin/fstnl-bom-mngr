@@ -15,7 +15,7 @@ const createMasterBom = function (req, res) {
         console.log(lists.map(list => list.id));
         const newMaster = combineLists(
             lists.map((list) => list.json.map((mat) => {
-                mat.list = list.id;
+                mat.lists = [list.id];
                 return mat;
             })),
             id,
@@ -34,7 +34,6 @@ const createMasterBom = function (req, res) {
                 dbModel.comparison = comparison;
             }
 
-            res.sendStatus(200);
             dbModel.save((err) => {
                 if (err) {
                     res.sendStatus(500);
@@ -82,8 +81,9 @@ function combineLists(lists, id, date, projectTags) {
 
     masterList.forEach((mat1, e1, i) => {
         masterList.forEach((mat2, e2, j) => {
-            if (mat1.Station === mat2.Station && mat1.Material === mat2.Material && mat1.list !== mat2.list) {
+            if (mat1.Station === mat2.Station && mat1.Material === mat2.Material && mat1.lists[0] !== mat2.lists[0]) {
                 mat1.Menge += mat2.Menge;
+                mat1.lists.push(mat2.lists[0]);
                 masterList.delete(mat2);
             }
         });

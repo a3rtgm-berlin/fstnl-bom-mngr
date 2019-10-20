@@ -59,6 +59,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
   bigRedButton() {
     if (this.listsToCombine.length > 0) {
+      alert(`Creating new Master File from Month ${this.latestId}`);
       this.restService.createMaster(this.latestId);
     }
   }
@@ -69,7 +70,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
       this.allProjects.forEach((el) => {
         if (el.active !== false) {
           this.count += 1;
-          console.log(this.count)
+          console.log(this.count);
         }
       });
     }

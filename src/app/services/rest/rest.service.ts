@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
 import { MasterBom } from 'src/app/masterBom';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { LoaderService } from '../loader/loader.service';
 
 const url = 'http://localhost:8000/api/';
 
@@ -16,7 +17,7 @@ const url = 'http://localhost:8000/api/';
 })
 export class RestService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loader: LoaderService) { }
 
   public singleList: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allLists: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -128,10 +129,12 @@ export class RestService {
   }
 
   public async compareLists(id1: string, id2: string) {
+    this.loader.showLoader();
     const observable = this.http.get(`${url}master/compare/${id1}/${id2}`);
     const comparison = await observable.toPromise();
 
     this.setComparison(comparison);
+    this.loader.hideLoader();
   }
 
   public createProject(projectData: Project) {
@@ -190,24 +193,31 @@ export class RestService {
   }
 
   public async getAllProjects() {
+    this.loader.showLoader();
     const observable = this.http.get<Project[]>(url + 'projects');
     const projects = await observable.toPromise();
 
     if (projects) {
       this.setAllProjects(projects);
+      console.log(projects);
     }
+    this.loader.hideLoader();
   }
 
   public async createMaster(id: string) {
+    this.loader.showLoader();
+
     const observable = this.http.get(url + 'master/create/' + id);
     const masterId = await observable.toPromise();
 
     if (masterId) {
       this.setMasterId(masterId);
     }
+    this.loader.hideLoader();
   }
 
   public async getMasterById(id: string) {
+    this.loader.showLoader();
     const observable = this.http.get<MasterBom>(url + 'master/get/' + id);
     const master = await observable.toPromise();
 
@@ -215,16 +225,19 @@ export class RestService {
       master.uploadDate = new Date(master.uploadDate);
       this.setMaster(master);
     }
+    this.loader.hideLoader();
   }
 
 
   public async getLatestMaster() {
+    this.loader.showLoader();
     const observable = this.http.get(url + 'master');
     const master = await observable.toPromise();
 
     if (master) {
       this.setMaster(master);
     }
+    this.loader.hideLoader();
   }
 
   public async getLatestMasterId() {
@@ -237,11 +250,13 @@ export class RestService {
   }
 
   public async getAllMaster() {
+    this.loader.showLoader();
     const observable = this.http.get<MaterialList[]>(url + 'master/all');
     const masterLists = await observable.toPromise();
 
     if (masterLists) {
       this.setAllMaster(masterLists);
     }
+    this.loader.hideLoader();
   }
 }

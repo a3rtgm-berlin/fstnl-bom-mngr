@@ -9,7 +9,7 @@ import { MetaData } from '../../metaDataModel';
 export class ComparisonMetaViewComponent implements OnInit, OnChanges {
 
   private metaData$: MetaData;
-  
+
   @Input() set metaData(metaData: MetaData) {
     this.metaData$ = metaData;
   }

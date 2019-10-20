@@ -29,6 +29,7 @@ import { LoginComponent } from './login/login.component';
 import { MasterlistviewComponent } from './masterlistview/masterlistview.component';
 import { CreateuserComponent } from './login/createuser/createuser.component';
 import { SettingsComponent } from './settings/settings.component';
+import { RoundDecimalsPipe } from './pipes/round-decimals.pipe';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { SettingsComponent } from './settings/settings.component';
     MasterlistviewComponent,
     CreateuserComponent,
     SettingsComponent,
+    RoundDecimalsPipe,
   ],
   entryComponents: [
     CreateProjectComponent,

@@ -6,7 +6,7 @@
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-primary label">Projects</button>
-            <button type="button" class="btn btn-outline-secondary btn-block">{{master$ ? master.projects : "-"}}</button>
+            <button type="button" class="btn btn-outline-secondary btn-block">{{master$ ? master.projects.join(', ') : "-"}}</button>
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-primary label">Date</button>
@@ -22,10 +22,10 @@
         <div class="btn-group">
             <div [ngSwitch]="tab">
                 <ng-template [ngSwitchCase]="'MasterBOM'">
-                    <app-masterlistview></app-masterlistview>
+                    <app-masterlistview [bom]="master$.json ? master$.json : null" [id]="master$.id"></app-masterlistview>
                 </ng-template>
                 <ng-template [ngSwitchCase]="'Comparison'">
-                        <app-compare-orders [comparison]="master$.comparison ? master.comparison : null"></app-compare-orders>
+                        <app-compare-orders [comparison]="master$.comparison ? master.comparison : null" [id]="master$.id"></app-compare-orders>
                     </ng-template>
                 <ng-template ngSwitchDefault>
                     <p>No Tab Selected.</p>

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 import { RestService } from '../rest/rest.service';
+import { LoaderService } from '../loader/loader.service';
 
 const url = 'http://localhost:8000/api/upload';
 
@@ -11,22 +12,27 @@ const url = 'http://localhost:8000/api/upload';
 })
 export class UploadService {
 
-  constructor(private http: HttpClient, private router: Router, private restService: RestService) {}
+  constructor(private http: HttpClient, private router: Router, private restService: RestService, private loader: LoaderService) {}
 
-  public upload(files: File[], service: string, projectTag?: string): {[key: string]: {progress: Observable<number>}} {
+  public upload(files: File[], service: string, projectTag?: string, suffix?: string): {[key: string]: {progress: Observable<number>}} {
 
     const status: { [key: string]: { progress: Observable<number> } } = {};
 
     files.forEach(file => {
       const formData: FormData = new FormData();
-      formData.append('field', projectTag);
+      formData.append('tag', projectTag);
       formData.append('file', file, file.name);
+
+      if (suffix) {
+        formData.append('suffix', suffix);
+      }
 
       const req = new HttpRequest('POST', `${url}/${service}`, formData, {
         reportProgress: true
       });
 
       const progress = new Subject<number>();
+      this.loader.showLoader();
 
       this.http.request(req).subscribe((event) => {
         if (event.type === HttpEventType.UploadProgress) {
@@ -38,11 +44,15 @@ export class UploadService {
 
           switch (service) {
             case 'bom':
+              this.loader.hideLoader();
               this.restService.getAllProjects();
               break;
             case 'matrix':
+              this.loader.hideLoader();
+              this.restService.getAllProjects();
               break;
             default:
+              this.loader.hideLoader();
               break;
           }
         }

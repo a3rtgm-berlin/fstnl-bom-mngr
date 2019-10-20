@@ -2,9 +2,9 @@ const XLSX = require('../node_modules/xlsx');
 
 const rangeToIgnore = {c:1, r:3};
 
-function xlsParser(input, tag) {
-    // load from buffer, 
-    const wb = XLSX.read(input, {type:"array", cellNF: true});
+function xlsParser(input, tag, suffix = null, type) {
+    // load from buffer,
+    const wb = XLSX.read(input);
     const ws = wb.Sheets[wb.SheetNames[0]];
 
     // Get range of BOM File
@@ -15,7 +15,7 @@ function xlsParser(input, tag) {
     let date = ws['A1'].v;
     let index = date.indexOf(' ');
     date = index !== -1 ? date.substring(0, index) : date;
-    let id = tag + '-' + date.substring(6) + '-' + date.substring(3, 5);
+    let id = suffix ? tag + '-' + date.substring(6) + '-' + date.substring(3, 5) + '-' + suffix : tag + '-' + date.substring(6) + '-' + date.substring(3, 5);
 
     // Set new Range according to standard BOM File
     const newRange = XLSX.utils.encode_range(range);
@@ -26,6 +26,8 @@ function xlsParser(input, tag) {
 
     // encode as CSV
     let dataAsCsv = XLSX.utils.sheet_to_csv(newWs, {FS: ';'});
+
+    console.log(dataAsJson.length);
 
     // fix inconsistencies in column naming
     dataAsCsv = dataAsCsv.replace(dataAsCsv.substring(0, dataAsCsv.search(/\n/)), dataAsCsv.substring(0, dataAsCsv.search(/\n/)).replace(/\s/g, ""));
@@ -51,5 +53,16 @@ function matrixParser(input) {
     return dataAsJson;
 }
 
-module.exports = { xlsParser, matrixParser };
+function excludeListParser(input) {
+        // load from buffer, 
+        const wb = XLSX.read(input, {type:"array"});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+    
+        // create JSON from sheet
+        const dataAsJson = XLSX.utils.sheet_to_json(ws);
+    
+        return dataAsJson.map(d => Object.values(d)[0].toString());
+}
+
+module.exports = { xlsParser, matrixParser, excludeListParser };
 
