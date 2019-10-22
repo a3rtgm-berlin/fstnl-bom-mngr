@@ -39,10 +39,11 @@ export class MenuComponent implements OnInit {
 
   updateLog(val) {
     if(val) {
-      this.switch = 'Log In';
-    } else {
       this.switch = 'Log Out';
+    } else {
+      this.switch = 'Log In';
     }
+
   }
 
 }
