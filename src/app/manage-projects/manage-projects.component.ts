@@ -89,8 +89,13 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
         if (project.bomLists.length > 0) {
           const thisId = project.bomLists[project.bomLists.length - 1];
           const thisId$ = thisId.substring(thisId.indexOf('-') + 1);
-
-          // console.log(project.bomLists[project.bomLists.length - 1], thisId$, this.masterId);
+          
+          /*if (thisId$.includes('-M')) {
+            const thisId$$ = thisId$.substring(0, thisId$.lastIndexOf('-'));
+            thisId$ = thisId$$;
+          }*/
+          
+          //console.log(project.bomLists[project.bomLists.length - 1], thisId$, this.masterId);
 
           if (thisId$ > this.masterId) {
             this.latestId = thisId$;
