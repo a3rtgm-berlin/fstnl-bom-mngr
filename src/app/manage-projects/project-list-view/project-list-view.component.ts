@@ -34,11 +34,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     this.tglSwitch = 'overview';
     this.bomList$ = this.project$.bomLists;
 
-    let date1 = new Date(this.project$.deadline);
-    let date2 = new Date();
-    let diffInWeeks =(date2.getTime() - date1.getTime()) / 1000;
-    diffInWeeks /= (60 * 60 * 24 * 7);
-    this.totalDiff = Math.abs(Math.round(diffInWeeks));
+    this.setWeeks(this.project$.deadline);
 
     let i;
     for (i = 0; i < this.project$.multiBom; i++) {
@@ -65,6 +61,14 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     this.tglSwitch = targ;
     $(evt.target).addClass("active");
     $(evt.target).siblings().removeClass("active");
+  }
+
+  setWeeks(date) {
+    let date1 = new Date(date);
+    let date2 = new Date();
+    let diffInWeeks =(date2.getTime() - date1.getTime()) / 1000;
+    diffInWeeks /= (60 * 60 * 24 * 7);
+    this.totalDiff = Math.abs(Math.round(diffInWeeks));
   }
 
   increaseMultiBom() {
