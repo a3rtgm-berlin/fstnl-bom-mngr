@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 const url = 'http://localhost:8000/api/';
 
@@ -14,7 +15,7 @@ export class AuthserviceService {
   user: any;
 
   loggedIn: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-  
+
   setLoginState(val) {
     if (val) {
       this.loggedIn.next(val);
@@ -23,7 +24,7 @@ export class AuthserviceService {
     }
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
 
    }
 
@@ -33,7 +34,7 @@ export class AuthserviceService {
     const verified = req.toPromise();
 
     console.log(await verified);
-    
+
     return await verified;
   }
 
@@ -43,6 +44,7 @@ export class AuthserviceService {
       (userData) => {
         this.storeUserData(userData);
         this.setLoginState(true);
+        this.router.navigate(['app/projects']);
       },
       err => {console.error('Userdata is incorrect', user, err)},
       () => console.log(user)

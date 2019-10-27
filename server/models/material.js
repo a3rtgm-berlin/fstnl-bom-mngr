@@ -8,7 +8,7 @@ class Item {
      * @param {*} catName - "Objektkurztext" of the last INV-row
      */
 
-    constructor (d, catId, catName, arbMatrix) {
+    constructor (d, catId, catName, arbMatrix, trainsPending) {
         // Keep category from last INV-row
         this.Kategorie = catName;
         this.KatID = catId;
@@ -16,7 +16,8 @@ class Item {
         // relevant rows from csv
         this.Material = d["MaterialP"];
         this.Objektkurztext = d["Objektkurztext"];
-        this.Menge = this.convertLocaleStringToNumber(d["Menge"]);
+        this.MengeProZug = this.convertLocaleStringToNumber(d["Menge"]);
+        this.Menge = this.MengeProZug * trainsPending;
         this.ME = d["ME"];
         this.MArt = d["MArt"];
         this.Station = d["ArbPlatz"] ? this.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location";

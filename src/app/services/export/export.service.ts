@@ -9,7 +9,11 @@ export class ExportService {
   constructor() { }
 
   xlsxFromJson(json, tag) {
-    json.forEach(p => p.lists.join(', '));
+    json.forEach(p => {
+      p.lists.join(', ');
+      delete p.Kategorie;
+      delete p.KatID;
+    });
     const ws = XLSX.utils.json_to_sheet(json);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, tag);

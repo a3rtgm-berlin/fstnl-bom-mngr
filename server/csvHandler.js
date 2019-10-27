@@ -3,10 +3,12 @@ const ArbMatrix = require('./models/arbMatrix');
 const ExcludeList = require('./models/excludeList');
 const mat = require('./models/material');
 const dsv = d3.dsvFormat(";");
+const getTrainsRemaining = require('./projectsHandler').getTrainsRemaining;
 
-async function csvToJson (csv) {
+async function csvToJson (csv, project) {
     var arbMatrix = null,
-        excludeList = [];
+        excludeList = [],
+        trainsPending;
 
     let promiseMatrix = new Promise((res, rej) => {
         ArbMatrix.findOne({}, (err, data) => {
@@ -25,10 +27,11 @@ async function csvToJson (csv) {
 
     arbMatrix = await promiseMatrix;
     excludeList = await promiseExcludeList;
+    trainsPending = await getTrainsRemaining(project);
 
 
     const json = dsv.parse(csv, (d) => {
-        return filterData(d, arbMatrix.json, excludeList.exclude);
+        return filterData(d, arbMatrix.json, excludeList.exclude, trainsPending);
     });
 
     return json.reduce((cleanJson, part) => {
@@ -42,7 +45,7 @@ async function csvToJson (csv) {
     }, []);
 }
 
-function filterData (d, arbMatrix, excludeList) {
+function filterData (d, arbMatrix, excludeList, trainsPending) {
     var catId = "",
         catName = "";
 
@@ -53,7 +56,7 @@ function filterData (d, arbMatrix, excludeList) {
         if (!excludeList.includes(d["MaterialP"])) {
             if (d.SchGut === "X") {
                 if (d.MArt === "ROH" || d.MArt === "HALB") {
-                    return new mat.Item(d, catId, catName, arbMatrix);
+                    return new mat.Item(d, catId, catName, arbMatrix, trainsPending);
                 }
             }
         }

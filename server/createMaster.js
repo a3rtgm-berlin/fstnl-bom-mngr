@@ -46,36 +46,6 @@ const createMasterBom = function (req, res) {
     });
 };
 
-// function combineLists(lists, id, date, projectTags) {
-//     let masterList = lists[0];
-
-//     for (let i = 1; i < lists.length; i++) {
-//         masterList = addList(masterList, lists[i]);
-//     }
-
-//     return {
-//         id: id,
-//         projects: projectTags,
-//         json: Array.from(masterList),
-//         comparison: {},
-//         date: date,
-//         uploadDate: new Date()
-//     };
-// }
-
-// function addList (masterList, newList) {
-//     masterList.forEach((part) => {
-//         newList.forEach(_part => {
-//             if (_part.Station === part.Station && _part.Material === part.Material) {
-//                 part.Menge += _part.Menge;
-//                 _part.delete = true;
-//             }
-//         });
-//     });
-//     const newItems = newList.filter(part => !part.delete);
-//     return [...masterList, ...newItems];
-// }
-
 function combineLists(lists, id, date, projectTags) {
     const masterList = new Set([].concat(...lists));
 

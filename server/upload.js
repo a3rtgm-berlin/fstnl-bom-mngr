@@ -44,7 +44,7 @@ async function bom(req, res) {
                 const view = new Uint8Array(reader.result);
     
                 // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
-                let newDatum = parser.xlsParser(reader.result, tag, suffix, file.type);
+                let newDatum = parser.xlsParser(reader.result, tag, suffix);
                 newDatum.name = file.name;
     
                 // save files to server dir
@@ -72,9 +72,10 @@ async function bom(req, res) {
 async function addJson (datum) {
     // wait for the d3.dsv-handler to filter and convert the csv-string
     let promise = new Promise ((res, rej) => {
-        res(csvHandler.csvToJson(datum.csv));
+        res(csvHandler.csvToJson(datum.csv, datum.project));
     });
     datum.json = await promise;
+    delete datum.csv;
 
     return datum;
 }

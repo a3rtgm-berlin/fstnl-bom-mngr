@@ -47,9 +47,6 @@ server.use(passport.session());
 const privateKey = fs.readFileSync('./keys/private.key', 'utf8');
 const publicKey = fs.readFileSync('./keys/public.key', 'utf8');
 
-// const publicKey = '-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAO63hsHDV1r6jsAGxCrg3mu++WKtaygE6+idFlH1fd77z92c2ME4dQgtKL6NmJO66+MZYgPFzfaCGTCiX3fmKU8CAwEAAQ==-----END PUBLIC KEY-----';
-// const privateKey = '-----BEGIN PRIVATE KEY-----MIIBUwIBADANBgkqhkiG9w0BAQEFAASCAT0wggE5AgEAAkEA7reGwcNXWvqOwAbEKuDea775Yq1rKATr6J0WUfV93vvP3ZzYwTh1CC0ovo2Yk7rr4xliA8XN9oIZMKJfd+YpTwIDAQABAkAzMPwe9Sr4gZ63IzxSDaLk7DFCrfm6vUNxwK4WqVRyypc0cZWJx4T3xssPE5ifeDq3aegYv+MgXsJGcHITEgehAiEA/83ZLpciDWXbUAFjHXoCdrU5R3tqJ3Am7PjveD/CHekCIQDu5lP3xhoSG2uf32YpAJFT2fazITjvIH9WPK0/PsTydwIgcRFj9hwHiTSEhBCY5uaPQDlKYDZE7bm8+vHtp5FHFEECIA6g4fFhGwWS0kNG3a2TEFMPHLEZTrAt0D5Klt0xjcO/AiA6ybCpTlZVfzrAUfE+y3Hs9eS10oeiiGstswwmVCErtg==-----END PRIVATE KEY-----'
-
 const signOptions = {
     expiresIn: '3h', //3 hours
     algorithm: 'HS512',
