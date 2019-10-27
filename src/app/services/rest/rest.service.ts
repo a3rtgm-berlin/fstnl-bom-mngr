@@ -89,7 +89,7 @@ export class RestService {
   public async getAllLists() {
     const observable = this.http.get<MaterialList[]>(url + 'lists');
     const materialLists = await observable.toPromise();
-
+    
     if (materialLists) {
       this.setAllLists(materialLists.map((el) => {
           el.uploadDate = new Date(el.uploadDate);
@@ -99,10 +99,13 @@ export class RestService {
     }
   }
 
+  public tryMe(valid) {
+    console.log(valid);
+  }
+
   public async getList(id: string) {
     const observable = this.http.get<MaterialList>(url + 'lists/' + id);
     const materialList = await observable.toPromise();
-
     if (materialList) {
       materialList.uploadDate = new Date(materialList.uploadDate);
     }

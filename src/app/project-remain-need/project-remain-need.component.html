@@ -1,1 +1,28 @@
-<p>project-remain-need works!</p>
+
+<table class="table table-sm" id="RMN">
+    <thead class="thead-dark">
+        <th scope="col">Part #</th>
+        <th *ngFor="let project of projects" scope="col">{{project.id}}</th>
+        <th scope="col">Overall Need</th>
+        <th scope="col">Phase Out Date</th>
+    </thead>
+    <tr>
+        <td>Weeks remaining</td>
+        <td *ngFor="let project of projects" [id]="project.id">{{project.weeksLeft}}</td>
+    </tr>
+    <tr>
+        <td>Trains per Week</td>
+        <td *ngFor="let project of projects" [id]="project.id">{{project.trainsPerWeek}}</td>
+    </tr>
+    <tr>
+        <td>Trains left (avg.)</td>
+        <td *ngFor="let project of projects" [id]="project.id">{{project.trainsLeft}}</td>
+    </tr>
+    <tr *ngFor="let item of allParts">
+        <td class="{{item}}">{{item.id}}</td>
+        <td *ngFor="let project of projects" [id]="project.id">{{item.projects[project.id]}}</td>
+        <td>{{item.ovCount}}</td>
+        <td></td>
+    </tr>
+    
+</table>
