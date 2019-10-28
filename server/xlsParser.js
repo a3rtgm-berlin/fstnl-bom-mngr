@@ -2,7 +2,7 @@ const XLSX = require('../node_modules/xlsx');
 
 const rangeToIgnore = {c:1, r:3};
 
-function xlsParser(input, tag, suffix = null, type) {
+function xlsParser(input, tag, suffix = null) {
     // load from buffer,
     const wb = XLSX.read(input);
     const ws = wb.Sheets[wb.SheetNames[0]];
@@ -26,8 +26,6 @@ function xlsParser(input, tag, suffix = null, type) {
 
     // encode as CSV
     let dataAsCsv = XLSX.utils.sheet_to_csv(newWs, {FS: ';'});
-
-    console.log(dataAsJson.length);
 
     // fix inconsistencies in column naming
     dataAsCsv = dataAsCsv.replace(dataAsCsv.substring(0, dataAsCsv.search(/\n/)), dataAsCsv.substring(0, dataAsCsv.search(/\n/)).replace(/\s/g, ""));

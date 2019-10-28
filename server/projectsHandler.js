@@ -15,6 +15,17 @@ const newProject = function(req, res, next) {
             res.sendStatus(500);
         }
     });
-}
+};
 
-module.exports = { newProject }
+const getTrainsRemaining = async function (projectTag) {
+    const getProject = Promise.resolve(Project.findOne({tag: projectTag}));
+    const project = await getProject;
+    const totalDuration = project.deadline - project.created;
+    const remainingDuration = project.deadline - new Date();
+    const precentRemaining = remainingDuration / totalDuration;
+    const trainsRemaining = Math.ceil(project.trainsCount * precentRemaining);
+
+    return trainsRemaining;
+};
+
+module.exports = { newProject, getTrainsRemaining };
