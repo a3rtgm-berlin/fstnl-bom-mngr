@@ -1,6 +1,15 @@
-<form (submit)="loginUser($event)">
-    <input type="text" placeholder="Username" id="user" [(ngModel)]="username" name="username">
-    <input type="password" placeholder="Password" id="pass" [(ngModel)]="password" name="password">
-    <input type="submit" value="Log In">
-</form>
-<button (click)="logOut()" value="Log Out">Log Out</button>
+<div class="wrapper">
+    <div class="header">
+        <img src="../../assets/img/Fastenal-Logo_blu.png">
+        <h1>Bom Supply Manager</h1>
+    </div>
+
+    <div class="submitform">
+        <form (submit)="loginUser()">
+            <input class="cas" type="text" placeholder="Username" id="user" [(ngModel)]="username" name="username">
+            <input class="cas" type="password" placeholder="Password" id="pass" [(ngModel)]="password" name="password">
+            <input class="btn" type="submit" value="Log In">
+        </form>
+        <!--<button (click)="logOut()" value="Log Out">Log Out</button>-->
+    </div>
+</div>

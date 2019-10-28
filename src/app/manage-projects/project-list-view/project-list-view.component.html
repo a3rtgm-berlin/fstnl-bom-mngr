@@ -5,7 +5,7 @@
             {{project$.name}}
 
             <ul *ngIf="project$.multiBom > 0">
-                <li class="mltBmSw" (click)="setSwitch('overview', $event)">Overview</li>
+                <li class="mltBmSw active" (click)="setSwitch('overview', $event)">Overview</li>
                 <li class="mltBmSw" (click)="setSwitch('A', $event)">A</li>
                 <li class="mltBmSw" *ngFor="let i of mltBmArray" (click)="setSwitch(i, $event)">{{i}}</li>
             </ul>
@@ -55,7 +55,7 @@
             <li class="overview" *ngIf="tglSwitch === 'overview'">
                 <div class="prjct_ovw">
                     <select class="bomlists">
-                        <option class="act-lst" *ngFor="let multibom of multibomList$">{{multibom}}</option>
+                        <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
                     </select>
                 </div>
                 <div class="prjct_bom">

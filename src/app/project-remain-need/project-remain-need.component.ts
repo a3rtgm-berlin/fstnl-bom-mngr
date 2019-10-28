@@ -28,19 +28,19 @@ export class ProjectRemainNeedComponent implements OnInit {
   @Input() id: string | null;
 
   constructor( public restService: RestService) {
+    this.restService.allProjects.subscribe((res) => {
+      if (res) {
+        this.projectList = res;
+        this.setMetaValues(this.projectList);
+      }
+    });
+
     this.restService.singleList.subscribe((res) => {
       if (res) {
         this.tryList.push(res);
         this.createRMNTable(res);
       } 
     });
-
-    this.restService.allProjects.subscribe((res) => {
-      if (res) {
-        this.projectList = res;
-        this.setMetaValues(this.projectList);
-      }
-    })
   }
 
   ngOnInit() {
@@ -88,6 +88,7 @@ export class ProjectRemainNeedComponent implements OnInit {
                 match.ovCount += item.Menge; 
                 match.projects[target] = match.projects[target] ? match.projects[target] + item.Menge : item.Menge;
               }
+
         });
     }
 

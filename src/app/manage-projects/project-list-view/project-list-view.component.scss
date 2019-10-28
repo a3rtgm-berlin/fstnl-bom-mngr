@@ -102,7 +102,8 @@
         }
 
         .prjct_tpbr.mltBm {
-            background:linear-gradient(45deg, $brandblue, $brandorange);
+            /*background:linear-gradient(45deg, $brandblue, $brandorange);*/
+            background:$brandorange;
         }
 
         .prjct_bdy {
@@ -214,10 +215,26 @@
         .mltBm_prjct_bdy {
 
             li {
+                list-style:none;
+
+                .prjct_ovw {
+                    width:90%;
+                    margin:5px auto 3px auto;
+
+                    select {
+                        width:100%;
+                        height:30px;
+                        line-height:30px;
+                        text-align:center;
+                        margin:auto;
+                        font-size:80%;
+                    }
+                }
 
                 .prjct_vars {
                     width:90%;
                     margin:5px auto 3px auto;
+
                     ul {
                         @include flex-standard;
                         justify-content:space-between;
@@ -226,12 +243,14 @@
                         li {
                             @include flex-standard;
                             flex:0 0 49%;
+
                             .imgbx {
                                 position:relative;
                                 height:30px;
                                 width:30px;
                                 /*background-color:#444;*/
                             }
+
                             .field {
                                 flex-basis:calc(100% - 60px);
                                 height:30px;
@@ -263,6 +282,7 @@
                                     transition:0.3s;
                                 }
                             }
+
                             .txtbx {
                                 flex:1 0 100%;
                                 p {

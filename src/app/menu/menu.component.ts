@@ -43,7 +43,12 @@ export class MenuComponent implements OnInit {
     } else {
       this.switch = 'Log In';
     }
+  }
 
+  
+  logOut() {
+    this.authService.logoutUser();
+    this.router.navigate(['app/login']);
   }
 
 }

@@ -1,0 +1,73 @@
+@import "../../variables";
+
+:host {
+    position:fixed;
+    top:0;
+    left:0;
+    height:100vh;
+    width:100vw;
+    background:white;
+
+    .wrapper {
+        @include absolute-center;
+        width:400px;
+        
+        .header {
+            display:block;
+            width:100%;
+            margin:10px auto;
+
+            img {
+                display:block;
+                margin:5px auto;
+                width:150px;
+                height:auto;
+            }
+            h1 {
+                width:100%;
+                text-align:center;
+                color:#aaa;
+                font-size:160%;
+                font-weight:700;
+            }
+        }
+
+        .submitform {
+            width:100%;
+            form {
+                
+                .cas {
+                    display:block;
+                    width:80%;
+                    margin:20px auto;
+                    border:none;
+                    border-bottom:1px solid $darkbrandblue;
+                    color:#aaa;
+                    text-align:center;
+                    padding:5px;
+
+                    &:focus {
+                        outline:none;
+                        color:#666;
+                    }
+                }
+                .btn {
+                    display:block;
+                    width:80%;
+                    margin:10px auto;
+                    border:none;
+                    color:white;
+                    background:$brandblue;
+                    @include outershadow;
+                    transition:0.3s;
+
+                    &:hover {
+                        transform:scale(1.01);
+                        transition:0.3s;
+                        background:$darkbrandblue;
+                    }
+                }
+            }
+        }
+    }
+}
