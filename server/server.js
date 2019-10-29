@@ -284,7 +284,7 @@ server.post('/api/projects/:tag', (req, res, next) => {
 
 server.post('/api/token/verify', (req, res) => {
     if (req.body.token) {
-        decoded = jwt.verify(req.body.token, privateKey, verifyOptions, (err, decoded) => {
+        var decoded = jwt.verify(req.body.token, privateKey, verifyOptions, (err, decoded) => {
             if (err) return res.status(401).send(false);
             return res.status(200).send(true);
         });

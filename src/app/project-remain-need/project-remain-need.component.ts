@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { RestService } from '../services/rest/rest.service';
 import { MaterialList } from '../materialListModel';
@@ -10,7 +10,7 @@ import $ from 'jquery';
   templateUrl: './project-remain-need.component.html',
   styleUrls: ['./project-remain-need.component.scss']
 })
-export class ProjectRemainNeedComponent implements OnInit {
+export class ProjectRemainNeedComponent implements OnInit, OnChanges {
 
   allParts: any[];
   getLists: any[];
@@ -18,7 +18,9 @@ export class ProjectRemainNeedComponent implements OnInit {
   //public allPartLists: MaterialList[];
   allPartLists: any[];
   tryList: MaterialList[] = [];
+  tryList$: MaterialList[] = [];
   projectList: Project[] = [];
+  projectList$: Project[] = [];
   projectValues: Project[];
   inWeeks: any;
 
@@ -28,17 +30,17 @@ export class ProjectRemainNeedComponent implements OnInit {
   @Input() id: string | null;
 
   constructor( public restService: RestService) {
-    this.restService.allProjects.subscribe((res) => {
+    this.restService.allProjects.subscribe(async res => {
       if (res) {
         this.projectList = res;
-        this.setMetaValues(this.projectList);
+        await this.setMetaValues(this.projectList);
       }
     });
 
-    this.restService.singleList.subscribe((res) => {
+    this.restService.singleList.subscribe(async res => {
       if (res) {
         this.tryList.push(res);
-        this.createRMNTable(res);
+        await this.createRMNTable(res);
       } 
     });
   }
@@ -46,6 +48,17 @@ export class ProjectRemainNeedComponent implements OnInit {
   ngOnInit() {
     this.loadBomList();
     this.restService.getAllProjects();
+    //this.setMetaValues(this.projectList);
+    //this.createRMNTable(this.tryList);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    //this.loadBomList();
+    //this.restService.getAllProjects();
+    /*this.projectList = changes.projectList.currentValue;
+    this.tryList = changes.tryList.currentValue;
+    this.setMetaValues(this.projectList);
+    this.createRMNTable(this.tryList);*/
   }
 
   loadBomList() {
