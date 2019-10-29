@@ -9,9 +9,9 @@ import $ from 'jquery';
 })
 export class MaterialListViewComponent implements OnInit, OnChanges {
 
-  private master$: MaterialList;
-  private tab: any = 'MasterBOM';
-  private tabs: string[] = ['MasterBOM', 'Comparison', 'RMN'];
+  public master$: any;
+  public tab: any = 'MasterBOM';
+  public tabs: string[] = ['MasterBOM', 'Comparison', 'RMN'];
 
   @ViewChild('tabsPanel', {static: false}) tabsPanel: ElementRef;
 

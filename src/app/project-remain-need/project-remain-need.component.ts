@@ -44,8 +44,8 @@ export class ProjectRemainNeedComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.restService.getAllProjects();
     this.loadBomList();
+    this.restService.getAllProjects();
   }
 
   loadBomList() {

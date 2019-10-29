@@ -11,6 +11,7 @@ import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { LoaderService } from '../loader/loader.service';
 
 const url = 'http://localhost:8000/api/';
+//const url = 'http://91.250.112.78:49160/api/';
 
 @Injectable({
   providedIn: 'root'

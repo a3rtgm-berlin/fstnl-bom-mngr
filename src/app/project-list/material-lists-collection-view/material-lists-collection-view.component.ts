@@ -10,7 +10,7 @@ export class MaterialListsCollectionViewComponent implements OnInit, OnChanges {
 
   isSelected: boolean;
 
-  private materialList$: MaterialList;
+  public materialList$: MaterialList;
 
   @Output() public selectedMaterialList: EventEmitter<{materialList: MaterialList, status: boolean}> = new EventEmitter();
 
@@ -31,7 +31,7 @@ export class MaterialListsCollectionViewComponent implements OnInit, OnChanges {
     this.materialList = changes.materialList.currentValue;
   }
 
-  selectList(materialList: MaterialList) {
+  selectList() {
     this.isSelected = !this.isSelected;
     this.selectedMaterialList.emit({
       materialList: this.materialList$,

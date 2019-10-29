@@ -94,7 +94,6 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
 
       }
     } else if ($(evt.target).hasClass('filter2') || $(evt.target).hasClass('filter') || $(evt.target).hasClass('filter3')) {
-        alert('I Have alrey a filter class');
         if ($(evt.target).hasClass('filter')) {
           $(evt.target).removeClass('filter');
           $(evt.target).siblings('.filter2').addClass('filter').removeClass('filter2');

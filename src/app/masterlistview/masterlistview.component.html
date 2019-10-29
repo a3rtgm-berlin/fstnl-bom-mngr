@@ -13,7 +13,7 @@
     </div>
     <div id="sider" class="borderless">
         <div class="button-grp">
-            <button class="csv" (click)="downloadBom()"><p>Download Full XLSX</p></button>
+            <button class="csv" (click)="downloadBom('full')"><p>Download Full XLSX</p></button>
             <!-- <button class="pdf" (click)="downloadFullPDF()"><p>Download Full PDF</p></button> -->
             <button class="csv" (click)="downloadBom('filtered')"><p>Download filtered XLSX</p></button>
             <!-- <button class="pdf" (click)="downloadprocPDF()"><p>Download filtered PDF</p></button> -->
@@ -35,11 +35,7 @@
         <td>{{item.Material}}</td>
         <td>{{item.Objektkurztext}}</td>
         <td>{{item.ME}}</td>
-        <td>{{item.lists.join(', ')}}
-          <select>
-            <option *ngFor="let proj of bomProjects"></option>
-          </select>
-        </td>
+        <td>{{item.lists.join(', ')}}</td>
         <td>{{item.Menge | roundDecimals}}</td>
       </tr>
     </ng-container>    

@@ -6,6 +6,7 @@ import { RestService } from '../rest/rest.service';
 import { LoaderService } from '../loader/loader.service';
 
 const url = 'http://localhost:8000/api/upload';
+//const url = 'http://91.250.112.78:49160/api/upload';
 
 @Injectable({
   providedIn: 'root'

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class CreateProjectComponent implements OnInit {
 
-  private projectData: Project;
+  public projectData: Project;
   dateToday: Date = new Date();
   findFormat: any;
 
@@ -22,7 +22,7 @@ export class CreateProjectComponent implements OnInit {
     this.findFormat = this.dateToday.toISOString().substr(0, 10);
   }
 
-  private update(name, tag, description, trainsCount, deadline): void {
+  public update(name, tag, description, trainsCount, deadline): void {
     this.projectData = {
       name,
       tag,

@@ -10,7 +10,7 @@ import { DeleteProjectComponent } from '../delete-project/delete-project.compone
 })
 export class ProjectSubSettingsComponent implements OnInit, OnChanges {
 
-  private project$: any;
+  public project$: any;
   multiBom: any;
 
   @Input() set project(project: any) {
@@ -53,11 +53,16 @@ export class ProjectSubSettingsComponent implements OnInit, OnChanges {
   }
 
   giveMeInfo() {
-    console.log(this.project$.tag);
+    alert("Project: [" + this.project$.tag + "] - " + this.project$.name + "\ncreated: " + this.project$.created + "\ntrains: " + this.project$.trainsCount + "\ndeadline: " + this.project$.deadline);
     console.log(this.project$.multiBom);
     console.log(this.project$.isArchived);
     console.log(this.project$.active);
     console.log(this.project$.created);
+    console.log(this.project$);
+  }
+
+  updateProject() {
+    alert("Function not available yet!");
   }
 
 

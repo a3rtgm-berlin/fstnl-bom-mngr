@@ -20,12 +20,12 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   date: Date = new Date();
   todayMonth: any;
 
-  private upToDate = true;
-  private listsToCombine: string[] = [];
-  private masterId: string;
-  private latestId: string;
+  public upToDate = true;
+  public listsToCombine: string[] = [];
+  public masterId: string;
+  public latestId: string;
   public state: string;
-  private count: any;
+  public count: any;
   public penisse: string;
   public crossIdCheck: string;
 

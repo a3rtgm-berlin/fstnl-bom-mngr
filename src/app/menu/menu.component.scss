@@ -8,11 +8,13 @@
     #menu {
         justify-self:flex-start;
         position:relative;
+        width:100%;
         height:50px;
         order:1;
 
         ul {
             @include flex-standard;
+            justify-content: flex-start;
             list-style:none;
 
             li {
@@ -41,6 +43,21 @@
                     background:$darkbrandblue;
                     color:whitesmoke !important;
                     transition:0.1s;
+                }
+
+                &.loglink {
+                    margin-right: 20px;
+                    margin-left: auto;
+                    background:$darkbrandblue;
+
+                    &:hover {
+                        background:whitesmoke;
+
+                        a {
+                            background:transparent;
+                            color:$brandblue !important;
+                        }
+                    }
                 }
             }
             

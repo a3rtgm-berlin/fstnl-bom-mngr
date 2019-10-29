@@ -19,23 +19,23 @@ export class XlsLoaderComponent implements OnInit {
 
   public data: object;
 
-  private files: File[] | null = null;
-  private acceptedTypes: string[] = [
+  public files: File[] | null = null;
+  public acceptedTypes: string[] = [
     'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'text/csv',
     '',
   ];
-  private isFocused = false;
+  public isFocused = false;
 
-  constructor(public uploadService: UploadService, public restService: RestService, private loader: LoaderService) { }
+  constructor(public uploadService: UploadService, public restService: RestService, public loader: LoaderService) { }
 
   ngOnInit() {
   }
 
   // Update UI on input change
   // Migrate to REACTIVE form later?
-  private onChange(evt) {
+  public onChange(evt) {
     this.files = [];
 
     if (evt.target.files.length) {
@@ -50,7 +50,7 @@ export class XlsLoaderComponent implements OnInit {
   }
 
   // Submit uploaded file to server as POST request
-  private onSubmit() {
+  public onSubmit() {
 
     if (this.files) {
       const upload = this.uploadService.upload(this.files, 'bom', this.projectTag, this.suffix);

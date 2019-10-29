@@ -11,13 +11,14 @@ export class MatrixFilesComponent implements OnInit {
 
   public data: object;
   
-  private title: string;
+  public title: string;
 
-  private file = {
+  public file = {
     matrix: null,
     exclude: null
   };
-  private acceptedTypes: string[] = [
+
+  public acceptedTypes: string[] = [
     'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'text/csv'
@@ -30,7 +31,7 @@ export class MatrixFilesComponent implements OnInit {
 
   // Update UI on input change
   // Migrate to REACTIVE form later?
-  private onChange(evt, type) {
+public onChange(evt, type) {
     if (evt.target.files.length) {
       if (this.acceptedTypes.indexOf(evt.target.files[0].type) !== -1) {
         this.file[type] = evt.target.files[0];
@@ -41,7 +42,7 @@ export class MatrixFilesComponent implements OnInit {
   }
 
   // Submit uploaded file to server as POST request
-  private onSubmit(type) {
+  public onSubmit(type) {
     if (this.file[type]) {
       const upload = this.uploadService.upload([this.file[type]], type);
 

@@ -14,7 +14,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   @ViewChild ('prjctsb', {static: false}) injector: any;
 
-  private project$: any;
+  public project$: any;
   bomList$: any;
   totalDiff: any;
   modalController = true;
@@ -97,11 +97,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     });
   }
 
-  updateTrains() {
-    alert("this shall be eu");
-  }
-
-  updateDeadline() {
-
+  updateProject() {
+    alert("Function not available yet!");
   }
 }

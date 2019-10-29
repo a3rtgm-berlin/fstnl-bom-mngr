@@ -12,8 +12,8 @@ import { LoaderService } from '../services/loader/loader.service';
 })
 export class MasterViewComponent implements OnInit {
 
-  private master: MaterialList;
-  private masterId: string;
+  public master: MaterialList;
+  public masterId: string;
 
   public observable;
 
