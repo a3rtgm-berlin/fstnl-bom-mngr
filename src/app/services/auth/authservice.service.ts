@@ -4,8 +4,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
-const url = 'http://localhost:8000/api/';
-//const url = 'http://91.250.112.78:49160/api/';
+//const url = 'http://localhost:8000/api/';
+const url = 'http://91.250.112.78:49160/api/';
 
 @Injectable({
   providedIn: 'root'

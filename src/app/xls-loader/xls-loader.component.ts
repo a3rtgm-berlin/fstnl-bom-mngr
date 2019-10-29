@@ -42,15 +42,16 @@ export class XlsLoaderComponent implements OnInit {
       for (const file in evt.target.files) {
         if (evt.target.files[file] instanceof File) {
           this.files.push(evt.target.files[file]);
+          console.log(this.files);
         }
       }
       } else {
-        alert('No valid file type. Please select another file of type XLS, XLSX or CSV');
+        alert('No valid file type. Please select another file of type XLSX or CSV');
       }
   }
 
   // Submit uploaded file to server as POST request
-  public onSubmit() {
+  public onSubmit(files) {
 
     if (this.files) {
       const upload = this.uploadService.upload(this.files, 'bom', this.projectTag, this.suffix);

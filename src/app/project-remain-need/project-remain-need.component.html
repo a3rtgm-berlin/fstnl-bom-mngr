@@ -2,25 +2,36 @@
 <table class="table table-sm" id="RPN">
     <thead class="thead-dark">
         <th scope="col">Part #</th>
+        <th scope="col">Description</th>
         <th *ngFor="let project of projects" scope="col">{{project.id}}</th>
         <th scope="col">Overall Need</th>
         <th scope="col">Phase Out Date</th>
     </thead>
     <tr>
         <td>Weeks remaining</td>
+        <td>Time between now and set deadline</td>
         <td *ngFor="let project of projects" [id]="project.id">{{project.weeksLeft}}</td>
+        <td>no Value</td>
+        <td>no Value</td>
     </tr>
     <tr>
         <td>Trains per Week</td>
+        <td>Average value calculated from train count and deadline</td>
         <td *ngFor="let project of projects" [id]="project.id">{{project.trainsPerWeek}}</td>
+        <td>no Value</td>
+        <td>no Value</td>
     </tr>
     <tr>
         <td>Trains left (avg.)</td>
+        <td>Average value calculated from train count per week and deadline</td>
         <td *ngFor="let project of projects" [id]="project.id">{{project.trainsLeft}}</td>
+        <td>no Value</td>
+        <td>no Value</td>
     </tr>
     <tr *ngFor="let item of allParts">
         <td class="{{item}}">{{item.id}}</td>
-        <td *ngFor="let project of projects" [id]="project.id">{{item.projects[project.id]}}</td>
+        <td class="{{item}}">{{item.name}}</td>
+        <td *ngFor="let project of projects" [id]="project.id">{{item.projects[project.id] ? item.projects[project.id] : '0'}}</td>
         <td>{{item.ovCount}}</td>
         <td></td>
     </tr>

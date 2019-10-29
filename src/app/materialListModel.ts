@@ -5,4 +5,6 @@ export interface MaterialList {
     csv: string;
     date: string;
     uploadDate: Date;
+    projects: any;
+    comparison: any; 
   }
