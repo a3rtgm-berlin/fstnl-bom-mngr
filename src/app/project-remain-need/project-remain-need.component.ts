@@ -4,18 +4,17 @@ import { RestService } from '../services/rest/rest.service';
 import { MaterialList } from '../materialListModel';
 import { Project } from '../projectModel'
 import $ from 'jquery';
+import { ExportService } from '../services/export/export.service';
 
 @Component({
   selector: 'app-project-remain-need',
   templateUrl: './project-remain-need.component.html',
   styleUrls: ['./project-remain-need.component.scss']
 })
-export class ProjectRemainNeedComponent implements OnInit, OnChanges {
+export class ProjectRemainNeedComponent implements OnInit {
 
-  allParts: any[];
   getLists: any[];
   allLists: any[];
-  //public allPartLists: MaterialList[];
   allPartLists: any[];
   tryList: MaterialList[] = [];
   tryList$: MaterialList[] = [];
@@ -28,8 +27,9 @@ export class ProjectRemainNeedComponent implements OnInit, OnChanges {
   @Input() bom: any[] | null;
   @Input() projects: any[] | null;
   @Input() id: string | null;
+  @Input() allParts: any[];
 
-  constructor( public restService: RestService) {
+  constructor( public restService: RestService, public exportService: ExportService) {
     this.restService.allProjects.subscribe(async res => {
       if (res) {
         this.projectList = res;
@@ -40,7 +40,7 @@ export class ProjectRemainNeedComponent implements OnInit, OnChanges {
     this.restService.singleList.subscribe(async res => {
       if (res) {
         this.tryList.push(res);
-        await this.createRMNTable(res);
+        await this.createRPNTable(res);
       } 
     });
   }
@@ -52,57 +52,49 @@ export class ProjectRemainNeedComponent implements OnInit, OnChanges {
     //this.createRMNTable(this.tryList);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    //this.loadBomList();
-    //this.restService.getAllProjects();
-    /*this.projectList = changes.projectList.currentValue;
-    this.tryList = changes.tryList.currentValue;
-    this.setMetaValues(this.projectList);
-    this.createRMNTable(this.tryList);*/
-  }
-
   loadBomList() {
     if (this.bom) {
       this.allParts = this.bom
-      .map(d => d.Material)
-      .reduce((res, part) => {
-        return res.includes(part) ? res : [...res, part];
-        }, []);
-        
-        this.allParts = this.allParts.map((str) => ({
-          id: str,
-          ovCount: 0,
-          projects: {},
-        }));
+        .map(d => d.Material)
+        .reduce((res, part) => {
+          return res.includes(part) ? res : [...res, part];
+          }, []);
 
-        this.getLists = this.bom.map(d => d.lists);
-        const mergeLists =  [].concat.apply([], this.getLists);
-        this.allPartLists = mergeLists.reduce((res, list) => {
-          return res.includes(list) ? res : [...res, list];
-        }, []);
+      this.allParts = this.allParts.map((str) => ({
+        id: str,
+        ovCount: 0,
+        projects: {},
+      }));
 
-        this.allPartLists.forEach(function (list) {
-            //let matchList = list.substr(0, list.indexOf('-'));
-            this.getListfromServer(list);
-        }, this);
-      }
+      this.getLists = this.bom.map(d => d.lists);
+      const mergeLists =  [].concat.apply([], this.getLists);
+      this.allPartLists = mergeLists.reduce((res, list) => {
+        return res.includes(list) ? res : [...res, list];
+      }, []);
+
+      this.allPartLists.forEach(function(list) {
+        // let matchList = list.substr(0, list.indexOf('-'));
+        this.getListfromServer(list);
+      }, this);
     }
+  }
 
     getListfromServer(listId) {
       this.restService.getList(listId);
     }
 
-    createRMNTable(list) {
-      var target = list.project;
-      var singleList = list.json;
-        singleList.forEach(item => {
-              let match = this.allParts.find(part => part.id === item.Material);
-              if (match) {
-                match.ovCount += item.Menge; 
-                match.projects[target] = match.projects[target] ? match.projects[target] + item.Menge : item.Menge;
-              }
+    createRPNTable(list) {
+      const target = list.project;
+      const singleList = list.json;
 
-        });
+      singleList.forEach(item => {
+            const match = this.allParts.find(part => part.id === item.Material);
+            if (match) {
+              match.ovCount += item.Menge;
+              match.projects[target] = match.projects[target] ? match.projects[target] + item.Menge : item.Menge;
+            }
+
+      });
     }
 
     setMetaValues(incProjects) {
@@ -153,5 +145,9 @@ export class ProjectRemainNeedComponent implements OnInit, OnChanges {
         diffInWeeks /= (60 * 60 * 24 * 7);
         let totalWeeks = Math.abs(Math.round(diffInWeeks));
         return totalWeeks;
+      }
+
+      downloadRPN() {
+        this.exportService.xlsxFromJson(this.allParts, `RPN-${this.id}`);
       }
 }

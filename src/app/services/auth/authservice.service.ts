@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 const url = 'http://localhost:8000/api/';
 //const url = 'http://91.250.112.78:49160/api/';
@@ -15,7 +16,7 @@ export class AuthserviceService {
   user: any;
 
   loggedIn: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-  
+
   setLoginState(val) {
     if (val) {
       this.loggedIn.next(val);
@@ -33,8 +34,6 @@ export class AuthserviceService {
     const req = this.http.post(url + 'token/verify', {token: logToken ? logToken : null});
     const verified = req.toPromise();
 
-    console.log(await verified);
-    
     return await verified;
   }
 

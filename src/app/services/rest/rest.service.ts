@@ -136,7 +136,7 @@ export class RestService {
   }
 
   public async compareLists(id1: string, id2: string) {
-    this.loader.showLoader();
+    this.loader.showLoader(true);
     const observable = this.http.get(`${url}master/compare/${id1}/${id2}`);
     const comparison = await observable.toPromise();
 
@@ -200,7 +200,7 @@ export class RestService {
   }
 
   public async getAllProjects() {
-    this.loader.showLoader();
+    this.loader.showLoader(true);
     const observable = this.http.get<Project[]>(url + 'projects');
     const projects = await observable.toPromise();
 
@@ -212,7 +212,7 @@ export class RestService {
   }
 
   public async createMaster(id: string) {
-    this.loader.showLoader();
+    this.loader.showLoader(true);
 
     const observable = this.http.get(url + 'master/create/' + id);
     const masterId = await observable.toPromise();
@@ -224,7 +224,7 @@ export class RestService {
   }
 
   public async getMasterById(id: string) {
-    this.loader.showLoader();
+    this.loader.showLoader(true, 800);
     const observable = this.http.get<MasterBom>(url + 'master/get/' + id);
     const master = await observable.toPromise();
 
@@ -237,7 +237,7 @@ export class RestService {
 
 
   public async getLatestMaster() {
-    this.loader.showLoader();
+    this.loader.showLoader(true, 800);
     const observable = this.http.get(url + 'master');
     const master = await observable.toPromise();
 
@@ -257,7 +257,7 @@ export class RestService {
   }
 
   public async getAllMaster() {
-    this.loader.showLoader();
+    this.loader.showLoader(true, 1200);
     const observable = this.http.get<MaterialList[]>(url + 'master/all');
     const masterLists = await observable.toPromise();
 

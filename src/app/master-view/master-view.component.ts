@@ -23,13 +23,11 @@ export class MasterViewComponent implements OnInit {
     });
     this.restService.master.subscribe(res => {
       this.master = res;
-      // this.loader.hideLoader();
       console.log(this.master);
     });
   }
 
   ngOnInit() {
     this.restService.getMasterById(this.masterId);
-    // this.loader.showLoader(true);
   }
 }
