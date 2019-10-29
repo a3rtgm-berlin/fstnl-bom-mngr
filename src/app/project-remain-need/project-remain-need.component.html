@@ -1,5 +1,5 @@
-
-<table class="table table-sm" id="RMN">
+<button class="csv" (click)="downloadRPN()"><p>Download RPN XLSX</p></button>
+<table class="table table-sm" id="RPN">
     <thead class="thead-dark">
         <th scope="col">Part #</th>
         <th *ngFor="let project of projects" scope="col">{{project.id}}</th>

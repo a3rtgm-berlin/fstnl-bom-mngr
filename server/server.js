@@ -312,10 +312,6 @@ server.post('/api/users/authenticate', passport.authenticate('local', {
         }
     });
 
-    // const valid = jwt.verify(token, 'abcdefg', {
-    //     algorithms: ['HS512']
-    // });
-
     res.json({
         success: true,
         token: token,

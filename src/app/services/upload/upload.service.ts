@@ -33,7 +33,7 @@ export class UploadService {
       });
 
       const progress = new Subject<number>();
-      this.loader.showLoader();
+      this.loader.showLoader(true);
 
       this.http.request(req).subscribe((event) => {
         if (event.type === HttpEventType.UploadProgress) {
