@@ -33,7 +33,6 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { ProjectRemainNeedComponent } from './project-remain-need/project-remain-need.component';
 import { RoundDecimalsPipe } from './pipes/round-decimals.pipe';
 import { UpdateProjectComponent } from './manage-projects/update-project/update-project.component';
-import { ProjectComponent } from './project/project.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +43,6 @@ import { ProjectComponent } from './project/project.component';
     CompareOrdersComponent,
     MasterViewComponent,
     QueryFormComponent,
-    ProjectComponent,
     MaterialListsCollectionViewComponent,
     ComparisonRowViewComponent,
     ComparisonMetaViewComponent,
