@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UploadService } from '../services/upload/upload.service';
 import { ModalService } from '../services/modal/modal.service';
+import { RestService } from '../services/rest/rest.service';
+import { ExportService } from '../services/export/export.service';
 
 @Component({
   selector: 'app-matrix-files',
@@ -9,8 +11,10 @@ import { ModalService } from '../services/modal/modal.service';
 })
 export class MatrixFilesComponent implements OnInit {
 
+  public arbMatrix: object;
+  public excludeList: string[];
+
   public data: object;
-  
   public title: string;
 
   public file = {
@@ -24,9 +28,29 @@ export class MatrixFilesComponent implements OnInit {
     'text/csv'
   ];
 
-  constructor(public uploadService: UploadService, public modalService: ModalService) { }
+  constructor(
+    public uploadService: UploadService,
+    public modalService: ModalService,
+    public restService: RestService,
+    public exportService: ExportService
+  ) { }
 
   ngOnInit() {
+    this.restService.getExclude();
+    this.restService.getMatrix();
+
+    this.restService.excludeList.subscribe(res => {
+      if (res) {
+        this.excludeList = res.exclude.map(part => {
+          return {exclude: part};
+        });
+      }
+    });
+    this.restService.arbMatrix.subscribe(res => {
+      if (res) {
+        this.arbMatrix = res.json;
+      }
+    });
   }
 
   // Update UI on input change
@@ -60,5 +84,18 @@ public onChange(evt, type) {
 
   public close() {
     this.modalService.destroy();
+  }
+
+  public download(type) {
+    switch (type) {
+      case 'matrix':
+        this.exportService.xlsxFromJson(this.arbMatrix, 'BOM_ArbMatrix');
+        break;
+      case 'exclude':
+        this.exportService.xlsxFromJson(this.excludeList, 'BOM_excludeList');
+        break;
+      default:
+        break;
+    }
   }
 }

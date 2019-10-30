@@ -17,7 +17,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary dl" data-dismiss="modal"><a href='#'>Download</a></button>
+            <button type="button" class="btn btn-outline-primary dl" (click)="download('matrix')">Download</button>
             <div class="submit">
                 <button class="btn btn-outline-secondary" type="button" (click)="onSubmit('matrix')">Submit</button>
             </div>
@@ -41,7 +41,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary dl" data-dismiss="modal"><a href='#'>Download</a></button>
+                <button type="button" class="btn btn-outline-primary dl" (click)="download('exclude')">Download</button>
                 <div class="submit">
                     <button class="btn btn-outline-secondary" type="button" (click)="onSubmit('exclude')">Submit</button>
                 </div>

@@ -30,6 +30,8 @@ export class RestService {
   public allMaster: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public master: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public masterId: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public excludeList: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public arbMatrix: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   setSingleList(val) {
     if (val) {
@@ -265,5 +267,21 @@ export class RestService {
       this.setAllMaster(masterLists);
     }
     this.loader.hideLoader();
+  }
+
+  public async getExclude() {
+    const observable = this.http.get(url + 'exclude');
+
+    observable.subscribe(res => {
+      this.excludeList.next(res);
+    });
+  }
+
+  public async getMatrix() {
+    const observable = this.http.get(url + 'matrix');
+
+    observable.subscribe(res => {
+      this.arbMatrix.next(res);
+    });
   }
 }

@@ -23,9 +23,11 @@ const MaterialList = require("./models/list").MaterialListModel;
 const Project = require("./models/project").ProjectModel;
 const MasterBom = require('./models/masterBom');
 const User = require("./models/userModel").UserModel;
+const ExcludeList = require("./models/excludeList");
+const ArbMatrix = require("./models/arbMatrix");
 
 // Server
-const server = express();
+const app = express();
 const port = process.env.PORT || 8000;
 
 const corsOptions = {
@@ -34,7 +36,7 @@ const corsOptions = {
 }
 
 // Expess Session
-server.use(session({
+app.use(session({
     secret:'secret',
     resave: true,
     saveUninitialized: true
@@ -42,8 +44,8 @@ server.use(session({
 
 //Passport config
 require('./passport')(passport);
-server.use(passport.initialize());
-server.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 const privateKey = fs.readFileSync('./keys/private.key', 'utf8');
 const publicKey = fs.readFileSync('./keys/public.key', 'utf8');
 
@@ -57,10 +59,10 @@ const verifyOptions = {
 };
 
 // Connect Flash
-server.use(flash());
+app.use(flash());
 
 //Global Variables 
-server.use((req, res, next) => {
+app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error')
@@ -72,12 +74,12 @@ mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mn
 // mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false });
 
 // Set server options
-server.use(cors(corsOptions));
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set routes
-server.get('/', (req, res) => {
+app.get('/', (req, res) => {
     res.send(200, "connected");
 });
 /**
@@ -85,8 +87,26 @@ server.get('/', (req, res) => {
  * @param {*} file
  * @method POST
  */
-server.post('/api/upload/matrix', upload.matrix);
-server.post('/api/upload/exclude', upload.excludeList);
+app.post('/api/upload/matrix', upload.matrix);
+app.post('/api/upload/exclude', upload.excludeList);
+app.get('/api/matrix', (res, req) => {
+    ArbMatrix.findOne({}, (err, data) => {
+        if (err) {
+            res.sendStatus(404);
+            return console.error(err);
+        }
+        res.send(data);
+    });
+});
+app.get('/api/exclude', (res, req) => {
+    ExcludeList.findOne({}, (err, data) => {
+        if (err) {
+            res.sendStatus(404);
+            return console.error(err);
+        }
+        res.send(data);
+    });
+});
 
 /**
  * @description Handles uploaded BOM files
@@ -94,7 +114,7 @@ server.post('/api/upload/exclude', upload.excludeList);
  * @method POST
  * @returns {void}
  */
-server.post('/api/upload/bom', upload.bom);
+app.post('/api/upload/bom', upload.bom);
 
 
 /**
@@ -102,14 +122,14 @@ server.post('/api/upload/bom', upload.bom);
  * @param
  * @method
  */
-server.get('/api/master/create/:id', createMaster);
+app.get('/api/master/create/:id', createMaster);
 
 /**
  * @description todo
  * @param
  * @method
  */
-server.get('/api/master', (req, res) => {
+app.get('/api/master', (req, res) => {
     MasterBom.find((err, data) => {
         if (err) throw err;
         if (data) return res.status(200).send(
@@ -127,7 +147,7 @@ server.get('/api/master', (req, res) => {
  * @param
  * @method
  */
-server.get('/api/master/id', (req, res) => {
+app.get('/api/master/id', (req, res) => {
     MasterBom.find((err, data) => {
         if (err) throw err;
         if (data.length > 0) return res.status(200).send(
@@ -145,7 +165,7 @@ server.get('/api/master/id', (req, res) => {
  * @todo ... for a selected project?
  * @returns {[MaterialList]}
  */
-server.get('/api/master/all', (req, res, next) => {
+app.get('/api/master/all', (req, res, next) => {
     MasterBom.find((err, data) => {
         if (err) return console.error(err);
         res.send(data);
@@ -157,7 +177,7 @@ server.get('/api/master/all', (req, res, next) => {
  * @todo ... and project
  * @returns {MaterialList}
  */
-server.get('/api/master/get/:id', (req, res, next) => {
+app.get('/api/master/get/:id', (req, res, next) => {
     const q = req.params.id;
 
     MasterBom.findOne({id: q}, (err, data) => {
@@ -171,7 +191,7 @@ server.get('/api/master/get/:id', (req, res, next) => {
  * @todo ... for a selected project?
  * @returns {[MaterialList]}
  */
-server.get('/api/lists', (req, res, next) => {
+app.get('/api/lists', (req, res, next) => {
     MaterialList.find((err, data) => {
         if (err) return console.error(err);
         res.send(data);
@@ -183,7 +203,7 @@ server.get('/api/lists', (req, res, next) => {
  * @todo ... and project
  * @returns {MaterialList}
  */
-server.get('/api/lists/:id', (req, res, next) => {
+app.get('/api/lists/:id', (req, res, next) => {
     const q = req.params.id;
 
     MaterialList.findOne({id: q}, (err, data) => {
@@ -197,7 +217,7 @@ server.get('/api/lists/:id', (req, res, next) => {
  * @todo ... and project
  * @returns {void}
  */
-server.delete('/api/lists/:id', (req, res, next) => {
+app.delete('/api/lists/:id', (req, res, next) => {
     const q = req.params.id;
 
     if (q === 'delete-all') {
@@ -229,7 +249,7 @@ server.delete('/api/lists/:id', (req, res, next) => {
  * @todo ... and project
  * @returns {void}
  */
-server.put('/api/lists/:id', (req, res, next) => {
+app.put('/api/lists/:id', (req, res, next) => {
     const q = req.params.id,
         body = req.body;
 
@@ -238,7 +258,7 @@ server.put('/api/lists/:id', (req, res, next) => {
     });
 });
 
-server.post('/api/lists/multibom', (req, res) => {
+app.post('/api/lists/multibom', (req, res) => {
     MaterialList.find({id: {$in: req.body.lists}}, (err, data) => {
         if (err) {
             res.send(503);
@@ -270,7 +290,7 @@ server.post('/api/lists/multibom', (req, res) => {
     });
 });
 
-server.post('/api/projects/:tag', (req, res, next) => {
+app.post('/api/projects/:tag', (req, res, next) => {
     const q = req.params.tag
 
     Project.findOneAndUpdate({tag: q}, req.body, (err, data) => {
@@ -282,7 +302,7 @@ server.post('/api/projects/:tag', (req, res, next) => {
     });
 });
 
-server.post('/api/token/verify', (req, res) => {
+app.post('/api/token/verify', (req, res) => {
     if (req.body.token) {
         var decoded = jwt.verify(req.body.token, privateKey, verifyOptions, (err, decoded) => {
             if (err) return res.status(401).send(false);
@@ -293,7 +313,7 @@ server.post('/api/token/verify', (req, res) => {
     }
 });
 
-server.post('/api/users/authenticate', passport.authenticate('local', {
+app.post('/api/users/authenticate', passport.authenticate('local', {
     successMessage: 'you are now logged in',
     failureMessage: 'something went wrong',
     failureFlash: true
@@ -326,7 +346,7 @@ server.post('/api/users/authenticate', passport.authenticate('local', {
 /**
  * @description manually adds a list (not necessary?)
  */
-server.post('/api/lists', (req, res, next) => {
+app.post('/api/lists', (req, res, next) => {
     const dbModel = new MaterialList(data);
     
     res.send(201, dbModel);
@@ -338,7 +358,7 @@ server.post('/api/lists', (req, res, next) => {
  * @param {string} id2
  * @returns {comparison}
  */
-server.get('/api/master/compare/:id1/:id2', (req, res, next) => {
+app.get('/api/master/compare/:id1/:id2', (req, res, next) => {
     const q = req.params;
     let comparison;
 
@@ -353,13 +373,13 @@ server.get('/api/master/compare/:id1/:id2', (req, res, next) => {
  * @description adds a project by form data
  * @returns {void}
  */
-server.post('/api/projects', projectHandler.newProject);
+app.post('/api/projects', projectHandler.newProject);
 
 /**
  * @description returns all projects from DB
  * @returns {[Project]}
  */
-server.get('/api/projects', (req, res, next) => {
+app.get('/api/projects', (req, res, next) => {
     Project.find((err, data) => {
         if (err) return console.error(err);
         res.send(data);
@@ -370,7 +390,7 @@ server.get('/api/projects', (req, res, next) => {
  * @description returns a projects by name
  * @returns {Project}
  */
-server.get('/api/projects/:tag', (req, res, next) => {
+app.get('/api/projects/:tag', (req, res, next) => {
     const q = req.params.tag;
 
     Project.findOne({tag: q}, (err, data) => {
@@ -383,7 +403,7 @@ server.get('/api/projects/:tag', (req, res, next) => {
  * @description deletes project by name including all its BOM files
  * @returns {void}
  */
-server.delete('/api/projects/:tag', (req, res, next) => {
+app.delete('/api/projects/:tag', (req, res, next) => {
     const q = req.params.tag;
 
     if (q === 'delete-all') {
@@ -409,8 +429,8 @@ server.delete('/api/projects/:tag', (req, res, next) => {
     }
 });
 
-// Open Server Connection
-server.listen(port, () => {
+// Open server Connection
+app.listen(port, () => {
     console.log(`server started @Port:${port}`);
 });
 

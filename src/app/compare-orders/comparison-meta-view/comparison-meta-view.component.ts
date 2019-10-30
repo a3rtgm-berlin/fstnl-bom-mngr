@@ -42,7 +42,7 @@ export class ComparisonMetaViewComponent implements OnInit, OnChanges {
   downloadBom(type) {
     this.exportService.xlsxFromJson(
       type === 'filtered' ? this.processedBom : this.bom,
-      type === 'filtered' ? this.id + '(filtered)' : this.id
+      type === 'filtered' ? 'BOM-' + this.id + '(filtered)' : 'BOM-' + this.id
     );
   }
 

@@ -8,15 +8,17 @@ export class ExportService {
 
   constructor() { }
 
-  xlsxFromJson(json, tag) {
-    json.forEach(p => {
-      p.lists.join(', ');
-      delete p.Kategorie;
-      delete p.KatID;
-    });
+  xlsxFromJson(json: any, filename: string) {
+    if (json[0].lists) {
+      json.forEach(p => {
+        p.lists.join(', ');
+        delete p.Kategorie;
+        delete p.KatID;
+      });
+    }
     const ws = XLSX.utils.json_to_sheet(json);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, tag);
-    XLSX.writeFile(wb, `BOM-${tag}.xlsx`);
+    XLSX.utils.book_append_sheet(wb, ws, filename);
+    XLSX.writeFile(wb, filename + '.xlsx');
   }
 }
