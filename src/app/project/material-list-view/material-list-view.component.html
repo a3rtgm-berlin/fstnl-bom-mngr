@@ -1,0 +1,26 @@
+<div class="d-flex flex-column single-list">
+        <label>{{materialList$ ? "BOM-List loaded:" : "BOM-List not found!"}}</label>
+        <div class="btn-group">
+            <button type="button" class="btn btn-info label" (click)="test()">ID</button>
+            <button type="button" class="btn btn-outline-secondary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{materialList$ ? materialList.id : "-"}}</button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-info label" (click)="test()">Name</button>
+            <button type="button" class="btn btn-outline-secondary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{materialList$ ? materialList.name : "-"}}</button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-info label">Date</button>
+            <button type="button" class="btn btn-outline-secondary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{materialList$ ? materialList.date : "-"}}</button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-info label">Uploaded</button>
+            <button type="button" class="btn btn-outline-secondary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{materialList$ ? materialList.uploadDate : "-"}}</button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-info label">Content</button>
+            <button type="button" class="btn btn-outline-secondary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{materialList$ ? "JSON" : "-"}}</button>
+        </div>
+        <div class="input-group mb-3">
+            <small class="form-text text-muted" *ngIf="!materialList$">The requested Material-List is not available. Please check the Year and Month.</small>
+        </div>
+    </div>
