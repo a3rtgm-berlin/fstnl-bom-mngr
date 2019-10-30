@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { ProjectSubSettingsComponent } from '../project-sub-settings/project-sub-settings.component';
+import { UpdateProjectComponent } from '../update-project/update-project.component';
 import { XlsLoaderComponent } from '../../xls-loader/xls-loader.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { RestService } from '../../services/rest/rest.service';
@@ -53,10 +54,6 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     this.autoSelectMultiBom();
   }
 
-  createComponent() {
-    this.modalService.init(ProjectSubSettingsComponent, {project: this.project$}, {}, this.injector, false);
-  }
-
   setSwitch(targ, evt) {
     this.tglSwitch = targ;
     $(evt.target).addClass("active");
@@ -97,7 +94,11 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     });
   }
 
+  createComponent() {
+    this.modalService.init(ProjectSubSettingsComponent, {project: this.project$}, {}, this.injector, false);
+  }
+
   updateProject() {
-    alert("Function not available yet!");
+    this.modalService.init(UpdateProjectComponent, {project: this.project$}, {}, this.injector, false);
   }
 }

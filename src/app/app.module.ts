@@ -32,16 +32,19 @@ import { SettingsComponent } from './settings/settings.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ProjectRemainNeedComponent } from './project-remain-need/project-remain-need.component';
 import { RoundDecimalsPipe } from './pipes/round-decimals.pipe';
+import { UpdateProjectComponent } from './manage-projects/update-project/update-project.component';
+import { ProjectComponent } from './project/project.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     XlsLoaderComponent,
     ProjectListComponent,
+    MaterialListViewComponent,
     CompareOrdersComponent,
     MasterViewComponent,
     QueryFormComponent,
-    MaterialListViewComponent,
+    ProjectComponent,
     MaterialListsCollectionViewComponent,
     ComparisonRowViewComponent,
     ComparisonMetaViewComponent,
@@ -59,11 +62,13 @@ import { RoundDecimalsPipe } from './pipes/round-decimals.pipe';
     SettingsComponent,
     ProjectRemainNeedComponent,
     RoundDecimalsPipe,
+    UpdateProjectComponent,
   ],
   entryComponents: [
     CreateProjectComponent,
     ProjectSubSettingsComponent,
-    DeleteProjectComponent
+    DeleteProjectComponent,
+    UpdateProjectComponent,
   ],
   imports: [
     BrowserModule,

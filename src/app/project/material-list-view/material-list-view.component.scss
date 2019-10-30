@@ -1,0 +1,16 @@
+.single-list {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #CCC;
+    .btn-group {
+        margin: 1px 0;
+        .label {
+            flex-basis: 20%;
+        }
+        button {
+            &.dropdown-toggle {
+                text-align: right;
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+<ng-container *ngIf="materialList; else elseTemplate">
+        <app-material-list-view [materialList]="materialList"></app-material-list-view>
+</ng-container>
+<ng-template #elseTemplate>
+    <div class="d-flex flex-column single-list">
+        <div class="input-group mb-3">
+            <small class="form-text text-muted" *ngIf="!materialList">The requested Material-List is not available. Please check the Year and Month.</small>
+        </div>
+    </div>
+</ng-template>
