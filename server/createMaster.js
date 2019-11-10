@@ -1,19 +1,20 @@
 const MaterialList = require("./models/list").MaterialListModel;
 const MasterBom = require('./models/masterBom');
 const Comparison = require('./compareLists');
+const ArbMatrix = require('./models/arbMatrix');
 
 
 const createMasterBom = function (req, res) {
     const id = req.params.id;
 
-    MaterialList.find({id: { $regex: id, $options: 'i' }}, (err, lists) => {
+    MaterialList.find({id: { $regex: id, $options: 'i' }}, async (err, lists) => {
         if (err) {
             res.sendStatus(500);
             throw err;
         }
 
         console.log(lists.map(list => list.id));
-        const newMaster = combineLists(
+        const newMaster = await combineLists(
             lists.map((list) => list.json.map((mat) => {
                 mat.lists = [list.id];
                 return mat;
@@ -46,8 +47,8 @@ const createMasterBom = function (req, res) {
     });
 };
 
-function combineLists(lists, id, date, projectTags) {
-    const masterList = new Set([].concat(...lists));
+async function combineLists(lists, id, date, projectTags) {
+    var masterList = new Set([].concat(...lists));
 
     masterList.forEach((mat1, e1, i) => {
         masterList.forEach((mat2, e2, j) => {
@@ -59,6 +60,8 @@ function combineLists(lists, id, date, projectTags) {
         });
     });
 
+    masterList = await calculateCarts(masterList);
+
     return {
         id: id,
         projects: projectTags,
@@ -67,6 +70,61 @@ function combineLists(lists, id, date, projectTags) {
         date: date,
         uploadDate: new Date()
     };
+}
+
+async function calculateCarts(list) {
+    var stations, arbMatrix;
+
+    let promiseMatrix = new Promise((res, rej) => {
+        ArbMatrix.findOne({}, (err, data) => {
+            if (err) return console.error(err);
+    
+            res(data);
+        });
+    });
+
+    arbMatrix = await promiseMatrix;
+    stations = Array.from(list).reduce((res, item) => {
+        const station = res.find(el => el.Station === item.Station);
+
+        if (station) {
+            station.parts += 1;
+            return res;
+        } else {
+            const newStation = {
+                Station: item.Station,
+                parts: 1,
+                carts: 1,
+                bins: 2
+            }
+            return [...res, newStation];
+        }
+    }, [])
+    stations.forEach(station => {
+        const stationFromMatrix = arbMatrix.json.find(stat => stat.Area === station.station);
+        const cartSize = stationFromMatrix ? stationFromMatrix.CartSize : 60;
+
+        station.carts = Math.ceil(station.parts / cartSize);
+        station.bins = station.parts * 2;
+    });
+
+    list.forEach((mat1, e1, i) => {
+        mat1.stationParts = null;
+        mat1.stationCarts = null;
+        mat1.stationBins = null;
+
+        if (mat1.station !== "No Location") {
+            const station = stations.find(station => station.Station === mat1.Station);
+
+            if (station) {
+                mat1.stationParts = station.parts;
+                mat1.stationCarts = station.carts;
+                mat1.stationBins = station.bins;
+            }
+        }
+    });
+    
+    return list;
 }
 
 module.exports = createMasterBom;

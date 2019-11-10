@@ -48,8 +48,8 @@ async function bom(req, res) {
                 newDatum.name = file.name;
     
                 // save files to server dir
-                fs.writeFile(path.join(uploadDir, file.name), view);
-                fs.writeFile(path.join(uploadDir, `${file.name}.csv`), newDatum.csv);
+                // fs.writeFile(path.join(uploadDir, file.name), view);
+                // fs.writeFile(path.join(uploadDir, `${file.name}.csv`), newDatum.csv);
     
                 // send csv to csvHandler and wait for resolution
                 // return the new data-object
@@ -57,9 +57,6 @@ async function bom(req, res) {
                 res(await addJson(newDatum));
             };
         });
-
-        const processedBom = await readFile;
-        processedBoms.add(processedBom);
 
         if (await saveBomAndUpdateProject(await readFile)) {
             res.json();
@@ -95,8 +92,8 @@ function matrix (req, res) {
                 'uploadDate': new Date()
             };
 
-            fs.writeFile(path.join(uploadDir, '/arb-matrix/', file.name), view);
-            fs.writeFile(path.join(uploadDir, '/arb-matrix/', 'arbMatrix.json'), JSON.stringify(newMatrix));
+            // fs.writeFile(path.join(uploadDir, '/arb-matrix/', file.name), view);
+            // fs.writeFile(path.join(uploadDir, '/arb-matrix/', 'arbMatrix.json'), JSON.stringify(newMatrix));
 
             ArbMatrix.find((err, data) => {
                 if (err) {
@@ -140,9 +137,8 @@ function excludeList(req, res) {
             const view = new Uint8Array(reader.result);
             const excludeList = parser.excludeListParser(reader.result);
 
-            console.log(excludeList);
-            fs.writeFile(path.join(uploadDir, '/arb-matrix/', file.name), view);
-            fs.writeFile(path.join(uploadDir, '/arb-matrix/', 'excludeList.json'), JSON.stringify(excludeList));
+            // fs.writeFile(path.join(uploadDir, '/arb-matrix/', file.name), view);
+            // fs.writeFile(path.join(uploadDir, '/arb-matrix/', 'excludeList.json'), JSON.stringify(excludeList));
 
             ExcludeList.find((err, data) => {
                 if (err) {

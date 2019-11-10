@@ -45,7 +45,8 @@ module.exports = class Comparison {
             removed: 0,
             modified: 0,
             remain: 0,
-            moved: 0
+            moved: 0,
+            obsolete: 0,
         };
 
         this.currentList.json.forEach((currentItem) => {
@@ -124,6 +125,19 @@ module.exports = class Comparison {
             oldItem.status = "removed";
             comparedList.removed += 1;
             this.currentList.json.push(oldItem);
+        });
+
+        this.currentList.json.forEach(item => {
+            if (item.status === "removed") {
+                if (!this.currentList.json.find(currentItem => 
+                    currentItem.Material === item.Material && 
+                    currentItem.Station !== item.Station && 
+                    currentItem.status !== "removed")) {
+                        item.status = "obsolete";
+                        comparedList.removed -= 1;
+                        comparedList.obsolete += 1;
+                    }
+            }
         });
 
         return comparedList;

@@ -7,7 +7,6 @@ class Item {
      * @param {*} catId - "Material P" of the last INV-row
      * @param {*} catName - "Objektkurztext" of the last INV-row
      */
-
     constructor (d, catId, catName, arbMatrix, trainsPending) {
         // Keep category from last INV-row
         this.Kategorie = catName;

@@ -66,7 +66,7 @@ export class ProjectRemainNeedComponent implements OnInit {
 
       this.allParts = this.allParts.map((str) => ({
         id: str,
-        name:'',
+        name: '',
         ovCount: 0,
         projects: {},
       }));
@@ -109,17 +109,17 @@ export class ProjectRemainNeedComponent implements OnInit {
           id: str,
           deadline: '',
           trainCount: 0,
-          created:'',
-          trainsPerWeek:0,
-          trainsLeft:'',
-          overallWeeks:0,
-          weeksLeft:'',
+          created: '',
+          trainsPerWeek: 0,
+          trainsLeft: '',
+          overallWeeks: 0,
+          weeksLeft: '',
         }));
 
         incProjects.forEach(function(project){
-                  
-          let match = this.projects.find(proj => proj.id === project.tag);
-          
+
+          const match = this.projects.find(proj => proj.id === project.tag);
+
           if (match) {
             match.trainCount = project.trainsCount;
             match.deadline = project.deadline;
@@ -127,7 +127,9 @@ export class ProjectRemainNeedComponent implements OnInit {
             match.overallWeeks = this.setMetaWeeks(project.created, project.deadline);
             match.weeksLeft = this.setWeeks(project.deadline);
             match.trainsPerWeek = Math.round((match.trainCount / match.overallWeeks) * 100) / 100;
-            let helpWeeksDone = match.overallWeeks - match.weeksLeft;
+
+            const helpWeeksDone = match.overallWeeks - match.weeksLeft;
+
             match.trainsLeft = project.trainsCount - (helpWeeksDone * match.trainsPerWeek);
           }
 
@@ -136,20 +138,25 @@ export class ProjectRemainNeedComponent implements OnInit {
       }
 
       setWeeks(date) {
-        let date1 = new Date(date);
-        let date2 = new Date();
-        let diffInWeeks =(date2.getTime() - date1.getTime()) / 1000;
+        const date1 = new Date(date);
+        const date2 = new Date();
+
+        let diffInWeeks = (date2.getTime() - date1.getTime()) / 1000;
         diffInWeeks /= (60 * 60 * 24 * 7);
         this.inWeeks = Math.abs(Math.round(diffInWeeks));
+
         return this.inWeeks;
       }
 
       setMetaWeeks(dateA, dateB) {
-        let date1 = new Date(dateA);
-        let date2 = new Date(dateB);
-        let diffInWeeks =(date2.getTime() - date1.getTime()) / 1000;
+        const date1 = new Date(dateA);
+        const date2 = new Date(dateB);
+
+        let diffInWeeks = (date2.getTime() - date1.getTime()) / 1000;
         diffInWeeks /= (60 * 60 * 24 * 7);
-        let totalWeeks = Math.abs(Math.round(diffInWeeks));
+
+        const totalWeeks = Math.abs(Math.round(diffInWeeks));
+
         return totalWeeks;
       }
 
@@ -166,63 +173,63 @@ export class ProjectRemainNeedComponent implements OnInit {
           this.processedBom = this.bom$;
         }
       }
-    
+
       addSort(cat, evt) {
         if ($(evt.target).siblings().hasClass('filter')) {
           if ($(evt.target).siblings().hasClass('filter2')) {
             const cat1 = $(evt.target).siblings('.filter').data('sort');
             const cat2 = $(evt.target).siblings('.filter2').data('sort');
-    
+
             $(evt.target).addClass('filter3');
             this.bom$.sort(this.dynamicSort(cat1, cat2, cat));
-    
+
           } else {
             const cat1 = $(evt.target).siblings('.filter').data('sort');
             $(evt.target).addClass('filter2');
             $(evt.target).data('sort', cat);
             this.bom$.sort(this.dynamicSort(cat1, cat));
-    
+
           }
         } else if ($(evt.target).hasClass('filter2') || $(evt.target).hasClass('filter') || $(evt.target).hasClass('filter3')) {
             if ($(evt.target).hasClass('filter')) {
               $(evt.target).removeClass('filter');
               $(evt.target).siblings('.filter2').addClass('filter').removeClass('filter2');
               $(evt.target).siblings('.filter3').addClass('filter2').removeClass('filter3');
-    
+
               const cat1 = $(evt.target).siblings('filter').data('sort');
               const cat2 = $(evt.target).siblings('filter2').data('sort');
               this.bom$.sort(this.dynamicSort(cat1, cat2));
-    
+
             } else if ($(evt.target).hasClass('filter2')) {
                 $(evt.target).removeClass('filter2');
                 $(evt.target).siblings('.filter3').addClass('filter2').removeClass('filter3');
                 const cat1 = $(evt.target).siblings('filter').data('sort');
                 const cat2 = $(evt.target).siblings('filter2').data('sort');
                 this.bom$.sort(this.dynamicSort(cat1, cat2));
-    
+
             } else if ($(evt.target).hasClass('filter3')) {
                 $(evt.target).removeClass('filter3');
                 const cat1 = $(evt.target).siblings('filter').data('sort');
                 const cat2 = $(evt.target).siblings('filter2').data('sort');
                 this.bom$.sort(this.dynamicSort(cat1, cat2));
             }
-    
+
         } else {
           $(evt.target).addClass('filter');
           $(evt.target).data('sort', cat);
           this.bom$.sort(this.dynamicSort(cat));
         }
-    
+
         this.processedBom = this.bom$;
       }
-    
+
       dynamicSort(...props) {
-        var args = arguments;
-      
-         return function (a,b) {
-          var result = a[args[0]] < b[args[0]] ? -1 : a[args[0]] > b[args[0]] ? 1 : 0 || a[args[1]] < b[args[1]] ? -1 : a[args[1]] > b[args[1]] ? 1 : 0 || a[args[2]] < b[args[2]] ? -1 : a[args[2]] > b[args[2]] ? 1 : 0;
+        const args = arguments;
+
+        return (a, b) => {
+          const result = a[args[0]] < b[args[0]] ? -1 : a[args[0]] > b[args[0]] ? 1 : 0 || a[args[1]] < b[args[1]] ? -1 : a[args[1]] > b[args[1]] ? 1 : 0 || a[args[2]] < b[args[2]] ? -1 : a[args[2]] > b[args[2]] ? 1 : 0;
+
           return result;
         }
       }
-    
 }
