@@ -27,7 +27,7 @@ async function csvToJson (csv, project) {
 
     arbMatrix = await promiseMatrix;
     excludeList = await promiseExcludeList;
-    trainsPending = await getTrainsRemaining(project);
+    trainsPending = await getTrainsCount(project);
 
 
     const json = dsv.parse(csv, (d) => {

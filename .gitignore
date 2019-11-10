@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/server/node_modules
 
 # uploaded user data
 /server/user-upload

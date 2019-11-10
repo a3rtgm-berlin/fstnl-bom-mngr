@@ -65,7 +65,7 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
-    res.locals.error = req.flash('error')
+    res.locals.error = req.flash('error');
     next();
 });
 
@@ -89,7 +89,7 @@ app.get('/', (req, res) => {
  */
 app.post('/api/upload/matrix', upload.matrix);
 app.post('/api/upload/exclude', upload.excludeList);
-app.get('/api/matrix', (res, req) => {
+app.get('/api/matrix', (req, res) => {
     ArbMatrix.findOne({}, (err, data) => {
         if (err) {
             res.sendStatus(404);
@@ -98,7 +98,7 @@ app.get('/api/matrix', (res, req) => {
         res.send(data);
     });
 });
-app.get('/api/exclude', (res, req) => {
+app.get('/api/exclude', (req, res) => {
     ExcludeList.findOne({}, (err, data) => {
         if (err) {
             res.sendStatus(404);

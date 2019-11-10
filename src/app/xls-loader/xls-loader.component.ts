@@ -21,7 +21,7 @@ export class XlsLoaderComponent implements OnInit {
 
   public files: File[] | null = null;
   public acceptedTypes: string[] = [
-    'application/vnd.ms-excel',
+    // 'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'text/csv',
     '',
@@ -38,16 +38,16 @@ export class XlsLoaderComponent implements OnInit {
   public onChange(evt) {
     this.files = [];
 
-    if (evt.target.files.length) {
+    if (evt.target.files.length && this.acceptedTypes.includes(evt.target.files[0].type)) {
       for (const file in evt.target.files) {
         if (evt.target.files[file] instanceof File) {
           this.files.push(evt.target.files[file]);
           console.log(this.files);
         }
       }
-      } else {
-        alert('No valid file type. Please select another file of type XLSX or CSV');
-      }
+    } else {
+      alert('No valid file type. Please select another file of type XLSX or CSV');
+    }
   }
 
   // Submit uploaded file to server as POST request

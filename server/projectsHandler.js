@@ -22,10 +22,17 @@ const getTrainsRemaining = async function (projectTag) {
     const project = await getProject;
     const totalDuration = project.deadline - project.created;
     const remainingDuration = project.deadline - new Date();
-    const precentRemaining = remainingDuration / totalDuration;
-    const trainsRemaining = Math.ceil(project.trainsCount * precentRemaining);
+    const percentRemaining = remainingDuration / totalDuration;
+    const trainsRemaining = Math.ceil(project.trainsCount * percentRemaining);
 
     return trainsRemaining;
 };
 
-module.exports = { newProject, getTrainsRemaining };
+const getTrainsCount = async function (projectTag) {
+    const getProject = Promise.resolve(Project.findOne({tag: projectTag}));
+    const project = await getProject;
+
+    return project.trainsCount;
+}
+
+module.exports = { newProject, getTrainsRemaining, getTrainsCount };
