@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class ColorCodeService {
 
   public colorsArray$: string[] = [
-    '#0c5a9e', '#003b69', '#83d0f5', '#ff6600', '#FF944D', '#fbfbfb', '#ed677a', '#BA5060', '#caf583', '#a1d75a', '#f5d583', '#FAC643',
+    '#0c5a9e', '#003b69', '#0591B5', '#0535B5', '#427CAE', '#093D6B', '#0F3252', '#032D52', '#1B1B38', '#0B4C85', '#08365E', '#0E61AB',
   ];
 
   get colorArray(): string[] {

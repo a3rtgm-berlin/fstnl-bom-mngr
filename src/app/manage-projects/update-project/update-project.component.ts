@@ -12,7 +12,6 @@ export class UpdateProjectComponent implements OnInit {
   public project$: any;
   public projectData: any;
   public findFormat: any;
-  dateToday: Date = new Date();
 
   @Input() set project(project: any) {
     this.project$ = project;
@@ -22,7 +21,6 @@ export class UpdateProjectComponent implements OnInit {
   constructor(public modalService: ModalService, public restService: RestService) { }
 
   ngOnInit() {
-    this.findFormat = this.dateToday.toISOString().substr(0, 10);
   }
 
   public update(name, trainsCount, deadline): void {
