@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import $ from 'jquery';
+import { ColorCodeService } from 'src/app/services/color-code/color-code.service';
 
 @Component({
   selector: 'app-comparison-list-view',
@@ -11,7 +12,9 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
   public bom$: any;
   public processedBom: any;
   public sorted: any;
-  public cols: string[] = [];
+  //public cols: string[] = [];
+  public cols: any;
+  public activeCols: any;
 
 
   @ViewChild('filterCol', {static: false}) filterCol: any;
@@ -34,6 +37,36 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     this.bom$ = changes.bom.currentValue;
     this.processedBom = this.bom$;
     this.cols = Object.keys(this.bom$[0]);
+   
+    this.mapFilters();
+
+  }
+
+  mapFilters() {
+    this.cols = this.cols.map((col) => ({
+       value: col,
+       //name: this.mapColName(col)
+       name: this.mapColName(col),
+    }));
+  }
+
+  mapColName(col) {
+    if (col === "ME") {
+      col = "Unit"
+      return col;
+    }
+    if (col === "Objektkurztext"){
+      col = "Part"
+      return col;
+    }
+    if (col === "id") {
+      col = "Part#"
+      return col;
+    }
+    if (col === "Menge") {
+      col = "Quantity"
+      return col;
+    }
   }
 
   filterBom(val) {
