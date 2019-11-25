@@ -21,9 +21,14 @@
 
     <div *ngIf="project$.multiBom == 0" class="prjct_bdy">
         <div class="prjct_bom">
-            <select class="bomlists">
-                <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
+            <select class="bomlists" [(ngModel)]="selectedSingleBom" (change)="targetSingleBom($event)">
+                <option class="act-lst" *ngFor="let bom of bomList$" >{{bom}}</option>
             </select>
+            <div class="btnbox">
+                <button class="subbtn refresh" (click)="updateSingleBOM()"></button>
+                <button class="subbtn meta" (click)="getSingleBOMMeta()"></button>
+                <button class="subbtn delete" (click)="deleteSingleBOM()"></button>
+            </div>
         </div>
         <div class="prjct_vars">
             <ul>

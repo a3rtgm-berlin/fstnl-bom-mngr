@@ -23,6 +23,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   mltBmArray = [];
   mltBmToMerge = [];
   tglSwitch: any;
+  cSBom: any;
 
   @Input() set project(project) {
     this.project$ = project;
@@ -100,5 +101,21 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   updateProject() {
     this.modalService.init(UpdateProjectComponent, {project: this.project$}, {}, this.injector, false);
+  }
+
+  targetSingleBom (event: any) {
+    this.cSBom = event.target.value;
+  }
+
+  updateSingleBOM() {
+    console.log(this.cSBom);
+  }
+
+  deleteSingleBOM() {
+    console.log(this.cSBom);
+  }
+
+  getSingleBOMMeta() {
+    console.log(this.cSBom);
   }
 }
