@@ -4,7 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
-//const url = 'http://localhost:8000/api/';
+// const url = 'http://localhost:8000/api/';
 const url = 'http://91.250.112.78:49160/api/';
 
 @Injectable({
@@ -44,8 +44,7 @@ export class AuthserviceService {
         this.storeUserData(userData);
         this.setLoginState(true);
       },
-      err => {console.error('Userdata is incorrect', user, err)},
-      () => console.log(user)
+      err => { console.error('Userdata is incorrect: ', err); }
     );
   }
 

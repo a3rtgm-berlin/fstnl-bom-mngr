@@ -124,8 +124,12 @@ export class RestService {
     return this.http.post<MaterialList>(url + 'lists/', materialList);
   }
 
-  public updateList(materialList: MaterialList): Observable<void> {
+  public replaceList(materialList: MaterialList): Observable<void> {
     return this.http.put<void>(url + 'lists/' + materialList.id, materialList);
+  }
+
+  public updateList(materialList: MaterialList): Observable<string> {
+    return this.http.get<string>(url + 'lists/update/' + materialList.id);
   }
 
   public async createMultiBomFromIds(ids: string[]) {
@@ -172,15 +176,17 @@ export class RestService {
     const formData: FormData = new FormData();
 
     for (const prop in userData) {
+      if (userData[prop]) {
         formData.append(prop, userData[prop]);
       }
+    }
 
-      const observable = this.http.post<User>(url + 'users/', userData);
-      observable.subscribe(
-        (val) => console.log('User successfully created'),
-        err => console.error('Error in User Creation', err),
-        () => console.log('User created')
-      );
+    const observable = this.http.post<User>(url + 'users/', userData);
+    observable.subscribe(
+      (val) => console.log('User successfully created'),
+      err => console.error('Error in User Creation', err),
+      () => console.log('User created')
+    );
   }
 
   public deleteProject(tag: string) {
@@ -217,6 +223,18 @@ export class RestService {
     this.loader.showLoader(true);
 
     const observable = this.http.get(url + 'master/create/' + id);
+    const masterId = await observable.toPromise();
+
+    if (masterId) {
+      this.setMasterId(masterId);
+    }
+    this.loader.hideLoader();
+  }
+
+  public async rebuildMaster(id: string) {
+    this.loader.showLoader(true);
+
+    const observable = this.http.get(url + 'master/rebuild/' + id);
     const masterId = await observable.toPromise();
 
     if (masterId) {
@@ -267,6 +285,10 @@ export class RestService {
       this.setAllMaster(masterLists);
     }
     this.loader.hideLoader();
+  }
+
+  public deleteMaster(id: string): Observable<string> {
+    return this.http.delete<string>(url + 'master/delete/' + id);
   }
 
   public async getExclude() {

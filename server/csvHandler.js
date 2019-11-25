@@ -38,6 +38,7 @@ async function csvToJson (csv, project) {
         match = cleanJson.find(_part => _part.id === part.id);
         if (match) {
             match.Menge += part.Menge;
+            match.MengeProZug += part.MengeProZug;
             return cleanJson;
         } else {
             return [...cleanJson, part];
