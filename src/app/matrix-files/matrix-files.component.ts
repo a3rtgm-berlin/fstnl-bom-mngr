@@ -7,7 +7,8 @@ import { ExportService } from '../services/export/export.service';
 @Component({
   selector: 'app-matrix-files',
   templateUrl: './matrix-files.component.html',
-  styleUrls: ['./matrix-files.component.scss']
+  styleUrls: ['./matrix-files.component.scss'],
+  host: {'class': 'modalparts'}
 })
 export class MatrixFilesComponent implements OnInit {
 

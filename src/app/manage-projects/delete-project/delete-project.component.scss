@@ -5,26 +5,27 @@
     .dialog {
         
         .modal-content {
-            background:white;
-            border-radius:0px;
 
             .modal-header {
                 width:90%;
                 margin:10px auto;
                 border:none;
+                border-bottom:1px solid #222 !important;
 
                 h5 {
-                    color:$brandblue;
-                    text-align:left;
+                    text-align:center !important;
+                    font-weight:500 !important;
 
                     span {
                         color:$red;
-                        background:$darkbrandblue;
+                        border:2px solid #222;
                         padding:3px 8px;
                     }
                 }
                 p {}
-                button {}
+                button {
+                    display:none;
+                }
             }
             .modal-footer {
                 border-top:1px solid $darkbrandblue;

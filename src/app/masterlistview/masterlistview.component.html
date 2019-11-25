@@ -7,7 +7,9 @@
             <input class="form-control wrt" type="text" placeholder="filter BOM table" #filter (change)="filterBom(filter.value)">
             
             <select class="form-control cat" #filterCol>
-                <option *ngFor="let col of cols" value="{{col}}">{{col}}</option>
+                <ng-container *ngFor="let col of cols">
+                    <option  *ngIf="col.name" value="{{col.value}}">{{col.name}}</option>
+                </ng-container>
             </select>
         </div>
     </div>
@@ -28,6 +30,8 @@
         <th (click)="addSort('ME', $event)" scope="col">Unit</th>
         <th scope="col">Projects</th>
         <th (click)="addSort('Menge', $event)" scope="col">Quantity</th>
+        <th scope="col">Station Carts</th>
+        <th scope="col">Station Bins</th>
     </thead>
     <ng-container *ngFor="let item of processedBom">
       <tr>
@@ -37,6 +41,8 @@
         <td>{{item.ME}}</td>
         <td>{{item.lists.join(', ')}}</td>
         <td>{{item.Menge | roundDecimals}}</td>
+        <td>{{item.stationCarts}}</td>
+        <td>{{item.stationBins}}</td>
       </tr>
     </ng-container>    
 </table>

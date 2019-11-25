@@ -14,7 +14,7 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
   public processedBom: any;
   public allBomProjects: any;
   public sorted: any;
-  public cols: string[] = [];
+  public cols: any;
   public colors: object = {};
 
 
@@ -41,7 +41,45 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
     this.processedBom = this.bom$;
     this.cols = Object.keys(this.bom$[0]);
     this.colorCodeStations();
+    this.mapFilters();
   }
+
+  mapFilters() {
+    this.cols = this.cols.map((col) => ({
+       value: col,
+       //name: this.mapColName(col)
+       name: this.mapColName(col),
+    }));
+
+  }
+
+  mapColName(col) {
+    if (col === "ME") {
+      col = "Unit"
+      return col;
+    }
+    if (col === "Objektkurztext"){
+      col = "Part"
+      return col;
+    }
+    if (col === "id") {
+      col = "Part#"
+      return col;
+    }
+    if (col === "Menge") {
+      col = "Quantity"
+      return col;
+    }
+    if (col === "Station") {
+      return col;
+    }
+    if (col === "Status") {
+      return col;
+    } else {
+      return false;
+    }
+  }
+
 
   colorCodeStations() {
     const stations = this.bom$

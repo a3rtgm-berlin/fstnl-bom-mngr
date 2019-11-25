@@ -90,8 +90,8 @@ app.use((req, res, next) => {
 });
 
 // Connect DB
-// mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
-mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+// mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
 
 // Set server options
 app.use(cors(corsOptions));
@@ -343,7 +343,7 @@ app.post('/api/lists/multibom', (req, res) => {
         }
 
         if (data) {
-            multiBom = new MultiBom(data);
+            const multiBom = new MultiBom(data);
 
             const dbModel = new MaterialList(multiBom.list);
             dbModel.save((err) => {
