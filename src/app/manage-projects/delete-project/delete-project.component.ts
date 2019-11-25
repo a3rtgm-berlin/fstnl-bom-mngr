@@ -5,7 +5,8 @@ import { RestService } from 'src/app/services/rest/rest.service';
 @Component({
   selector: 'app-delete-project',
   templateUrl: './delete-project.component.html',
-  styleUrls: ['./delete-project.component.scss']
+  styleUrls: ['./delete-project.component.scss'],
+  host: {'class': 'modalparts'}
 })
 export class DeleteProjectComponent implements OnInit {
 
