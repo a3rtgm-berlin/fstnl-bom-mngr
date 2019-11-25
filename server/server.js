@@ -266,7 +266,7 @@ app.post('/api/lists/multibom', (req, res) => {
         }
 
         if (data) {
-            multiBom = new MultiBom(data);
+            const multiBom = new MultiBom(data);
 
             const dbModel = new MaterialList(multiBom.list);
             dbModel.save((err) => {

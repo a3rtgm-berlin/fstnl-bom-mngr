@@ -48,6 +48,7 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
        //name: this.mapColName(col)
        name: this.mapColName(col),
     }));
+
   }
 
   mapColName(col) {
@@ -66,6 +67,14 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     if (col === "Menge") {
       col = "Quantity"
       return col;
+    }
+    if (col === "Station") {
+      return col;
+    }
+    if (col === "Status") {
+      return col;
+    } else {
+      return false;
     }
   }
 

@@ -7,7 +7,9 @@
             <input class="form-control wrt" type="text" placeholder="filter BOM table" #filter (change)="filterBom(filter.value)">
             
             <select id="filter" class="form-control cat" #filterCol>
-                <option *ngFor="let col of cols" value="{{col.value}}">{{col.name}}</option>
+                <ng-container *ngFor="let col of cols">
+                    <option *ngIf="col.name" value="{{col.value}}">{{col.name}}</option>
+                </ng-container>
             </select>
         </div>
     </div>
