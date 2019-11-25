@@ -10,7 +10,7 @@ const createMasterBom = function (req, res) {
     MaterialList.find({id: { $regex: id, $options: 'i' }}, async (err, lists) => {
         if (err) {
             res.sendStatus(500);
-            throw err;
+            return console.error(err);
         }
 
         console.log(lists.map(list => list.id));
@@ -24,8 +24,11 @@ const createMasterBom = function (req, res) {
             lists.map(list => list.project));
         const dbModel = new MasterBom(newMaster);
 
-        MasterBom.findOne({id: {$lt: id}}).sort('id').exec(async (err, lastMaster) => {
-            if (err) throw err;
+        MasterBom.findOne({id: {$lt: id}}).sort({id: -1}).exec(async (err, lastMaster) => {
+            if (err) {
+                res.sendStatus(404);
+                return console.error(err);
+            }
 
             if (lastMaster && lastMaster.id < id) {
                 let compare = new Promise((res, rej) => {
@@ -38,7 +41,7 @@ const createMasterBom = function (req, res) {
             dbModel.save((err) => {
                 if (err) {
                     res.sendStatus(500);
-                    throw err;
+                    return console.error(err);
                 }
 
                 res.status(201).send([id]);

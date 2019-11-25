@@ -1,18 +1,33 @@
-const config = require('./config');
-const express = require('../node_modules/express');
-const cors = require('../node_modules/cors');
-const bodyParser = require("../node_modules/body-parser");
+'use strict';
+
+// const config = require('./config');
+// const express = require('../node_modules/express');
+// const cors = require('../node_modules/cors');
+// const bodyParser = require("../node_modules/body-parser");
 const mongoose = require("../node_modules/mongoose");
-const flash = require("./node_modules/connect-flash");
-const session = require("./node_modules/express-session");
+// const flash = require("./node_modules/connect-flash");
+// const session = require("./node_modules/express-session");
+// const passport = require("passport");
+// const jwt = require("./node_modules/jsonwebtoken");
+// const fs = require("fs");
+
+const express = require('express');
+const config = require('./config');
+const cors = require('cors');
+const bodyParser = require("body-parser");
+// const mongoose = require("mongoose");
+const flash = require("connect-flash");
+const session = require("express-session");
 const passport = require("passport");
-const jwt = require("./node_modules/jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const http = require('http');
 
 // Server Modules
 const upload = require('./upload');
 const projectHandler = require('./projectsHandler');
 const createMaster = require('./createMaster');
+const utils = require('./utils');
 
 // Classes
 const Comparison = require('./compareLists');
@@ -26,10 +41,15 @@ const User = require("./models/userModel").UserModel;
 const ExcludeList = require("./models/excludeList");
 const ArbMatrix = require("./models/arbMatrix");
 
-// Server
-const app = express();
-const port = process.env.PORT || 8000;
+// Constants
+const PORT = process.env.PORT || 8000;
+const HOST = 'localhost';
+// const HOST = '0.0.0.0';
 
+// App
+const app = express();
+
+// CORS
 const corsOptions = {
     origin: '*',
     optionsSuccessStatus: 200,
@@ -70,8 +90,8 @@ app.use((req, res, next) => {
 });
 
 // Connect DB
-mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false });
-// mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false });
+// mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
 
 // Set server options
 app.use(cors(corsOptions));
@@ -80,7 +100,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set routes
 app.get('/', (req, res) => {
-    res.send(200, "connected");
+    res.status(200).send("connected");
 });
 /**
  * @description Handles upload of ArbMatrix files
@@ -125,13 +145,33 @@ app.post('/api/upload/bom', upload.bom);
 app.get('/api/master/create/:id', createMaster);
 
 /**
+ * @description rebuilds the current master by ID
+ * @param id the ID string of the current month
+ * @method get
+ */
+app.get('/api/master/rebuild/:id', (req, res) => {
+    const q = req.params.id;
+
+    MasterBom.findOneAndDelete({id: q}, (err) => {
+        if (err) {
+            res.sendStatus(404);
+            return console.error(err);
+        }
+        createMaster(req, res);
+    });
+});
+
+/**
  * @description todo
  * @param
  * @method
  */
 app.get('/api/master', (req, res) => {
     MasterBom.find((err, data) => {
-        if (err) throw err;
+        if (err) {
+            res.sendStatus(404);
+            return  console.error(err);
+        };
         if (data) return res.status(200).send(
             [data.sort((a, b) => {
                 if (a.id < b.id) return 1;
@@ -149,7 +189,10 @@ app.get('/api/master', (req, res) => {
  */
 app.get('/api/master/id', (req, res) => {
     MasterBom.find((err, data) => {
-        if (err) throw err;
+        if (err) {
+            res.sendStatus(404);
+            return  console.error(err);
+        };
         if (data.length > 0) return res.status(200).send(
             [data.map(d => d.id).sort((a, b) => {
                 if (a < b) return 1;
@@ -187,6 +230,23 @@ app.get('/api/master/get/:id', (req, res, next) => {
 });
 
 /**
+ * @description deletes a master by id
+ * @todo ... and project
+ * @returns {MaterialList}
+ */
+app.delete('/api/master/delete/:id', (req, res) => {
+    const q = req.params.id;
+
+    MasterBom.findOneAndDelete({id: q}, (err) => {
+        if (err) {
+            res.sendStatus(404)
+            return console.error(err);
+        }
+        res.status(204).send('deleted');
+    });
+});
+
+/**
  * @description returns all uploaded BOM Lists
  * @todo ... for a selected project?
  * @returns {[MaterialList]}
@@ -209,6 +269,23 @@ app.get('/api/lists/:id', (req, res, next) => {
     MaterialList.findOne({id: q}, (err, data) => {
         if (err) return console.error(err);
         res.send(data);
+    });
+});
+
+/**
+ * @description rebuilds a given project BOM file with the updated project values
+ * @param {String} id the bom id
+ * @returns {void}
+ */
+app.get('/api/lists/update/:id', (req, res) => {
+    const q = req.params.id;
+
+    MaterialList.findOne({id: q}, (err, bom) => {
+        if (err) {
+            res.sendStatus(404);
+            return console.error(err);
+        }
+        utils.updatePartAmount(bom, res);
     });
 });
 
@@ -429,10 +506,24 @@ app.delete('/api/projects/:tag', (req, res, next) => {
     }
 });
 
-// Open server Connection
-app.listen(port, () => {
-    console.log(`server started @Port:${port}`);
-});
+app.listen(PORT, HOST);
+// app.listen(PORT);
+console.log(`Running on http://${HOST}:${PORT}`);
 
+app.get('/api/test/:id', (req, res) => {
+    var id = req.params.id;
+    console.log(id);
+
+    MasterBom.findOne({id: {$lt: id}}).sort({id: -1}).exec(async (err, data) => {
+        if (err) {
+            res.sendStatus(404);
+            return console.error(err);
+        };
+        if (data) {
+            console.log(data.id);
+            res.status(200).send(data);
+        }
+    });
+});
 
  
