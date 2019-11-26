@@ -11,6 +11,45 @@
         </div>
     </div>
 </div>
+
+<div id="master-tools">
+    <div class="infoarea">
+        <div class="textwrap">
+            <h3><strong>Latest Master BOM</strong> {{masterId}}</h3>
+        </div>
+    </div>
+    <div class="btnarea">
+        <ul>
+            <li [class]="upToDate ? 'bigRedButton' : 'bigRedButton active'" #brb>
+                <button (click)="bigRedButton()" [disabled]="upToDate ? true : false">Create New Master BOM</button>
+            </li>
+            <li *ngIf="masterId !== null && masterId !== '0000-00'">
+                <button class="view" (click)="showBom()">View latest Master BOM</button>
+            </li>
+            <li *ngIf="masterId !== null && masterId !== '0000-00'">
+                <button class="re" (click)="recalculateMasterBom()">Recalculate latest Master BOM</button>
+            </li>
+            <li *ngIf="masterId !== null && masterId !== '0000-00'">
+                <button class="del" (click)="deleteMasterBom()">Delete latest Master BOM</button>
+            </li>
+        </ul>
+        <!--<ng-container *ngIf="masterId !== null && masterId !== '0000-00' && upToDate; else elseTemplate">
+            <li class="bigRedButton done" #brb>
+                    <button class="btn-success" (click)="showBom()">
+                        <a>View Master BOM</a>
+                    </button>
+                </li>
+        </ng-container>
+        <ng-template #elseTemplate>
+                <li [class]="upToDate ? 'bigRedButton' : 'bigRedButton active'" #brb>
+                    <button (click)="bigRedButton()" [disabled]="upToDate ? true : false">
+                        <a>Create New Master BOM from Materiallists</a>
+                    </button>
+                </li>
+        </ng-template>-->
+    </div>
+</div>
+
 <div id="list-projects">
     <ul>
         <li class="nProject">
@@ -21,19 +60,6 @@
             </app-project-list-view>
         </li>
 
-        <ng-container *ngIf="masterId !== null && masterId !== '0000-00' && upToDate; else elseTemplate">
-                <li class="bigRedButton done" #brb>
-                        <button class="btn-success" (click)="showBom()">
-                            <a>View latest MASTER {{masterId}}</a>
-                        </button>
-                    </li>
-        </ng-container>
-        <ng-template #elseTemplate>
-                <li [class]="upToDate ? 'bigRedButton' : 'bigRedButton active'" #brb>
-                    <button (click)="bigRedButton()" [disabled]="upToDate ? true : false">
-                        <a>Create New Master List from BOM files</a>
-                    </button>
-                </li>
-        </ng-template>
+        
     </ul>
 </div>

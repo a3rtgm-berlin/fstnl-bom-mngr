@@ -57,6 +57,112 @@
             }
         }
     }
+
+    #master-tools {
+        position:relative;
+        display:flex;
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+        align-items:center;
+        width:100%;
+        max-width:1192px;
+        margin:5px auto;
+        background:#efefef;
+
+        .infoarea {
+            height:100%;
+            margin:5px;
+
+            .textwrap {
+                h3 {
+                    font-size:100%;
+                    margin:0;
+                    padding:5px;
+                    margin-right:10px;
+                    background:whitesmoke;
+                    padding-right:20px;
+
+                    strong {
+                        background:#222;
+                        padding:5px 20px;
+                        color:$brightblue;
+                        font-weight:500;
+                        font-size:80%;
+                        margin-right:10px;
+                    }
+                }
+            }
+        }
+
+        .btnarea {
+            height:100%;
+            margin:5px;
+
+            ul {
+                display:flex;
+                list-style:none;
+                margin:auto;
+
+                li {
+                    margin:auto 3px;
+                    button {
+                        /*background:#222;*/
+                        border:2px solid #222;;
+                        outline:none;
+                        padding:5px 10px;
+                        font-weight:400;
+                        color:#222;
+                        font-size:80%;
+
+                        &:hover {
+                            background:#222;
+                            @include outershadow;
+                            transform:scale(1.02);
+                            transition:0.2s;
+                        }
+
+                        &.create {
+                            &:hover {
+                                color:$brightgreen;
+                            }
+                        }
+
+                        &.view {
+                            &:hover {
+                                color:$brightblue;
+                            }
+                        }
+
+                        &.re {
+                            &:hover {
+                                color:$honey;
+                            }
+                        }
+
+                        &.del {
+                            &:hover {
+                                color:$red;
+                            }
+                        }
+
+                        &:disabled {
+                            opacity:0.3;
+
+                            &:hover {
+                                transform:scale(0.95);
+                                opacity:0.15;
+                                color:black;
+                                background:transparent;
+                                transition:0.2s;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     #list-projects {
         margin:50px auto;
         max-width:1192px;
