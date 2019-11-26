@@ -19,7 +19,7 @@
         <div class="btn-group tabspanel" #tabsPanel>
             <button *ngFor="let currentTab of tabs" class="btn {{currentTab === tab ? 'btn-primary' : 'btn-outline-primary'}}" (click)="selectTab($event, currentTab)">View {{currentTab}}</button>
         </div>
-        <div class="btn-group">
+        <div class="btn-group xl">
             <div [ngSwitch]="tab">
                 <ng-template [ngSwitchCase]="'MasterBOM'">
                     <app-masterlistview [bom]="master$.json ? master$.json : null" [id]="master$.id"></app-masterlistview>

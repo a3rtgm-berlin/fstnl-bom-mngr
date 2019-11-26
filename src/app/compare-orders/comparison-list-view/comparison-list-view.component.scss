@@ -2,12 +2,22 @@
 
 :host {
 
+    .sticky {
+        display:flex;
+        flex-direction:row;
+        flex-wrap:wrap;
+    }
+
     #sider {
         display:block;
-        width:100%;
+        flex-basis:50%;
         height:70px;
         margin:5px auto;
         border:1px solid #222;
+
+        &.borderless {
+            border:none;
+        }
 
         .input-group {
             @include flex-standard;
@@ -78,9 +88,66 @@
             }
         }
 
+        .button-grp {
+            @include flex-standard;
+            justify-content:flex-start;
+            width:100%;
+            margin-left:5px;
+
+            button {
+                position:relative;
+                flex: 0 0 24.5%;
+                max-width:80px;
+                margin:2.5px 0.25%;
+                height:65px;
+                font-size:70%;
+                color:whitesmoke;
+                background-color:$darkbrandblue;
+                border:none;
+                outline:none;
+                mix-blend-mode: color;
+
+                p {
+                    position:absolute;
+                    bottom:0;
+                    left:0;
+                    padding:3px;
+                    margin:0;
+                    opacity:0.75;
+                    font-size:87%;
+                }
+
+                &.csv:after {
+                    content:'';
+                    @include absolute-full;
+                    background:url("../../../assets/img/csvdl2.png");
+                    background-position:50% 20%;
+                    background-size:30%;
+                    background-repeat:no-repeat;
+                    filter:invert(1);
+                    opacity:0.25;
+                    z-index:-1;
+                }
+
+                &.pdf:after {
+                    content:'';
+                    @include absolute-full;
+                    background:url("../../../assets/img/pdfdl.png");
+                    background-position:50% 20%;
+                    background-size:30%;
+                    background-repeat:no-repeat;               
+                    filter:invert(1);
+                    opacity:0.25;
+                    z-index:-1;
+                }
+            }
+        }
+
     }
 
     #BOM {
+        flex:1 0 100%;
+
         thead {
             padding:0px;
             margin:0px;

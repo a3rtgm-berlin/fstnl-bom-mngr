@@ -9,13 +9,17 @@
 }
 
 .app-bar {
-    @include outershadow;
+    margin:30px auto 10px auto;
 
     .uppr_wrppr {
         @include flex-standard;
         justify-content:space-between;
         height:50px;
-        background:$darkbrandblue;
+        /*background:$darkbrandblue;*/
+        background:#222;
+        width:100%;
+        max-width:1192px;
+        margin:0px auto;
 
         .ttle {
             order:2;
@@ -44,9 +48,19 @@
     }
 
     .lwr_wrppr {
+        position:relative;
         @include flex-standard;
-        height:50px;
-        background:$brandblue;
+        height:50px;width:100%;
+        max-width:1192px;
+        margin:0px auto;
+        @include outershadow;
+
+        &:after {
+            @include fullpseudo;
+            opacity:1;
+            background:$brandblue;
+            z-index:-1;
+        }
     }
 }
 

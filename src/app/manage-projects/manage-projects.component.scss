@@ -77,8 +77,8 @@
             }
 
             li.actProject {
-                border:1px solid #ccc;
-                background:white;
+                /*border:1px solid #ccc;*/
+                background:rgba(255,255,255,0.5);
                 @include outershadow;
                 overflow:visible;
                 z-index:5;
@@ -86,7 +86,7 @@
                 &:hover, &:focus {
                     transform:scale(1.02);
                     transition:0.25s;
-                    border:1px solid $brandblue;
+                    outline: 1px solid #222;
                     z-index: 10;
                 }
             }

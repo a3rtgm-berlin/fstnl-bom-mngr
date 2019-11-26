@@ -108,11 +108,11 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   updateSingleBOM() {
-    console.log(this.cSBom);
+    this.restService.updateList(this.cSBom);
   }
 
   deleteSingleBOM() {
-    console.log(this.cSBom);
+    this.restService.deleteList(this.cSBom);
   }
 
   getSingleBOMMeta() {

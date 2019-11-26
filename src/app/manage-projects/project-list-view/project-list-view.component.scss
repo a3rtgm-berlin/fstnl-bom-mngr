@@ -17,19 +17,23 @@
             justify-content:flex-start;
             position:relative;
             height:40px;
-            background:$bluepaper;
+            background:#333;
+            border-bottom:2px solid $brandblue;
+            /*background:$bluepaper;*/
             width:100%;
 
             .prjct_ttl {
                 @include flex-standard;
                 color:whitesmoke;
                 line-height:40px;
-                font-weight:400;
+                font-weight:500;
                 margin-left:10px;
                 transition:0.2s;
 
                 span {
                     margin-right:5px;
+                    font-weight:700;
+                    color:$brightblue;
                 }
 
                 ul {
@@ -83,9 +87,7 @@
                         pointer-events: none;
                     }
                 }
-
             }
-
             .prjct_sb_mn:hover {
                 cursor:pointer;
 
@@ -102,8 +104,10 @@
         }
 
         .prjct_tpbr.mltBm {
-            /*background:linear-gradient(45deg, $brandblue, $brandorange);*/
-            background:$brandorange;
+            /*background:linear-gradient(45deg, $brandblue, $brandorange);
+            background:$brandorange;*/
+            background:#333;
+            border-bottom:2px solid $brandorange;
         }
 
         .prjct_bdy {
@@ -290,14 +294,98 @@
             li {
                 list-style:none;
 
-                select {
-                    display:block;
+                .prjct_ovw {
+                    display:flex;
+                    flex-direction:row;
+                    justify-content:center;
                     width:90%;
                     height:30px;
-                    line-height:30px;
-                    text-align:center;
-                    margin:5px auto;
-                    font-size:80%;
+                    background:$lightgrey;
+                    margin:10px auto 5px auto;
+    
+                    select {
+                        flex-grow:1;
+                        height:30px;
+                        border:none;
+                        text-align:center;
+                        outline:1px solid #aaa;
+                        margin:auto;
+                        font-size:80%;
+    
+                        .act-list {
+                            width:80%;
+                        }
+                    }
+    
+                    .btnbox {
+                        display:flex;
+                        flex-direction:row;
+                        justify-content:center;
+                        flex-grow:0;
+                        height:30px;
+                        margin-left:3px;
+                        border:none;
+    
+                        
+                        button {
+                            position:relative;
+                            display:block;
+                            margin-left:3px;
+                            height:30px;
+                            width:30px;
+                            border:none;
+                            opacity:0.75;
+                            @include outershadow;
+    
+                            &:hover {
+                                transform:scale(1.03);
+                                opacity:0.9;
+                                transition:0.2s;
+                            }
+    
+                            &.refresh {
+                                background:$brandblue;
+    
+                                &:after {
+                                    @include fullpseudo;
+                                    background:url("../../../assets/img/reload2.png");
+                                    background-size:15px;
+                                    background-position:center;
+                                    background-repeat:no-repeat;
+                                    filter:invert(1);
+                                    opacity:0.6;
+                                }
+                            }
+    
+                            &.delete {
+                                background:$darkred;
+                                
+                                &:after {
+                                    @include fullpseudo;
+                                    background:url("../../../assets/img/trash.png");
+                                    background-size:15px;
+                                    background-position:center;
+                                    background-repeat:no-repeat;
+                                    filter:invert(1);
+                                    opacity:0.9;
+                                }
+                            }
+    
+                            &.meta {
+                                background:$brandblue;
+                                
+                                &:after {
+                                    @include fullpseudo;
+                                    background:url("../../../assets/img/info.png");
+                                    background-size:15px;
+                                    background-position:center;
+                                    background-repeat:no-repeat;
+                                    filter:invert(1);
+                                    opacity:0.6;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 .prjct_bom {

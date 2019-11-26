@@ -62,6 +62,11 @@
                     <select class="bomlists">
                         <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
                     </select>
+                    <div class="btnbox">
+                        <button class="subbtn refresh" (click)="updateSingleBOM()"></button>
+                        <button class="subbtn meta" (click)="getSingleBOMMeta()"></button>
+                        <button class="subbtn delete" (click)="deleteSingleBOM()"></button>
+                    </div>
                 </div>
                 <div class="prjct_bom">
                     <button class="mrgMltBm" (click)="mergeMultiBoms()">Merge Multi BOM Files</button>

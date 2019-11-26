@@ -21,26 +21,32 @@
             .custom-file {
                 height:30px;
                 border-radius:0px;
+
                 input {
                     line-height:30px;
                     height:30px;
+                    
+                    &:hover {
+                        cursor:pointer !important;
+                        @include innershadow;
+                        color:#222;
+                    }
                 }
+
                 label {
                     text-align:center;
                     border-radius:0px;
                     font-size:80%;
                     color:#aaa;
-                    border-bottom: none;
-                    @include innershadow;
+                    font-weight:400;
+                    border:none;
+                    border-bottom: 1px solid #222;
+                    background:transparent;
+                    /*@include innershadow;*/
 
                     &:after {
                         display:none;
                     }
-                }
-
-                &:hover {
-                    cursor:pointer !important;
-                    outline:1px solid $brandblue;
                 }
             }
 
@@ -51,32 +57,50 @@
 
         .input-group-append {
             flex: 1 0 100%;
-            margin:3px auto;
+            margin:5px auto;
 
             button {
+                position:relative;
                 border-radius:0px;
-                border:1px solid lightgrey;
-                line-height:30px;
+                /*border:1px solid lightgrey;*/
                 height:30px;
                 padding:0;
-                color:lightgrey;
+                font-weight:500;
+                color:#333;
                 font-size:80%;
-                background:rgba(0,0,0,0.35);
+                border:1px solid #333;
+                background:transparent;
+                @include outershadow;
+                
+                &:after {
+                    @include fullpseudo;
+                    /*background:$darkbrandblue;*/
+                    opacity:0.75;
+                    z-index:-1;
+                }
 
                 &:hover {
                     cursor:default;
+                    transform:scale(0.958);
+                    opacity:0.5;
+                    transition:0.3s;
                 }
             }
 
             &.active {
                 button {
-                color:$brandorange;
-                border:1px solid $brandorange;
-                background:rgba(255,148,77,0.35);
+                color:$brandblue;
+                border:1px solid $brandblue;
+                transition:0.3s;
+                @include outershadow;
 
                 &:hover { 
                     cursor:pointer;
-                    background:rgba(255,148,77,0.55);
+                    color:whitesmoke;
+                    background:$brandblue;
+                    transition:0.3s;
+                    opacity:1;
+                    transform:scale(1.01);
                 }
                 }
             }

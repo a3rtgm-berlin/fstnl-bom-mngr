@@ -296,7 +296,6 @@ app.get('/api/lists/update/:id', (req, res) => {
  */
 app.delete('/api/lists/:id', (req, res, next) => {
     const q = req.params.id;
-
     if (q === 'delete-all') {
         MaterialList.deleteMany({}, (err) => {
             if (err) return console.error(err);

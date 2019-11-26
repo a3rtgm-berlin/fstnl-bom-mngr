@@ -4,6 +4,7 @@
     @include flex-standard;
     justify-content:flex-start;
     width:100%;
+    max-width:1192px;
 
     #menu {
         justify-self:flex-start;
@@ -49,9 +50,11 @@
                     margin-right: 20px;
                     margin-left: auto;
                     background:$darkbrandblue;
+                    border:1px solid $darkbrandblue;
 
                     &:hover {
                         background:whitesmoke;
+                        border:1px solid whitesmoke;
 
                         a {
                             background:transparent;

@@ -4,6 +4,8 @@
     display:block;
     position:relative;
     width:100%;
+    max-width:1192px;
+    margin:5px auto;
 
     .single-list {
         @include flex-standard;
@@ -11,7 +13,7 @@
         width:100%;
 
         label {
-            display:block;
+            display:none;
             background:white;
             padding:10px 20px;
             margin:5px 0px 5px 0px;
@@ -25,32 +27,65 @@
                 margin-right:5px;
             }
         }
+
         .btn-group {
             border-radius:0px;
             border:none;
-            margin:2px auto 2px 0px;
+            margin:5px auto 5px 0px;
+            border-bottom:1px solid #222;
+
+            &.xl {
+                width:100%;
+                border:none;
+            }
+
+            &.tabspanel {
+                border:none;
+
+                .btn {
+                    margin: 5px 3px;
+                }
+
+                .btn-primary {
+                    background:#222;
+                    border:1px solid #222;
+                    color:$brightblue;
+                    @include outershadow;
+                }
+
+                .btn-outline-primary {
+                    border:1px solid #222;
+                    color:#222;
+                }
+
+            }
 
             .btn-primary {
-                min-width:140px;
+                width:120px;
                 padding:10px;
                 text-align:left;
-                background:$bluepaper;
+                /*background:$bluepaper;*/
+                background:transparent;
                 border:none;
                 border-radius:0px;
                 font-size:90%;
-                color:whitesmoke;
+                font-weight:700;
+                color:$darkbrandblue;
             }
 
             .btn-outline-secondary {
-                min-width:200px;
-                background:white;
+                width:auto;
+                /*background:white;*/
+                text-align:left;
                 font-size:90%;
                 border:none !important;
-                outline:1px solid #aaa;
                 border-radius:0px;
+                color:#888;
+                font-weight:400;
 
                 &:hover {
                     color:$brandblue;
+                    background:whitesmoke;
                 }
             }
 
