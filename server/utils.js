@@ -12,8 +12,7 @@ function updatePartAmount(bom, res) {
             part.Menge = part.MengeProZug * project.trainsCount;
         });
         bom.save();
-
-        res.status(203).send(`${bom.id} updated`);
+        res.json();
     });
 }
 

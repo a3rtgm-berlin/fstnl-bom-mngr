@@ -5,6 +5,8 @@ import { XlsLoaderComponent } from '../../xls-loader/xls-loader.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { RestService } from '../../services/rest/rest.service';
 import $ from 'jquery';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { BomMetaViewComponent } from 'src/app/bom-meta-view/bom-meta-view.component';
 
 @Component({
   selector: 'app-project-list-view',
@@ -29,7 +31,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     this.project$ = project;
   }
 
-  constructor(public modalService: ModalService, public restService: RestService) {
+  constructor(public modalService: ModalService, public restService: RestService, public alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -38,9 +40,8 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
     this.setWeeks(this.project$.deadline);
 
-    let i;
-    for (i = 0; i < this.project$.multiBom; i++) {
-      let count = String.fromCharCode(66 + i);
+    for (let i = 0; i < this.project$.multiBom; i++) {
+      const count = String.fromCharCode(66 + i);
       this.mltBmArray.push(count);
       this.autoSelectMultiBom();
     }
@@ -103,19 +104,33 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
     this.modalService.init(UpdateProjectComponent, {project: this.project$}, {}, this.injector, false);
   }
 
-  targetSingleBom (event: any) {
+  targetSingleBom(event: any) {
     this.cSBom = event.target.value;
   }
 
   updateSingleBOM() {
-    this.restService.updateList(this.cSBom);
+    if (confirm(`Recalculate BOM ${this.cSBom} with Project Stats?`)) {
+      this.restService.updateList(this.cSBom);
+    }
   }
 
   deleteSingleBOM() {
-    this.restService.deleteList(this.cSBom);
+    if (confirm(`Delete BOM ${this.cSBom}?`)) {
+      this.restService.deleteList(this.cSBom);
+    }
   }
 
   getSingleBOMMeta() {
-    console.log(this.cSBom);
+    if (this.cSBom) {
+      this.restService.getSingleBomMeta(this.cSBom)
+        .toPromise()
+        .then((meta: any) => {
+          if (meta) {
+            this.modalService.init(BomMetaViewComponent, {meta}, {});
+          }
+      });
+    } else {
+      alert('no BOM selected');
+    }
   }
 }

@@ -33,6 +33,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { ProjectRemainNeedComponent } from './project-remain-need/project-remain-need.component';
 import { RoundDecimalsPipe } from './pipes/round-decimals.pipe';
 import { UpdateProjectComponent } from './manage-projects/update-project/update-project.component';
+import { BomMetaViewComponent } from './bom-meta-view/bom-meta-view.component';
 
 @NgModule({
   declarations: [
@@ -61,12 +62,14 @@ import { UpdateProjectComponent } from './manage-projects/update-project/update-
     ProjectRemainNeedComponent,
     RoundDecimalsPipe,
     UpdateProjectComponent,
+    BomMetaViewComponent,
   ],
   entryComponents: [
     CreateProjectComponent,
     ProjectSubSettingsComponent,
     DeleteProjectComponent,
     UpdateProjectComponent,
+    BomMetaViewComponent
   ],
   imports: [
     BrowserModule,

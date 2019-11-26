@@ -13,14 +13,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-  
-  constructor(public restService: RestService, public modalService: ModalService, public authService: AuthserviceService, private authGuard: AuthGuardService, private router: Router)  {
-  }
+
+  constructor(
+    public restService: RestService,
+    public modalService: ModalService,
+    public authService: AuthserviceService,
+    private authGuard: AuthGuardService,
+    private router: Router
+  ) {}
 
   public logged: string;
   public switch: string;
-  
-  ngOnInit() { 
+
+  ngOnInit() {
     this.authService.loggedIn.subscribe((val) => {
       this.logged = val;
       this.updateLog(this.logged);
@@ -38,7 +43,7 @@ export class MenuComponent implements OnInit {
   }
 
   updateLog(val) {
-    if(val) {
+    if (val) {
       this.switch = 'Log Out';
     } else {
       this.switch = 'Log In';

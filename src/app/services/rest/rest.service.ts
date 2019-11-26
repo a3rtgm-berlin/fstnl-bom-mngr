@@ -10,7 +10,7 @@ import { MasterBom } from 'src/app/masterBom';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { LoaderService } from '../loader/loader.service';
 
-//const url = 'http://localhost:8000/api/';
+// const url = 'http://localhost:8000/api/';
 const url = 'http://91.250.112.78:49160/api/';
 
 @Injectable({
@@ -25,6 +25,7 @@ export class RestService {
 
   public singleList: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allLists: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public projectBomMeta: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public comparison: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allProjects: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allMaster: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -46,6 +47,14 @@ export class RestService {
       this.allLists.next(val);
     } else {
       this.allLists.next(null);
+    }
+  }
+
+  setProjectBomMeta(val) {
+    if (val) {
+      this.projectBomMeta.next(val);
+    } else {
+      this.projectBomMeta.next(null);
     }
   }
 
@@ -116,8 +125,14 @@ export class RestService {
     this.setSingleList(materialList);
   }
 
-  public deleteList(id: string): Observable<string> {
-    return this.http.delete<string>(url + 'lists/' + id);
+  public deleteList(id: string) {
+    console.log(id);
+    const observable = this.http.delete<string>(url + 'lists/' + id);
+    observable.subscribe(
+      (val) => console.log('DELETE call successful value returned in body', val),
+      err => console.error('DELETE call in error', err),
+      () => this.getAllProjects()
+    );
   }
 
   public insertList(materialList: MaterialList): Observable<MaterialList> {
@@ -128,8 +143,26 @@ export class RestService {
     return this.http.put<void>(url + 'lists/' + materialList.id, materialList);
   }
 
-  public updateList(materialList: MaterialList): Observable<string> {
-    return this.http.get<string>(url + 'lists/update/' + materialList.id);
+  public updateList(id: string) {
+    const observable = this.http.get<string>(url + 'lists/update/' + id);
+    observable.subscribe({
+      complete() { alert(`${id} has been successfully updated`); }
+    });
+  }
+
+  public getSingleBomMeta(id: string) {
+    return this.http.get(url + 'lists/meta/' + id);
+  }
+
+  public async getProjectBomMeta(tag: string) {
+    this.loader.showLoader(true);
+    const observable = this.http.get(url + 'project/meta/' + tag);
+    const meta = await observable.toPromise();
+
+    if (meta) {
+      this.setProjectBomMeta(meta);
+    }
+    this.loader.hideLoader();
   }
 
   public async createMultiBomFromIds(ids: string[]) {
@@ -288,8 +321,14 @@ export class RestService {
     this.loader.hideLoader();
   }
 
-  public deleteMaster(id: string): Observable<string> {
-    return this.http.delete<string>(url + 'master/delete/' + id);
+  public deleteMaster(id: string) {
+    const observable = this.http.delete<string>(url + 'master/delete/' + id);
+    observable.subscribe({
+      complete() {
+        alert(`MasterBOM with ID ${id} has been deleted.`);
+        this.getLatestMasterId();
+      }
+    });
   }
 
   public async getExclude() {

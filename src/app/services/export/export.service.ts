@@ -9,7 +9,17 @@ export class ExportService {
   constructor() { }
 
   xlsxFromJson(json: any, filename: string) {
-    const exportJson = JSON.parse(JSON.stringify(json));
+    let exportJson = JSON.parse(JSON.stringify(json));
+
+    if (!Array.isArray(exportJson)) {
+      exportJson = Object.entries(exportJson)
+        .map(pair => {
+          return {
+            Field: pair[0],
+            Value: pair[1]
+          };
+        });
+    }
 
     if (exportJson[0].lists) {
       exportJson.map(p => {

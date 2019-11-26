@@ -25,9 +25,9 @@
                 <option class="act-lst" *ngFor="let bom of bomList$" >{{bom}}</option>
             </select>
             <div class="btnbox">
-                <button class="subbtn refresh" (click)="updateSingleBOM()"></button>
-                <button class="subbtn meta" (click)="getSingleBOMMeta()"></button>
-                <button class="subbtn delete" (click)="deleteSingleBOM()"></button>
+                <button class="subbtn refresh" title="Update selected BOM by Project Stats" (click)="updateSingleBOM()"></button>
+                <button class="subbtn meta" title="Get meta data for selected BOM" (click)="getSingleBOMMeta()"></button>
+                <button class="subbtn delete" title="Delete Selected BOM" (click)="deleteSingleBOM()"></button>
             </div>
         </div>
         <div class="prjct_vars">

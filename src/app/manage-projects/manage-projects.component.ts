@@ -90,15 +90,13 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
         if (project.bomLists.length > 0) {
           const thisId = project.bomLists[project.bomLists.length - 1];
           const thisId$ = thisId.substring(thisId.indexOf('-') + 1);
-          
+
           if (thisId$.includes('-M')) {
             const thisId$$ = thisId$.substring(0, thisId$.lastIndexOf('-'));
             this.crossIdCheck = thisId$$;
           } else {
             this.crossIdCheck = thisId$;
           }
-          
-          //console.log(project.bomLists[project.bomLists.length - 1], thisId$, this.masterId);
 
           if (this.crossIdCheck > this.masterId) {
             this.latestId = this.crossIdCheck;
@@ -109,6 +107,18 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
       // console.log(this.upToDate, this.listsToCombine.length, this.allProjects.length);
       this.upToDate = this.listsToCombine.length >= this.allProjects.length ? false : true;
+    }
+  }
+
+  deleteMasterBom() {
+    if (confirm(`Delete current Master ${this.latestId}?`)) {
+      this.restService.deleteMaster(this.masterId);
+    }
+  }
+
+  recalculateMasterBom() {
+    if (confirm(`Recalculate current Master ${this.latestId}?`)) {
+      this.restService.rebuildMaster(this.masterId);
     }
   }
 

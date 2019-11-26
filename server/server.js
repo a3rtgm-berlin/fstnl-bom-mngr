@@ -259,6 +259,51 @@ app.get('/api/lists', (req, res, next) => {
 });
 
 /**
+ * @description returns all metas for the boms of a a project
+ */
+app.get('/api/project/meta/:tag', (req, res) => {
+    const q = req.params.tag;
+
+    MaterialList.find({project: q}, (err, boms) => {
+        if (err) {
+            res.sendStatus(500);
+            return console.error(err);
+        }
+        const meta = boms.map(bom => {
+            return {
+                id: bom.id,
+                name: bom.name,
+                project: bom.project,
+                date: bom.date,
+                uploadDate: bom.uploadDate
+            }
+        });
+        res.send(meta);
+    });
+});
+
+/**
+ * @description returns all metas for the boms of a a project
+ */
+app.get('/api/lists/meta/:id', (req, res) => {
+    const q = req.params.id;
+
+    MaterialList.findOne({id: q}, (err, bom) => {
+        if (err) {
+            res.sendStatus(500);
+            return console.error(err);
+        }
+        res.send({
+            id: bom.id,
+            name: bom.name,
+            project: bom.project,
+            date: bom.date,
+            uploadDate: bom.uploadDate
+        });
+    });
+});
+
+/**
  * @description returns one selected list by date
  * @todo ... and project
  * @returns {MaterialList}
@@ -296,6 +341,8 @@ app.get('/api/lists/update/:id', (req, res) => {
  */
 app.delete('/api/lists/:id', (req, res, next) => {
     const q = req.params.id;
+
+    console.log(q);
     if (q === 'delete-all') {
         MaterialList.deleteMany({}, (err) => {
             if (err) return console.error(err);

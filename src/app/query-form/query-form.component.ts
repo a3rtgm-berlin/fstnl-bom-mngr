@@ -44,12 +44,7 @@ export class QueryFormComponent implements OnInit {
   }
 
   public onDeleteList(id) {
-    const delReq = this.restService.deleteList(id);
-    delReq.subscribe(
-      (val) => console.log('DELETE call successful value returned in body', val),
-      err => console.error('DELETE call in error', err),
-      () => console.log('The DELETE observable is now completed.')
-    );
+    this.restService.deleteList(id);
   }
 
   public onInsertList(materialList) {
