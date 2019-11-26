@@ -157,9 +157,12 @@ export class RestService {
   public async getProjectBomMeta(tag: string) {
     this.loader.showLoader(true);
     const observable = this.http.get(url + 'project/meta/' + tag);
-    const meta = await observable.toPromise();
+    const meta: any = await observable.toPromise();
 
     if (meta) {
+      meta.forEach(bom => {
+        bom.uploadDate =new Date(bom.uploadDate);
+      });
       this.setProjectBomMeta(meta);
     }
     this.loader.hideLoader();

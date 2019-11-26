@@ -3,6 +3,7 @@ const ArbMatrix = require('./models/arbMatrix');
 const ExcludeList = require('./models/excludeList');
 const mat = require('./models/material');
 const dsv = d3.dsvFormat(";");
+const getTrainsRemaining = require('./projectsHandler').getTrainsRemaining;
 const getTrainsCount = require('./projectsHandler').getTrainsCount;
 
 async function csvToJson (csv, project) {

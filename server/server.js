@@ -110,21 +110,21 @@ app.get('/', (req, res) => {
 app.post('/api/upload/matrix', upload.matrix);
 app.post('/api/upload/exclude', upload.excludeList);
 app.get('/api/matrix', (req, res) => {
-    ArbMatrix.findOne({}, (err, data) => {
+    ArbMatrix.find((err, data) => {
         if (err) {
             res.sendStatus(404);
             return console.error(err);
         }
-        res.send(data);
+        res.send(data[0]);
     });
 });
 app.get('/api/exclude', (req, res) => {
-    ExcludeList.findOne({}, (err, data) => {
+    ExcludeList.findOne((err, data) => {
         if (err) {
             res.sendStatus(404);
             return console.error(err);
         }
-        res.send(data);
+        res.send(data[0]);
     });
 });
 
@@ -135,7 +135,6 @@ app.get('/api/exclude', (req, res) => {
  * @returns {void}
  */
 app.post('/api/upload/bom', upload.bom);
-
 
 /**
  * @description todo
@@ -259,51 +258,6 @@ app.get('/api/lists', (req, res, next) => {
 });
 
 /**
- * @description returns all metas for the boms of a a project
- */
-app.get('/api/project/meta/:tag', (req, res) => {
-    const q = req.params.tag;
-
-    MaterialList.find({project: q}, (err, boms) => {
-        if (err) {
-            res.sendStatus(500);
-            return console.error(err);
-        }
-        const meta = boms.map(bom => {
-            return {
-                id: bom.id,
-                name: bom.name,
-                project: bom.project,
-                date: bom.date,
-                uploadDate: bom.uploadDate
-            }
-        });
-        res.send(meta);
-    });
-});
-
-/**
- * @description returns all metas for the boms of a a project
- */
-app.get('/api/lists/meta/:id', (req, res) => {
-    const q = req.params.id;
-
-    MaterialList.findOne({id: q}, (err, bom) => {
-        if (err) {
-            res.sendStatus(500);
-            return console.error(err);
-        }
-        res.send({
-            id: bom.id,
-            name: bom.name,
-            project: bom.project,
-            date: bom.date,
-            uploadDate: bom.uploadDate
-        });
-    });
-});
-
-/**
  * @description returns one selected list by date
  * @todo ... and project
  * @returns {MaterialList}
@@ -314,23 +268,6 @@ app.get('/api/lists/:id', (req, res, next) => {
     MaterialList.findOne({id: q}, (err, data) => {
         if (err) return console.error(err);
         res.send(data);
-    });
-});
-
-/**
- * @description rebuilds a given project BOM file with the updated project values
- * @param {String} id the bom id
- * @returns {void}
- */
-app.get('/api/lists/update/:id', (req, res) => {
-    const q = req.params.id;
-
-    MaterialList.findOne({id: q}, (err, bom) => {
-        if (err) {
-            res.sendStatus(404);
-            return console.error(err);
-        }
-        utils.updatePartAmount(bom, res);
     });
 });
 
@@ -365,6 +302,68 @@ app.delete('/api/lists/:id', (req, res, next) => {
             res.sendStatus(204);
         });
     }
+});
+
+/**
+ * @description returns all metas for the boms of a a project
+ */
+app.get('/api/project/meta/:tag', (req, res) => {
+    const q = req.params.tag;
+
+    MaterialList.find({project: q}, (err, boms) => {
+        if (err) {
+            res.sendStatus(500);
+            return console.error(err);
+        }
+        const meta = boms.map(bom => {
+            return {
+                id: bom.id,
+                name: bom.name,
+                project: bom.project,
+                date: bom.date,
+                uploadDate: bom.uploadDate
+            }
+        });
+        res.send(meta);
+    });
+});
+
+/**
+ * @description returns all metas for a single bom
+ */
+app.get('/api/lists/meta/:id', (req, res) => {
+    const q = req.params.id;
+
+    MaterialList.findOne({id: q}, (err, bom) => {
+        if (err) {
+            res.sendStatus(500);
+            return console.error(err);
+        }
+        res.send({
+            id: bom.id,
+            name: bom.name,
+            project: bom.project,
+            date: bom.date,
+            uploadDate: bom.uploadDate
+        });
+    });
+});
+
+/**
+ * @description rebuilds a given project BOM file with the updated project values
+ * @param {String} id the bom id
+ * @returns {void}
+ */
+app.get('/api/lists/update/:id', (req, res) => {
+    const q = req.params.id;
+
+    MaterialList.findOne({id: q}, (err, bom) => {
+        if (err) {
+            res.sendStatus(404);
+            return console.error(err);
+        }
+        utils.updatePartAmount(bom, res);
+    });
 });
 
 /**

@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <th>Uploaded</th>
-                    <td>{{meta.uploadDate.toString()}}</td>
+                    <td>{{meta.uploadDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'})}}</td>
                 </tr>
             </table>
         </div>

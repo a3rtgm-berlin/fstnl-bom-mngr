@@ -126,6 +126,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
         .toPromise()
         .then((meta: any) => {
           if (meta) {
+            meta.uploadDate = new Date(meta.uploadDate);
             this.modalService.init(BomMetaViewComponent, {meta}, {});
           }
       });
