@@ -156,7 +156,13 @@ app.get('/api/master/rebuild/:id', (req, res) => {
             res.sendStatus(404);
             return console.error(err);
         }
-        createMaster(req, res);
+        MaterialList.find({id: { $regex: q, $options: 'i' }}, (err, boms) => {
+            utils.updateExcludesAndMatrix(boms).then(success => {
+                if (success) {
+                    createMaster(req, res);
+                }
+            });
+        });
     });
 });
 
