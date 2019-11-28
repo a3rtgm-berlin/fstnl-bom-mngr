@@ -23,16 +23,27 @@ function updateExcludesAndMatrix(boms) {
         try {
             var exclude = await ExcludeList.findOne({}).exec(),
                 matrix = await ArbMatrix.findOne({}).exec();
-        
+            
             boms.forEach(bom => {
-                bom.json.forEach(part => {
-                    part.Station = this.mapMatrix(part.ArbPlatz, matrix);
-                    part.id = part.Station + part.Material;
-                });
+                bom.json = bom.json
+                    .filter(part => !exclude.exclude.includes(part.Material))
+                    .map(part => {
+                        part.Station = this.mapMatrix(part.ArbPlatz, matrix.json);
+                        part.id = part.Station + part.Material;
+                        return part;
+                    });
                 mergeDuplicates(bom.json);
-                bom.save();
+                MaterialList.findOneAndUpdate({id: bom.id}, {json: bom.json, updated: new Date()}, (err) => {
+                    if (err) {
+                        res.sendStatus(500);
+                        console.err(err);
+                    }
+                });
             });
-            res(true);
+            setTimeout(() => {
+                console.log('lists updated');
+                res(true);
+            }, 2500);
         } catch (e) {
             console.error(e);
             rej(false);
