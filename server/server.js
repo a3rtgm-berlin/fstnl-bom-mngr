@@ -1,21 +1,10 @@
 'use strict';
 
-// const config = require('./config');
-// const express = require('../node_modules/express');
-// const cors = require('../node_modules/cors');
-// const bodyParser = require("../node_modules/body-parser");
-const mongoose = require("../node_modules/mongoose");
-// const flash = require("./node_modules/connect-flash");
-// const session = require("./node_modules/express-session");
-// const passport = require("passport");
-// const jwt = require("./node_modules/jsonwebtoken");
-// const fs = require("fs");
-
 const express = require('express');
 const config = require('./config');
 const cors = require('cors');
 const bodyParser = require("body-parser");
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
@@ -42,9 +31,9 @@ const ExcludeList = require("./models/excludeList");
 const ArbMatrix = require("./models/arbMatrix");
 
 // Constants
-const PORT = process.env.PORT || 8000;
-const HOST = 'localhost';
-// const HOST = '0.0.0.0';
+const PORT = 8080;
+const HOST = '0.0.0.0';
+// const HOST = 'localhost';
 
 // App
 const app = express();
@@ -53,7 +42,7 @@ const app = express();
 const corsOptions = {
     origin: '*',
     optionsSuccessStatus: 200,
-}
+};
 
 // Expess Session
 app.use(session({
@@ -100,8 +89,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set routes
 app.get('/', (req, res) => {
-    res.status(200).send("connected");
+    res.send(200, "connected");
 });
+
+app.get('/api/test/:id', (req, res) => {
+    var id = req.params.id;
+    console.log(id);
+
+    MasterBom.findOne({id: {$lt: id}}).sort({id: -1}).exec(async (err, data) => {
+        if (err) {
+            res.sendStatus(404);
+            return console.error(err);
+        };
+        if (data) {
+            console.log(data.id);
+            res.status(200).send(data);
+        }
+    });
+});
+
 /**
  * @description Handles upload of ArbMatrix files
  * @param {*} file
@@ -119,7 +125,7 @@ app.get('/api/matrix', (req, res) => {
     });
 });
 app.get('/api/exclude', (req, res) => {
-    ExcludeList.findOne((err, data) => {
+    ExcludeList.find((err, data) => {
         if (err) {
             res.sendStatus(404);
             return console.error(err);
@@ -156,7 +162,13 @@ app.get('/api/master/rebuild/:id', (req, res) => {
             res.sendStatus(404);
             return console.error(err);
         }
-        createMaster(req, res);
+        MaterialList.find({id: { $regex: q, $options: 'i' }}, (err, boms) => {
+            utils.updateExcludesAndMatrix(boms).then(success => {
+                if (success) {
+                    createMaster(req, res);
+                }
+            });
+        });
     });
 });
 
@@ -167,10 +179,7 @@ app.get('/api/master/rebuild/:id', (req, res) => {
  */
 app.get('/api/master', (req, res) => {
     MasterBom.find((err, data) => {
-        if (err) {
-            res.sendStatus(404);
-            return  console.error(err);
-        };
+        if (err) throw err;
         if (data) return res.status(200).send(
             [data.sort((a, b) => {
                 if (a.id < b.id) return 1;
@@ -188,10 +197,7 @@ app.get('/api/master', (req, res) => {
  */
 app.get('/api/master/id', (req, res) => {
     MasterBom.find((err, data) => {
-        if (err) {
-            res.sendStatus(404);
-            return  console.error(err);
-        };
+        if (err) throw err;
         if (data.length > 0) return res.status(200).send(
             [data.map(d => d.id).sort((a, b) => {
                 if (a < b) return 1;
@@ -262,7 +268,7 @@ app.get('/api/lists', (req, res, next) => {
  * @todo ... and project
  * @returns {MaterialList}
  */
-app.get('/api/lists/:id', (req, res, next) => {
+app.get('/api/lists/:id', (req, res) => {
     const q = req.params.id;
 
     MaterialList.findOne({id: q}, (err, data) => {
@@ -279,7 +285,6 @@ app.get('/api/lists/:id', (req, res, next) => {
 app.delete('/api/lists/:id', (req, res, next) => {
     const q = req.params.id;
 
-    console.log(q);
     if (q === 'delete-all') {
         MaterialList.deleteMany({}, (err) => {
             if (err) return console.error(err);
@@ -389,7 +394,6 @@ app.post('/api/lists/multibom', (req, res) => {
 
         if (data) {
             const multiBom = new MultiBom(data);
-
             const dbModel = new MaterialList(multiBom.list);
             dbModel.save((err) => {
                 if (err) {
@@ -426,7 +430,7 @@ app.post('/api/projects/:tag', (req, res, next) => {
 
 app.post('/api/token/verify', (req, res) => {
     if (req.body.token) {
-        var decoded = jwt.verify(req.body.token, privateKey, verifyOptions, (err, decoded) => {
+        const decoded = jwt.verify(req.body.token, privateKey, verifyOptions, (err, decoded) => {
             if (err) return res.status(401).send(false);
             return res.status(200).send(true);
         });
@@ -552,23 +556,4 @@ app.delete('/api/projects/:tag', (req, res, next) => {
 });
 
 app.listen(PORT, HOST);
-// app.listen(PORT);
 console.log(`Running on http://${HOST}:${PORT}`);
-
-app.get('/api/test/:id', (req, res) => {
-    var id = req.params.id;
-    console.log(id);
-
-    MasterBom.findOne({id: {$lt: id}}).sort({id: -1}).exec(async (err, data) => {
-        if (err) {
-            res.sendStatus(404);
-            return console.error(err);
-        };
-        if (data) {
-            console.log(data.id);
-            res.status(200).send(data);
-        }
-    });
-});
-
- 
