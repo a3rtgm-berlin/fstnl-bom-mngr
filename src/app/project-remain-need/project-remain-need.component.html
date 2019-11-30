@@ -1,4 +1,26 @@
-<button class="csv dl" (click)="downloadRPN()"><p>Download RPN XLSX</p></button>
+
+<div class="functionblock">
+    <div class="dlbuttons">
+        <button class="csv dl" (click)="downloadRPN()"><p>Download RPN XLSX</p></button>
+    </div>
+    <div class="ftbuttons">
+        <div class="input-group">
+            <app-consumtion-upload></app-consumption-upload>
+        </div>
+    </div>
+    <div class="storage">
+        <div class="input-group">
+            <input type="number" min="1" step="1" (change)="storageVal($event)">
+        </div>
+    </div>
+    <div class="viewbuttons">
+        <button class="view" (click)="viewVal(weekly)">Week</button>
+        <button class="view" (click)="viewVal(monthly)">Month</button>
+        <button class="view" (click)="viewVal(annual)">Year</button>
+        <button class="view" (click)="viewVal(bom)">BOM</button>
+        <button class="view" (click)="viewVal(rpn)">RPN</button>
+    </div>
+</div>
 <table class="table table-sm" id="RPN">
     <thead class="thead-dark">
         <th scope="col">Part #</th>

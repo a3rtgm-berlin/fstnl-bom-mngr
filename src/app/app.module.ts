@@ -34,6 +34,7 @@ import { ProjectRemainNeedComponent } from './project-remain-need/project-remain
 import { RoundDecimalsPipe } from './pipes/round-decimals.pipe';
 import { UpdateProjectComponent } from './manage-projects/update-project/update-project.component';
 import { BomMetaViewComponent } from './bom-meta-view/bom-meta-view.component';
+import { ConsumptionUploadComponent } from './project-remain-need/consumption-upload/consumption-upload.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { BomMetaViewComponent } from './bom-meta-view/bom-meta-view.component';
     RoundDecimalsPipe,
     UpdateProjectComponent,
     BomMetaViewComponent,
+    ConsumptionUploadComponent,
   ],
   entryComponents: [
     CreateProjectComponent,
