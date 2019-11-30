@@ -29,7 +29,7 @@
         <th scope="col">Overall Need</th>
         <th scope="col">Phase Out Date</th>
     </thead>
-    <tr *ngFor="let part of rpn">
+    <tr *ngFor="let part of rpn.parts">
         <td class="{{item}}">{{part.id}}</td>
         <td class="{{item}}">{{part.name}}</td>
         <td *ngFor="let project of projects" [id]="project">{{part[project]}}</td>

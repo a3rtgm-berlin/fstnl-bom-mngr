@@ -15,13 +15,16 @@ import { ExportService } from '../services/export/export.service';
 export class ProjectRemainNeedComponent implements OnInit {
 
   storageTime: any;
-  private _rpn: any[];
+  public _rpn = {
+    parts:[],
+  };
 
-  public get rpn(): any[] {
+  public get rpn(): any {
     return this._rpn;
   }
-  public set rpn(value: any[]) {
-    value.forEach(part => {
+
+  public set rpn(value: any) {
+    value.parts.forEach(part => {
       part.phaseOutDate = part.phaseOutDate.length > 0 ?
         new Date(part.phaseOutDate).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'}) : '';
     });

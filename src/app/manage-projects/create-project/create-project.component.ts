@@ -33,6 +33,7 @@ export class CreateProjectComponent implements OnInit {
       bomLists: [],
       active: true,
       createdBy: 'dev',
+      state: 'empty',
       created:this.dateToday,
       multiBom: 1,
       isArchived: true,
