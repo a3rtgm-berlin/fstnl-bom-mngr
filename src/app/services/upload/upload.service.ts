@@ -43,6 +43,8 @@ export class UploadService {
         } else if (event instanceof HttpResponse) {
           progress.complete();
 
+          console.log(event);
+
           switch (service) {
             case 'bom':
               this.loader.hideLoader();

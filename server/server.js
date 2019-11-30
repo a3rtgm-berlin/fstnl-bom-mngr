@@ -31,6 +31,7 @@ const MasterBom = require('./models/masterBom');
 const User = require("./models/userModel").UserModel;
 const ExcludeList = require("./models/excludeList");
 const ArbMatrix = require("./models/arbMatrix");
+const RPN = require("./models/rpn").RPNModel;
 
 // Constants
 // const PORT = 8080;
@@ -138,6 +139,14 @@ app.get('/api/exclude', (req, res) => {
 });
 
 /**
+ * @description Handles uploaded consumption files
+ * @param {*} file the consumption file uploaded
+ * @method POST
+ * @returns {void}
+ */
+app.post('/api/upload/consumption/:id', upload.consumption);
+
+/**
  * @description Handles uploaded BOM files
  * @param {*} file the BOM file uploaded
  * @method POST
@@ -150,7 +159,17 @@ app.post('/api/upload/bom', upload.bom);
  * @param id
  * @method get
  */
-app.get('/api/rpn/create/:id', createRpn);
+app.get('/api/rpn/:id', (req, res) => {
+    const id = req.params.id;
+
+    RPN.findOne({id: id}, (err, rpn) => {
+        if (rpn) {
+            res.send(rpn);
+        } else {
+            createRpn(req, res);
+        }
+    });
+});
 
 /**
  * @description todo

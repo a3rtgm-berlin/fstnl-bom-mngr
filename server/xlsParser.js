@@ -1,8 +1,9 @@
 const XLSX = require('../node_modules/xlsx');
 
-const rangeToIgnore = {c:1, r:3};
 
 function xlsParser(input, tag, suffix = null) {
+    const rangeToIgnore = {c:1, r:3};
+
     // load from buffer,
     const wb = XLSX.read(input);
     const ws = wb.Sheets[wb.SheetNames[0]];
@@ -62,5 +63,31 @@ function excludeListParser(input) {
         return dataAsJson.map(d => Object.values(d)[0].toString());
 }
 
-module.exports = { xlsParser, matrixParser, excludeListParser };
+function consumptionParser(input) {
+        const rangeToIgnore = {c:0, r:11};
+
+        // load from buffer,
+        const wb = XLSX.read(input, {type:"array"});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+
+        // const dataAsJson = XLSX.utils.sheet_to_json(ws);
+
+        // Get range of BOM File
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        range.s = rangeToIgnore;
+    
+        // Set new Range according to standard BOM File
+        const newRange = XLSX.utils.encode_range(range);
+
+        // // Create new Worksheet from range
+        const dataAsJson = XLSX.utils.sheet_to_json(ws, {range: newRange, raw: false})
+            .map(part => ({
+                id: part['Cust Part #'],
+                usage: part['Usage']
+            }));
+    
+        return dataAsJson;
+}
+
+module.exports = { xlsParser, matrixParser, excludeListParser, consumptionParser };
 

@@ -348,7 +348,7 @@ export class RestService {
   }
 
   public async getRPN(id: string) {
-    const observable = this.http.get<string>(url + 'rpn/create/' + id);
+    const observable = this.http.get<string>(url + 'rpn/' + id);
 
     observable.subscribe(res => {
       this.rpn.next(res);

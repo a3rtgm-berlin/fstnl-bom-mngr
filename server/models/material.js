@@ -22,17 +22,6 @@ class Item {
         this.ArbPlatz = d["ArbPlatz"];
         this.Station = d["ArbPlatz"] ? this.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location";
         this.id = this.Station + this.Material;
-
-        // this.SchGut = ((d) => {
-        //     return (d["SchGut"] === "X") ? true : false;
-        // });
-        // this.Stf = d["Stf"];
-        // this.Pos = d["Pos."];
-        // this.Werk = d["Werk"];
-        // this.ZTP = d["ZTP"];
-        // this.Horiz = d["Horiz"];
-        // this.DMk = d["DMk"];
-        // this.BeschArt = d["BeschArt"];
     }
 
     mapMatrix(station, arbMatrix) {
