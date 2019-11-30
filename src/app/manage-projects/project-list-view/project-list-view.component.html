@@ -59,7 +59,7 @@
         <ul>
             <li class="overview" *ngIf="tglSwitch === 'overview'">
                 <div class="prjct_ovw">
-                    <select class="bomlists">
+                    <select class="bomlists" [(ngModel)]="selectedSingleBom" (change)="targetSingleBom($event)">
                         <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
                     </select>
                     <div class="btnbox">

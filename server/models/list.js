@@ -12,7 +12,8 @@ const materialListSchema = new Schema({
     },
     csv: String,
     date: String,
-    uploadDate: Date
+    uploadDate: Date,
+    updated: Date
 }, {
     collection: 'order-data'
 });

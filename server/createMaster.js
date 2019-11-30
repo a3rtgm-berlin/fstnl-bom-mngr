@@ -13,7 +13,6 @@ const createMasterBom = function (req, res) {
             return console.error(err);
         }
 
-        console.log(lists.map(list => list.id));
         const newMaster = await combineLists(
             lists.map((list) => list.json.map((mat) => {
                 mat.lists = [list.id];
