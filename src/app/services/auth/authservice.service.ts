@@ -53,7 +53,6 @@ export class AuthserviceService {
     localStorage.setItem('user', JSON.stringify(userData.user));
     this.authToken = userData.token;
     this.user = userData.username;
-    console.log(userData, localStorage);
   }
 
   logoutUser() {

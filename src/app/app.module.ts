@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { XlsLoaderComponent } from './xls-loader/xls-loader.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { CompareOrdersComponent } from './compare-orders/compare-orders.component';
@@ -34,6 +34,7 @@ import { ProjectRemainNeedComponent } from './project-remain-need/project-remain
 import { RoundDecimalsPipe } from './pipes/round-decimals.pipe';
 import { UpdateProjectComponent } from './manage-projects/update-project/update-project.component';
 import { BomMetaViewComponent } from './bom-meta-view/bom-meta-view.component';
+import { ErrorInterceptor } from './services/interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,9 @@ import { BomMetaViewComponent } from './bom-meta-view/bom-meta-view.component';
   ],
   providers: [
     DomService,
-    ModalService
+    ModalService,
+    // { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
