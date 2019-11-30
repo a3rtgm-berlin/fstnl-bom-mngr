@@ -26,6 +26,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   mltBmToMerge = [];
   tglSwitch: any;
   cSBom: any;
+  selectedSingleBom: any;
 
   @Input() set project(project) {
     this.project$ = project;

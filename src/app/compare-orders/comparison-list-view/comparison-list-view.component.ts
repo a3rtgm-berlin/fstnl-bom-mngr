@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import $ from 'jquery';
+import { ExportService } from '../../services/export/export.service';
 import { ColorCodeService } from 'src/app/services/color-code/color-code.service';
 
 @Component({
@@ -19,6 +20,8 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
 
   @ViewChild('filterCol', {static: false}) filterCol: any;
   @Output() selection: EventEmitter<any> = new EventEmitter();
+  
+  @Input() id: string;
   @Input() set bom(bom) {
     this.bom$ = bom;
     this.processedBom = this.bom$;
@@ -28,7 +31,7 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     return this.bom$;
   }
 
-  constructor() { }
+  constructor(public exportService: ExportService) {}
 
   ngOnInit() {
   }
@@ -144,6 +147,13 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
       var result = a[args[0]] < b[args[0]] ? -1 : a[args[0]] > b[args[0]] ? 1 : 0 || a[args[1]] < b[args[1]] ? -1 : a[args[1]] > b[args[1]] ? 1 : 0 || a[args[2]] < b[args[2]] ? -1 : a[args[2]] > b[args[2]] ? 1 : 0;
       return result;
     }
+  }
+
+  downloadBom(type) {
+    this.exportService.xlsxFromJson(
+      type === 'filtered' ? this.processedBom : this.bom,
+      type === 'filtered' ? 'BOM-' + this.id + '(filtered)' : 'BOM-' + this.id
+    );
   }
 
 }
