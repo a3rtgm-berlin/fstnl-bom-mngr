@@ -1,5 +1,6 @@
-<div class="prjct" #ganzoben>
+<div class="prjct" #ganzoben class="{{project$.state}} prjct">
     <div class="prjct_tpbr" [ngClass]="{'mltBm': project$.multiBom > 0, 'snglBm' : project$.multiBom == 0}">
+        <div class="prjct_state"></div>
         <div class="prjct_ttl">
             <span>[ {{project$.tag}} ]</span>
             {{project$.name}}
@@ -50,10 +51,9 @@
         <div class="prjct_upl">
             <app-xls-loader [projectTag]="project$.tag" [suffix]="null"></app-xls-loader>
         </div>
-        <div class="prjct_state">
 
         </div>
-    </div>
+    
 
     <div *ngIf="project$.multiBom > 0" class="mltBm_prjct_bdy">
         <ul>
@@ -120,9 +120,5 @@
                 </li>
             </ng-container> 
         </ul>
-    </div>
-
-    <div class="prjct_switchbx">
-        <!--Wofür war das?-->    
     </div>
 </div>

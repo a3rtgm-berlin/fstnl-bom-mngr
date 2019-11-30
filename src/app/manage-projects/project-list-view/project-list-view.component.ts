@@ -13,6 +13,7 @@ import { BomMetaViewComponent } from 'src/app/bom-meta-view/bom-meta-view.compon
   templateUrl: './project-list-view.component.html',
   styleUrls: ['./project-list-view.component.scss']
 })
+
 export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild ('prjctsb', {static: false}) injector: any;
@@ -27,6 +28,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   tglSwitch: any;
   cSBom: any;
   selectedSingleBom: any;
+  state$: any;
 
   @Input() set project(project) {
     this.project$ = project;
@@ -38,7 +40,6 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   ngOnInit() {
     this.tglSwitch = 'overview';
     this.bomList$ = this.project$.bomLists;
-
     this.setWeeks(this.project$.deadline);
 
     for (let i = 0; i < this.project$.multiBom; i++) {
@@ -135,4 +136,5 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
       alert('no BOM selected');
     }
   }
+
 }

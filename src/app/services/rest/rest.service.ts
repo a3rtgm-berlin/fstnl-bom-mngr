@@ -247,6 +247,8 @@ export class RestService {
     this.loader.showLoader(true);
     const observable = this.http.get<Project[]>(url + 'projects');
     const projects = await observable.toPromise();
+    
+    console.log("this should be 2nd");
 
     if (projects) {
       this.setAllProjects(projects);
