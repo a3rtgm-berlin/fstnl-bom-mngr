@@ -33,6 +33,7 @@ export class RestService {
   public masterId: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public excludeList: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public arbMatrix: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public rpn: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   setSingleList(val) {
     if (val) {
@@ -101,7 +102,7 @@ export class RestService {
   public async getAllLists() {
     const observable = this.http.get<MaterialList[]>(url + 'lists');
     const materialLists = await observable.toPromise();
-    
+
     if (materialLists) {
       this.setAllLists(materialLists.map((el) => {
           el.uploadDate = new Date(el.uploadDate);
@@ -109,10 +110,6 @@ export class RestService {
         })
       );
     }
-  }
-
-  public tryMe(valid) {
-    console.log(valid);
   }
 
   public async getList(id: string) {
@@ -347,6 +344,14 @@ export class RestService {
 
     observable.subscribe(res => {
       this.arbMatrix.next(res);
+    });
+  }
+
+  public async getRPN(id: string) {
+    const observable = this.http.get<string>(url + 'rpn/create/' + id);
+
+    observable.subscribe(res => {
+      this.rpn.next(res);
     });
   }
 }

@@ -23,7 +23,6 @@ export class MasterViewComponent implements OnInit {
     });
     this.restService.master.subscribe(res => {
       this.master = res;
-      console.log(this.master);
     });
   }
 
