@@ -35,6 +35,7 @@ import { RoundDecimalsPipe } from './pipes/round-decimals.pipe';
 import { UpdateProjectComponent } from './manage-projects/update-project/update-project.component';
 import { BomMetaViewComponent } from './bom-meta-view/bom-meta-view.component';
 import { ErrorInterceptor } from './services/interceptors/error.interceptor';
+import { ConsumptionUploadComponent } from './project-remain-need/consumption-upload/consumption-upload.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { ErrorInterceptor } from './services/interceptors/error.interceptor';
     RoundDecimalsPipe,
     UpdateProjectComponent,
     BomMetaViewComponent,
+    ConsumptionUploadComponent,
   ],
   entryComponents: [
     CreateProjectComponent,
