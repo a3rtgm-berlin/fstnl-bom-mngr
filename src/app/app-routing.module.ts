@@ -13,7 +13,6 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuardService as AuthGuard} from '../app/services/auth-guard/auth-guard.service';
 
 const routes: Routes = [
-  { path: '',  redirectTo: '/app/projects', pathMatch: 'full', canActivate: [AuthGuard], },
   { path: 'app/login', component: LoginComponent},
   { path: 'app/projects', component: ManageProjectsComponent, canActivate: [AuthGuard] },
   { path: 'app/lists', component: ProjectListComponent, canActivate: [AuthGuard]  },
@@ -21,7 +20,8 @@ const routes: Routes = [
   { path: 'app/lists/compare/:id1/:id2', component: CompareOrdersComponent, canActivate: [AuthGuard]  },
   { path: 'app/matrix', component: MatrixFilesComponent, canActivate: [AuthGuard] },
   { path: 'app/masterlistview', component: MasterlistviewComponent, canActivate: [AuthGuard]  },
-  { path: 'app/settings', component: SettingsComponent, canActivate: [AuthGuard] }
+  { path: 'app/settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: '**',  redirectTo: '/app/projects', pathMatch: 'full', canActivate: [AuthGuard], }
 ];
 
 @NgModule({

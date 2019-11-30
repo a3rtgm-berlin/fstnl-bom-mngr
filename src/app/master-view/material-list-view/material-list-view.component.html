@@ -28,7 +28,7 @@
                     <app-compare-orders [comparison]="master$.comparison ? master.comparison : null"></app-compare-orders>
                 </ng-template>
                 <ng-template [ngSwitchCase]="'RPN'">
-                    <app-project-remain-need [bom]="master$.json ? master$.json : null" [id]="master$.id" [projects]="master$.projects"></app-project-remain-need>
+                    <app-project-remain-need [projects]="master$.projects" [id]="master$.id"></app-project-remain-need>
                 </ng-template>
                 <ng-template ngSwitchDefault>
                     <p>No Tab Selected.</p>

@@ -17,6 +17,7 @@ const http = require('http');
 const upload = require('./upload');
 const projectHandler = require('./projectsHandler');
 const createMaster = require('./createMaster');
+const createRpn = require('./createRpn');
 const utils = require('./utils');
 
 // Classes
@@ -144,6 +145,13 @@ app.get('/api/exclude', (req, res) => {
  * @returns {void}
  */
 app.post('/api/upload/bom', upload.bom);
+
+/**
+ * @description creates the RPN from the current master and project vals
+ * @param id
+ * @method get
+ */
+app.get('/api/rpn/create/:id', createRpn);
 
 /**
  * @description todo

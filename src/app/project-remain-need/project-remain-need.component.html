@@ -25,11 +25,18 @@
     <thead class="thead-dark">
         <th scope="col">Part #</th>
         <th scope="col">Description</th>
-        <th *ngFor="let project of projects" scope="col">{{project.id}}</th>
+        <th *ngFor="let project of projects" scope="col">{{project}}</th>
         <th scope="col">Overall Need</th>
         <th scope="col">Phase Out Date</th>
     </thead>
-    <tr>
+    <tr *ngFor="let part of rpn">
+        <td class="{{item}}">{{part.id}}</td>
+        <td class="{{item}}">{{part.name}}</td>
+        <td *ngFor="let project of projects" [id]="project">{{part[project]}}</td>
+        <td>{{part.ovCount}}</td>
+        <td>{{part.phaseOutDate}}</td>
+    </tr>
+    <!-- <tr>
         <td>Weeks remaining</td>
         <td>Time between now and set deadline</td>
         <td *ngFor="let project of projects" [id]="project.id">{{project.weeksLeft}}</td>
@@ -56,6 +63,5 @@
         <td *ngFor="let project of projects" [id]="project.id">{{item.projects[project.id] ? item.projects[project.id] : '0'}}</td>
         <td>{{item.ovCount}}</td>
         <td></td>
-    </tr>
-    
+    </tr> -->
 </table>
