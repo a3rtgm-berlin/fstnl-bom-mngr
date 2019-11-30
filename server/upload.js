@@ -222,6 +222,7 @@ async function saveBomAndUpdateProject(bom) {
                 if (err) throw err;
                 if (project) {
                     project.bomLists.push(bom.id);
+                    project.bomLists.sort().reverse();
                     project.save();
                 }
             });

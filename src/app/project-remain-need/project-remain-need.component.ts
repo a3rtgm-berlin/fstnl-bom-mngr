@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { RestService } from '../services/rest/rest.service';
+import { ConsumptionUploadComponent } from './consumption-upload/consumption-upload.component';
 import { MaterialList } from '../materialListModel';
 import { Project } from '../projectModel'
 import $ from 'jquery';

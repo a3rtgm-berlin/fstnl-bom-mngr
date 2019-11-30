@@ -1,0 +1,53 @@
+.prjct {
+
+    .prjct_state {
+        position:relative;
+        height:40px;
+        width:40px;
+
+        &:after {
+            content:'';
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            width:10px;
+            height:10px;
+            opacity:0.8;
+            border-radius:50%;
+        }
+    }
+
+    &.sync {
+        .prjct_state {
+            &:after {
+                background:$green;
+            }
+        }
+    }
+
+    &.sync.sub {
+        .prjct_state {
+            &:after {
+                background:$honey;
+            }
+        }
+    }
+
+    &.ahead {
+        .prjct_state {
+            &:after {
+                background:$green;
+            }
+        }
+    }
+
+    &.empty {
+        .prjct_state {
+            &:after {
+                background:whitesmoke;
+                opacity:0.3;
+            }
+        }
+    }
+}

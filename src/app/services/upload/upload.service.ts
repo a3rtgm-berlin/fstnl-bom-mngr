@@ -38,8 +38,8 @@ export class UploadService {
       this.http.request(req).subscribe((event) => {
         if (event.type === HttpEventType.UploadProgress) {
           const percentDone = Math.round(100 * event.loaded / event.total);
-
           progress.next(percentDone);
+
         } else if (event instanceof HttpResponse) {
           progress.complete();
 
@@ -56,11 +56,13 @@ export class UploadService {
               break;
             default:
               this.loader.hideLoader();
+              this.restService.getAllProjects();
               break;
           }
         }
       });
 
+      console.log("this should be first");
       status[file.name] = {
         progress: progress.asObservable()
       };

@@ -24,10 +24,12 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   public listsToCombine: string[] = [];
   public masterId: string;
   public latestId: string;
-  public state: string;
+  public crossId: string;
+  public state = '';
   public count: any;
   public penisse: string;
   public crossIdCheck: string;
+  public crossStateCheck: string;
 
   constructor(public modalService: ModalService, public restService: RestService, public router: Router) {
     this.restService.allProjects.subscribe((res) => {
@@ -44,7 +46,6 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     const dateToday = new Date();
-
     this.restService.getAllProjects();
     this.restService.getLatestMasterId();
 
@@ -71,7 +72,6 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
       this.allProjects.forEach((el) => {
         if (el.active !== false) {
           this.count += 1;
-          console.log(this.count);
         }
       });
     }
@@ -88,7 +88,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
     if (this.allProjects) {
       this.allProjects.forEach((project) => {
         if (project.bomLists.length > 0) {
-          const thisId = project.bomLists[project.bomLists.length - 1];
+          const thisId = project.bomLists[0];
           const thisId$ = thisId.substring(thisId.indexOf('-') + 1);
 
           if (thisId$.includes('-M')) {
@@ -108,6 +108,8 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
       // console.log(this.upToDate, this.listsToCombine.length, this.allProjects.length);
       this.upToDate = this.listsToCombine.length >= this.allProjects.length ? false : true;
     }
+    
+    this.projectStates();
   }
 
   deleteMasterBom() {
@@ -119,6 +121,47 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   recalculateMasterBom() {
     if (confirm(`Recalculate current Master ${this.latestId}?`)) {
       this.restService.rebuildMaster(this.masterId);
+    }
+  }
+
+  projectStates() {
+    this.crossId = this.masterId;
+    
+    if (this.allProjects) {
+      this.allProjects.forEach((project) => {
+        if (project.bomLists.length > 0) {
+          const thisId = project.bomLists[0];
+          const thisId$ = thisId.substring(thisId.indexOf('-') + 1);
+
+          if (thisId$.includes('-M')) {
+            const thisId$$ = thisId$.substring(0, thisId$.lastIndexOf('-'));
+            this.crossStateCheck = thisId$$;
+          } else {
+            this.crossStateCheck = thisId$;
+          }
+
+          const masterDate = new Date(this.crossId);
+          const projectDate =  new Date(this.crossStateCheck);
+          console.log(masterDate < projectDate);
+
+          if (projectDate < masterDate) {
+            project.state = " deprecated";
+          } else if (projectDate > masterDate) {
+            project.state += " ahead";
+
+            this.allProjects.forEach((project) => {
+              project.state += " sub";
+            });
+
+          } else {
+            project.state += " sync";
+          }
+
+        } else {
+          project.state += " empty";
+        }
+
+      });
     }
   }
 
