@@ -4,7 +4,8 @@ const express = require('express');
 const config = require('./config');
 const cors = require('cors');
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+const mongoose = require("../node_modules/mongoose");
 const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
@@ -31,9 +32,10 @@ const ExcludeList = require("./models/excludeList");
 const ArbMatrix = require("./models/arbMatrix");
 
 // Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
-// const HOST = 'localhost';
+// const PORT = 8080;
+// const HOST = '0.0.0.0';
+const HOST = 'localhost';
+const PORT = 8000;
 
 // App
 const app = express();
@@ -444,8 +446,6 @@ app.post('/api/users/authenticate', passport.authenticate('local', {
     failureMessage: 'something went wrong',
     failureFlash: true
 }), (req, res) => {
-    
-    // console.log(privateKey, publicKey);
     const token = jwt.sign({
         "admin": req.user.admin,
         "dev": req.user.dev,
