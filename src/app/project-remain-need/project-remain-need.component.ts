@@ -15,19 +15,19 @@ import { ExportService } from '../services/export/export.service';
 export class ProjectRemainNeedComponent implements OnInit {
 
   storageTime: any;
-  public _rpn = {
-    parts:[],
+  private _rpn = {
+    parts: [],
   };
 
   public get rpn(): any {
     return this._rpn;
   }
-
   public set rpn(value: any) {
     value.parts.forEach(part => {
       part.phaseOutDate = part.phaseOutDate.length > 0 ?
         new Date(part.phaseOutDate).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'}) : '';
     });
+    console.log(value);
     this._rpn = value;
   }
 
@@ -45,7 +45,6 @@ export class ProjectRemainNeedComponent implements OnInit {
       if (res) {
         this.rpn = res;
       }
-      console.log(this.rpn);
     });
   }
 

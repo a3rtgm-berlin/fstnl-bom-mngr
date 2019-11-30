@@ -1,6 +1,7 @@
 const MaterialList = require("./models/list").MaterialListModel;
 const Project = require("./models/project").ProjectModel;
 const MasterBom = require('./models/masterBom');
+const RPNModel = require('./models/rpn').RPNModel;
 const projectHandler = require('./projectsHandler');
 const template = require('./rpn.template.json');
 
@@ -69,7 +70,21 @@ module.exports = async function createRpn(req, res) {
         });
     });
 
-    res.send([...meta, ...allParts]);
+    const RPN = new RPNModel({
+        id: id,
+        parts: [...meta, ...allParts]
+    });
+
+    RPN.save((err, rpn) => {
+        if (err) {
+            res.sendStatus(503);
+            return console.error(err);
+        }
+        master.rpn = true;
+        master.save();
+
+        res.send(rpn);
+    });
 };
 
 function setWeeksTotal (dateA, dateB) {

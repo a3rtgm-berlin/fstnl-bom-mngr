@@ -10,6 +10,7 @@ const ArbMatrix = require('./models/arbMatrix');
 const Project = require('./models/project').ProjectModel;
 const MultiBom = require('./multiBom');
 const ExcludeList = require('./models/excludeList');
+const RPN = require('./models/rpn').RPNModel;
 
 const uploadDir = "./user-upload/";
 
@@ -75,6 +76,42 @@ async function addJson (datum) {
     delete datum.csv;
 
     return datum;
+}
+
+function consumption (req, res) {
+    const id = req.params.id;
+    const reader = new FileReader();
+    let form = new IncomingForm();
+
+    form.on('file', (field, file) => {
+        // Parse & save to disk
+        reader.readAsArrayBuffer(file);
+        reader.addEventListener('load', (evt) => {
+            const view = new Uint8Array(reader.result);
+            const consumption = parser.consumptionParser(reader.result);
+
+            RPN.findOne({id: id}, (err, rpn) => {
+                if (err) {
+                    res.send(503);
+                    return console.error(err);
+                }
+                consumption.forEach(part => {
+                    const match = rpn.parts.find(_part => _part.id === part.id);
+
+                    if (match) {
+                        match.usage = part.usage;
+                        match.diff = part.usage - match.ovCount;
+                    }
+                });
+                rpn.hasConsumption = true;
+                    rpn.save(() => {
+                        res.json(rpn); 
+                    });
+            });
+        });
+    });
+
+    form.parse(req);
 }
 
 function matrix (req, res) {
@@ -216,4 +253,4 @@ async function updateListId (list) {
     return await updateListId;
 }
 
-module.exports = {bom, matrix, excludeList};
+module.exports = {bom, matrix, excludeList, consumption};

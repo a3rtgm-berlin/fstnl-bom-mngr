@@ -12,6 +12,7 @@ const masterBomSchema = new Schema({
     date: String,
     uploadDate: Date,
     projects: [String],
+    rpn: Boolean
 }, {
     collection: 'master-bom'
 });
