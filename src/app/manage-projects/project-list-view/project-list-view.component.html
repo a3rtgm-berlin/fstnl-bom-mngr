@@ -21,7 +21,7 @@
 
     <div *ngIf="project$.multiBom == 0" class="prjct_bdy">
         <div class="prjct_bom">
-            <select class="bomlists" [(ngModel)]="selectedSingleBom" (change)="targetSingleBom($event)">
+            <select class="bomlists" (change)="targetSingleBom($event)">
                 <option class="act-lst" *ngFor="let bom of bomList$" >{{bom}}</option>
             </select>
             <div class="btnbox">
@@ -59,7 +59,7 @@
         <ul>
             <li class="overview" *ngIf="tglSwitch === 'overview'">
                 <div class="prjct_ovw">
-                    <select class="bomlists">
+                    <select class="bomlists" [(ngModel)]="selectedSingleBom" (change)="targetSingleBom($event)">
                         <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
                     </select>
                     <div class="btnbox">

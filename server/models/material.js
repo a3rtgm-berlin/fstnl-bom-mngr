@@ -19,6 +19,7 @@ class Item {
         this.Menge = this.MengeProZug * trainsPending;
         this.ME = d["ME"];
         this.MArt = d["MArt"];
+        this.ArbPlatz = d["ArbPlatz"];
         this.Station = d["ArbPlatz"] ? this.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location";
         this.id = this.Station + this.Material;
 
