@@ -50,7 +50,6 @@ function updateExcludesAndMatrix(boms) {
                         return part;
                     });
                 bom.json = await updatePartAmount(mergeDuplicates(bom.json), bom.project);
-                console.log(bom.json.length);
                 MaterialList.findOneAndUpdate({id: bom.id}, {json: bom.json, updated: new Date()}, (err) => {
                     if (err) {
                         res.sendStatus(500);

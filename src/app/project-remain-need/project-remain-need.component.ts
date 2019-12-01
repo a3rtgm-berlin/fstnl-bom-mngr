@@ -62,29 +62,20 @@ export class ProjectRemainNeedComponent implements OnInit {
     this.storageVal(event.target.value);
   }
 
-  storageVal(weeks) {
-    console.log(weeks);
+  storageVal(weeks: number) {
     this.storageTime = weeks;
-    this._rpn.parts.forEach((part) => {
-      part.minmax = 0;
-      part.min = 0;
-      part.max = 0;
-    });
 
-    this.projects.forEach((project) => {
-      this._rpn.parts.forEach((part, index) => {
-        if (index === 1) {
-            this.perWeek = part[project];
-        } else if (index > 2) {
-          const minmax = Math.round((part[project] * this.perWeek) * this.storageTime);
-          part.minmax = part.minmax + minmax;
-        }
-      });
-    });
+    this.rpn.parts.forEach((part, i) => {
+      if (i > 2) {
+        part.minmax = 0;
+        this.projects.forEach(project => {
+          const storageTime = this.rpn.parts[0][project] < this.storageTime ? this.rpn.parts[0][project] : this.storageTime;
 
-    this._rpn.parts.forEach((part) => {
-      part.min = Math.round(part.minmax * 0.9);
-      part.max = Math.round(part.minmax * 1.1);
+          part.minmax += Math.round((part[project] / this.rpn.parts[2][project]) * this.rpn.parts[1][project] * storageTime);
+          part.min = Math.round(part.minmax * 0.9);
+          part.max = Math.round(part.minmax * 1.1);
+        });
+      }
     });
   }
 
