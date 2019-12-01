@@ -10,7 +10,7 @@
     </div>
     <div class="storage">
         <div class="input-group">
-            <input type="number" min="1" step="1" (change)="storageVal($event)">
+            <input type="number" min="1" step="1" value="26" (change)="setStorageVal($event)">
         </div>
     </div>
     <div class="viewbuttons">
@@ -27,6 +27,7 @@
         <th scope="col">Description</th>
         <th *ngFor="let project of projects" scope="col">{{project}}</th>
         <th scope="col">Overall Need</th>
+        <th scope="col">Min | Max</th>
         <th scope="col">Phase Out Date</th>
     </thead>
     <tr *ngFor="let part of rpn.parts">
@@ -34,6 +35,7 @@
         <td class="{{item}}">{{part.name}}</td>
         <td *ngFor="let project of projects" [id]="project">{{part[project]}}</td>
         <td>{{part.ovCount}}</td>
+        <td>{{part.min}} | {{part.max}}</td>
         <td>{{part.phaseOutDate}}</td>
     </tr>
 </table>
