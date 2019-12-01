@@ -7,7 +7,10 @@ module.exports = class Comparison {
         this.quantitySelector = Config[this.client].quantity;
 
         const sortedLists = lists.sort((a, b) => {
-            return Date.parse(a.id) - Date.parse(b.id);
+            var dateA = a.date.split('.');
+            var dateB = b.date.split('.');
+            var diff = new Date(dateA[2], dateA[1] - 1, dateA[0]) - new Date(dateB[2], dateB[1] - 1, dateB[0]);
+            return diff !== 0 ? diff : a.uploadDate - b.uploadDate;
         });
         
         this.lastList = {

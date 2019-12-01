@@ -43,22 +43,13 @@ export class UploadService {
         } else if (event instanceof HttpResponse) {
           progress.complete();
 
-          console.log(event);
-
-          switch (service) {
-            case 'bom':
-              this.loader.hideLoader();
-              this.restService.getAllProjects();
-              break;
-            case 'matrix':
-              this.loader.hideLoader();
-              this.restService.getAllProjects();
-              break;
-            default:
-              this.loader.hideLoader();
-              this.restService.getAllProjects();
-              break;
+          if (service.includes('consumption')) {
+            this.restService.getRPN(service.split('/')[1]);
+          } else {
+            this.restService.getAllProjects();
           }
+
+          this.loader.hideLoader();
         }
       });
 

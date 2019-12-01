@@ -17,6 +17,7 @@ import { BomMetaViewComponent } from 'src/app/bom-meta-view/bom-meta-view.compon
 export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild ('prjctsb', {static: false}) injector: any;
+  @ViewChild ('selectBom', {static: false}) selectBom: any;
 
   public project$: any;
   bomList$: any;
@@ -50,6 +51,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngAfterViewInit(): void {
+    this.cSBom = this.selectBom.nativeElement.value;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -99,10 +101,12 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   createComponent() {
+    this.modalService.destroy('.prjctsb');
     this.modalService.init(ProjectSubSettingsComponent, {project: this.project$}, {}, this.injector, false);
   }
 
   updateProject() {
+    this.modalService.destroy('.prjctsb');
     this.modalService.init(UpdateProjectComponent, {project: this.project$}, {}, this.injector, false);
   }
 

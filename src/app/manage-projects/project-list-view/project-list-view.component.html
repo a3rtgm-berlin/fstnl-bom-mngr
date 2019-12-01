@@ -22,7 +22,7 @@
 
     <div *ngIf="project$.multiBom == 0" class="prjct_bdy">
         <div class="prjct_bom">
-            <select class="bomlists" (change)="targetSingleBom($event)">
+            <select class="bomlists" (change)="targetSingleBom($event)" #selectBom>
                 <option class="act-lst" *ngFor="let bom of bomList$" >{{bom}}</option>
             </select>
             <div class="btnbox">

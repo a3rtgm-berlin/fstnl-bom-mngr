@@ -1,0 +1,63 @@
+@import "../../../variables";
+
+form.upload {
+    .input-group {
+        width:100%;
+        margin:3px auto;
+
+        .input-group-prepend, .input-group-append {
+            border:none;
+            flex:1 0 100%;
+            margin-bottom:3px;
+
+            span {
+                text-align:left;
+                color:#444;
+                font-size:70%;
+                font-weight:500;
+            }
+        }
+
+        input {
+            background:transparent;
+            border-bottom:1px solid #222;
+            box-shadow:none;
+            color:#222;
+            font-weight:700;
+
+            &::placeholder {
+                color:#888;
+                font-weight:300;
+            }
+        }
+
+        .custom-file {
+            input {
+                &:hover {
+                    cursor:pointer;
+                    transform:scale(1.02);
+                }
+            }
+
+            label {
+                border-radius:0px;
+                border:1px solid #222;
+
+                &:after {
+                    border-radius:0px;
+                    background:#222;
+                    color:whitesmoke;
+                    font-size:80%;
+                    font-weight:500;
+                    height:100%;
+                    line-height:1.75;
+                }
+            }
+        }
+
+        textarea {
+            border-bottom:1px solid #222;
+            box-shadow:none;
+        }
+    }
+}

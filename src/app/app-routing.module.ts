@@ -11,6 +11,7 @@ import { MasterlistviewComponent } from './masterlistview/masterlistview.compone
 import { SettingsComponent } from './settings/settings.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardService as AuthGuard} from '../app/services/auth-guard/auth-guard.service';
+import { MasterOverviewComponent } from './master-overview/master-overview.component';
 
 const routes: Routes = [
   { path: 'app/login', component: LoginComponent},
@@ -19,7 +20,7 @@ const routes: Routes = [
   { path: 'app/master/view/:id', component: MasterViewComponent, canActivate: [AuthGuard]  },
   { path: 'app/lists/compare/:id1/:id2', component: CompareOrdersComponent, canActivate: [AuthGuard]  },
   { path: 'app/matrix', component: MatrixFilesComponent, canActivate: [AuthGuard] },
-  { path: 'app/masterlistview', component: MasterlistviewComponent, canActivate: [AuthGuard]  },
+  { path: 'app/master', component: MasterOverviewComponent, canActivate: [AuthGuard]  },
   { path: 'app/settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: '**',  redirectTo: '/app/projects', pathMatch: 'full', canActivate: [AuthGuard], }
 ];

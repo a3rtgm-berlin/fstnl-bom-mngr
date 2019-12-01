@@ -24,6 +24,7 @@ module.exports = async function createRpn(req, res) {
                 const map = {
                     id: part,
                     name: '',
+                    unit: '',
                     ovCount: 0,
                     phaseOutDate: '',
                     projects: []
@@ -54,6 +55,7 @@ module.exports = async function createRpn(req, res) {
             if (match) {
               match.ovCount += item.Menge;
               match.name = item.Objektkurztext;
+              match.unit = item.ME;
               match[target] = match[target] ? match[target] + item.Menge : item.Menge;
             }
         });

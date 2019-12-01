@@ -2,6 +2,7 @@
     {
         "id": "Weeks remaining", 
         "name": "Time between now and set deadline",
+        "unit": "",
         "ovCount": "",
         "phaseOutDate": "",
         "projects": ""
@@ -9,6 +10,7 @@
     {
         "id": "Trains per Week", 
         "name": "Average value calculated from train count and deadline",
+        "unit": "",
         "ovCount": "",
         "phaseOutDate": "",
         "projects": ""
@@ -16,6 +18,7 @@
     {
         "id": "Trains left", 
         "name": "Number of trains left in the project",
+        "unit": "",
         "ovCount": "",
         "phaseOutDate": "",
         "projects": ""

@@ -15,9 +15,11 @@ import { ExportService } from '../services/export/export.service';
 export class ProjectRemainNeedComponent implements OnInit {
 
   storageTime: any;
-  private _rpn = {
+  processedRPN: any;
+  _rpn = {
     parts: [],
-  };
+    hasConsumption: false
+  }
 
   public get rpn(): any {
     return this._rpn;
@@ -27,8 +29,8 @@ export class ProjectRemainNeedComponent implements OnInit {
       part.phaseOutDate = part.phaseOutDate.length > 0 ?
         new Date(part.phaseOutDate).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'}) : '';
     });
-    console.log(value);
     this._rpn = value;
+    this.processedRPN = value.parts;
   }
 
 
@@ -49,7 +51,7 @@ export class ProjectRemainNeedComponent implements OnInit {
   }
 
   downloadRPN() {
-    this.exportService.xlsxFromJson(this.rpn, `RPN-${this.id}`);
+    this.exportService.xlsxFromJson(this.rpn.parts, `RPN-${this.id}`);
   }
 
   storageVal(event) {

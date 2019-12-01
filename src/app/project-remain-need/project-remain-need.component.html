@@ -3,7 +3,7 @@
     <div class="dlbuttons">
         <button class="csv dl" (click)="downloadRPN()"><p>Download RPN XLSX</p></button>
     </div>
-    <div class="ftbuttons">
+    <div class="ftbuttons" id="sider">
         <div class="input-group">
             <app-consumption-upload [id]="id"></app-consumption-upload>
         </div>
@@ -25,15 +25,29 @@
     <thead class="thead-dark">
         <th scope="col">Part #</th>
         <th scope="col">Description</th>
+        <th scope="col">Unit</th>
         <th *ngFor="let project of projects" scope="col">{{project}}</th>
         <th scope="col">Overall Need</th>
         <th scope="col">Phase Out Date</th>
+        <ng-container *ngIf="rpn.hasConsumption">
+            <th scope="col">Usage</th>
+            <th scope="col">Over-/Under Consumption</th>
+        </ng-container>
     </thead>
-    <tr *ngFor="let part of rpn.parts">
+    <tr *ngFor="let part of processedRPN">
         <td class="{{item}}">{{part.id}}</td>
         <td class="{{item}}">{{part.name}}</td>
+        <td class="{{item}}">{{part.unit}}</td>
         <td *ngFor="let project of projects" [id]="project">{{part[project]}}</td>
-        <td>{{part.ovCount}}</td>
+        <td>{{part.ovCount | localeNumber}}</td>
         <td>{{part.phaseOutDate}}</td>
+        <ng-container *ngIf="rpn.hasConsumption">
+            <td scope="col">{{part.usage | localeNumber }}</td>
+            <td scope="col" 
+                class="{{part.diff === 'No Refill' ? 'grey' : part.diff > 0 ? 'orange' : 'blue'}}" 
+                title="{{part.diff === 'No Refill' ? 'not delivered' : part.diff > 0 ? 'over consumption' : 'under consumption'}}">
+                    {{part.diff | localeNumber}}
+            </td>
+        </ng-container>
     </tr>
 </table>

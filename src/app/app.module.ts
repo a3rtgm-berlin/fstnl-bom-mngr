@@ -36,6 +36,8 @@ import { UpdateProjectComponent } from './manage-projects/update-project/update-
 import { BomMetaViewComponent } from './bom-meta-view/bom-meta-view.component';
 import { ErrorInterceptor } from './services/interceptors/error.interceptor';
 import { ConsumptionUploadComponent } from './project-remain-need/consumption-upload/consumption-upload.component';
+import { LocaleNumberPipe } from './pipes/locale-number.pipe';
+import { MasterOverviewComponent } from './master-overview/master-overview.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { ConsumptionUploadComponent } from './project-remain-need/consumption-up
     UpdateProjectComponent,
     BomMetaViewComponent,
     ConsumptionUploadComponent,
+    LocaleNumberPipe,
+    MasterOverviewComponent,
   ],
   entryComponents: [
     CreateProjectComponent,

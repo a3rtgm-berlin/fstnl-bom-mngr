@@ -95,18 +95,24 @@ function consumption (req, res) {
                     res.send(503);
                     return console.error(err);
                 }
-                consumption.forEach(part => {
-                    const match = rpn.parts.find(_part => _part.id === part.id);
+                const parts = JSON.parse(JSON.stringify(rpn.parts));
+
+                parts.forEach((part, i) => {
+                    const match = consumption.find(_part => _part.id === part.id);
 
                     if (match) {
-                        match.usage = part.usage;
-                        match.diff = part.usage - match.ovCount;
+                        part.usage = parseFloat(match.usage);
+                        part.diff = parseFloat(match.usage) - part.ovCount;
+                    }
+                    else {
+                        part.diff = i > 2 ? "No Refill" : "";
                     }
                 });
+                rpn.parts = parts;
                 rpn.hasConsumption = true;
-                    rpn.save(() => {
-                        res.json(rpn); 
-                    });
+                rpn.save(() => {
+                    res.status(201).json();
+                });
             });
         });
     });

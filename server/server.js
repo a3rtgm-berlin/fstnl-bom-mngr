@@ -245,8 +245,16 @@ app.get('/api/master/id', (req, res) => {
  */
 app.get('/api/master/all', (req, res, next) => {
     MasterBom.find((err, data) => {
-        if (err) return console.error(err);
-        res.send(data);
+        if (err) {
+            res.sendStatus(500);
+            return console.error(err);
+        }
+        res.send(data.map(master => ({
+            id: master.id,
+            moving: master.comparison ? master.comparison.meta.last : '-',
+            date: master.date,
+            projects: master.projects
+        })));
     });
 });
 

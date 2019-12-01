@@ -142,7 +142,6 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
           const masterDate = new Date(this.crossId);
           const projectDate =  new Date(this.crossStateCheck);
-          console.log(masterDate < projectDate);
 
           if (projectDate < masterDate) {
             project.state = " deprecated";

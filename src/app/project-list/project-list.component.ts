@@ -21,7 +21,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.restService.getAllMaster();
+    // this.restService.getAllMaster();
   }
 
   setSelectedMaterialLists(event$) {

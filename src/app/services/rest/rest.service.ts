@@ -324,11 +324,13 @@ export class RestService {
   }
 
   public deleteMaster(id: string) {
+    const that = this;
     const observable = this.http.delete<string>(url + 'master/delete/' + id);
+
     observable.subscribe({
       complete() {
         alert(`MasterBOM with ID ${id} has been deleted.`);
-        this.getLatestMasterId();
+        that.getLatestMasterId();
       }
     });
   }
@@ -350,10 +352,12 @@ export class RestService {
   }
 
   public async getRPN(id: string) {
+    this.loader.showLoader(true);
     const observable = this.http.get<string>(url + 'rpn/' + id);
 
     observable.subscribe(res => {
       this.rpn.next(res);
+      this.loader.hideLoader();
     });
   }
 }

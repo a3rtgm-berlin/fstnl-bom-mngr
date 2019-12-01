@@ -1,0 +1,15 @@
+<table class="table table-sm" id="overview">
+    <thead class="thead-dark">
+        <th scope="col">ID</th>
+        <th scope="col">Moving File</th>
+        <th scope="col">Date</th>
+        <th scope="col">Projects</th>
+    </thead>
+    <tr (click)="navigate($event)" [id]="master.id" *ngFor="let master of allMaster">
+        <td>{{master.id}}</td>
+        <td>{{master.moving}}</td>
+        <td>{{master.date}}</td>
+        <td>{{master.projects.join(', ')}}</td>
+    </tr>
+
+</table>

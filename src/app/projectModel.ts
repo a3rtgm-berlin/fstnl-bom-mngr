@@ -11,6 +11,6 @@ export interface Project {
     multiBom: number;
     active: boolean;
     isArchived: boolean;
-    createdBy: String;
+    createdBy: string;
     created: Date;
 };
