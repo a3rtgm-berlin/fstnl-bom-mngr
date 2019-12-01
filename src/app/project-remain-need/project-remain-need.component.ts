@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { ThrowStmt } from '@angular/compiler';
+import { ThrowStmt, AstMemoryEfficientTransformer } from '@angular/compiler';
 import { RestService } from '../services/rest/rest.service';
 import { ConsumptionUploadComponent } from './consumption-upload/consumption-upload.component';
 import { MaterialList } from '../materialListModel';
@@ -12,14 +12,17 @@ import { ExportService } from '../services/export/export.service';
   templateUrl: './project-remain-need.component.html',
   styleUrls: ['./project-remain-need.component.scss']
 })
+
 export class ProjectRemainNeedComponent implements OnInit {
 
+  minmax: any;
   storageTime: any;
+  perWeek: any;
   processedRPN: any;
   _rpn = {
     parts: [],
     hasConsumption: false
-  }
+  };
 
   public get rpn(): any {
     return this._rpn;
@@ -46,6 +49,7 @@ export class ProjectRemainNeedComponent implements OnInit {
     this.restService.rpn.subscribe(res => {
       if (res) {
         this.rpn = res;
+        this.storageVal(26);
       }
     });
   }
@@ -54,8 +58,35 @@ export class ProjectRemainNeedComponent implements OnInit {
     this.exportService.xlsxFromJson(this.rpn.parts, `RPN-${this.id}`);
   }
 
-  storageVal(event) {
-    this.storageTime = event.target.value;
-    console.log(this.storageTime);
+  setStorageVal(event) {
+    this.storageVal(event.target.value);
   }
+
+  storageVal(weeks) {
+    console.log(weeks);
+    this.storageTime = weeks;
+    this._rpn.parts.forEach((part) => {
+      part.minmax = 0;
+      part.min = 0;
+      part.max = 0;
+    });
+
+    this.projects.forEach((project) => {
+      this._rpn.parts.forEach((part, index) => {
+        if (index === 1) {
+            this.perWeek = part[project];
+        } else if (index > 2) {
+          const minmax = Math.round((part[project] * this.perWeek) * this.storageTime);
+          part.minmax = part.minmax + minmax;
+        }
+      });
+    });
+
+    this._rpn.parts.forEach((part) => {
+      part.min = Math.round(part.minmax * 0.9);
+      part.max = Math.round(part.minmax * 1.1);
+    });
+  }
+
+
 }

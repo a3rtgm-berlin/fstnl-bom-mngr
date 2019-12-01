@@ -1,4 +1,3 @@
-
 <div class="functionblock">
     <div class="dlbuttons">
         <button class="csv dl" (click)="downloadRPN()"><p>Download RPN XLSX</p></button>
@@ -10,7 +9,7 @@
     </div>
     <div class="storage">
         <div class="input-group">
-            <input type="number" min="1" step="1" (change)="storageVal($event)">
+            <input type="number" min="1" step="1" value="26" (change)="setStorageVal($event)">
         </div>
     </div>
     <div class="viewbuttons">
@@ -28,6 +27,7 @@
         <th scope="col">Unit</th>
         <th *ngFor="let project of projects" scope="col">{{project}}</th>
         <th scope="col">Overall Need</th>
+        <th scope="col">Min | Max</th>
         <th scope="col">Phase Out Date</th>
         <ng-container *ngIf="rpn.hasConsumption">
             <th scope="col">Usage</th>
@@ -40,6 +40,7 @@
         <td class="{{item}}">{{part.unit}}</td>
         <td *ngFor="let project of projects" [id]="project">{{part[project]}}</td>
         <td>{{part.ovCount | localeNumber}}</td>
+        <td>{{part.min}} | {{part.max}}</td>
         <td>{{part.phaseOutDate}}</td>
         <ng-container *ngIf="rpn.hasConsumption">
             <td scope="col">{{part.usage | localeNumber }}</td>

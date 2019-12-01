@@ -42,6 +42,14 @@
         }
     }
 
+    &.deprecated {
+        .prjct_state {
+            &:after {
+                background:$red;
+            }
+        }
+    }
+
     &.empty {
         .prjct_state {
             &:after {
