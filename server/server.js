@@ -405,7 +405,7 @@ app.get('/api/lists/update/:id', (req, res) => {
             res.sendStatus(404);
             return console.error(err);
         }
-        utils.updatePartAmount(bom, res);
+        utils.updateSingleBom(bom, res);
     });
 });
 
