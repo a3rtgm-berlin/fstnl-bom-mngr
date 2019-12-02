@@ -102,7 +102,7 @@ function consumption (req, res) {
 
                     if (match) {
                         part.usage = parseFloat(match.usage);
-                        part.diff = parseFloat(match.usage) - part.ovCount;
+                        part.diff = parseFloat(match.usage) - part.monthlyCount;
                     }
                     else {
                         part.diff = i > 2 ? "No Refill" : "";

@@ -3,7 +3,7 @@ const Project = require("./models/project").ProjectModel;
 const ExcludeList = require("./models/excludeList");
 const ArbMatrix = require("./models/arbMatrix");
 
-function updatePartAmount(bom, res) {
+function updateSingleBom(bom, res) {
     Project.findOne({tag: bom.project}, (err, project) => {
         if (err) {
             res.sendStatus(404);
@@ -18,13 +18,30 @@ function updatePartAmount(bom, res) {
     });
 }
 
+async function updatePartAmount(json, tag) {
+    return new Promise((res, rej) => {
+        Project.findOne({tag: tag}, (err, project) => {
+            if (err) {
+                res.sendStatus(404);
+                return console.error(err);
+            }
+    
+            json.forEach((part) => {
+                part.Menge = part.MengeProZug * project.trainsCount;
+            });
+    
+            res(json);
+        });
+    });
+}
+
 function updateExcludesAndMatrix(boms) {
     return new Promise(async (res, rej) => {
         try {
             var exclude = await ExcludeList.findOne({}).exec(),
                 matrix = await ArbMatrix.findOne({}).exec();
             
-            boms.forEach(bom => {
+            boms.forEach(async bom => {
                 bom.json = bom.json
                     .filter(part => !exclude.exclude.includes(part.Material))
                     .map(part => {
@@ -32,7 +49,7 @@ function updateExcludesAndMatrix(boms) {
                         part.id = part.Station + part.Material;
                         return part;
                     });
-                mergeDuplicates(bom.json);
+                bom.json = await updatePartAmount(mergeDuplicates(bom.json), bom.project);
                 MaterialList.findOneAndUpdate({id: bom.id}, {json: bom.json, updated: new Date()}, (err) => {
                     if (err) {
                         res.sendStatus(500);

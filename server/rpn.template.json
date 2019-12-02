@@ -4,6 +4,7 @@
         "name": "Time between now and set deadline",
         "unit": "",
         "ovCount": "",
+        "monthlyCount": "",
         "phaseOutDate": "",
         "projects": ""
     },
@@ -12,6 +13,7 @@
         "name": "Average value calculated from train count and deadline",
         "unit": "",
         "ovCount": "",
+        "monthlyCount": "",
         "phaseOutDate": "",
         "projects": ""
     },
@@ -20,6 +22,7 @@
         "name": "Number of trains left in the project",
         "unit": "",
         "ovCount": "",
+        "monthlyCount": "",
         "phaseOutDate": "",
         "projects": ""
     }

@@ -26,6 +26,7 @@ module.exports = async function createRpn(req, res) {
                     name: '',
                     unit: '',
                     ovCount: 0,
+                    monthlyCount: 0,
                     phaseOutDate: '',
                     projects: []
                 };
@@ -47,7 +48,7 @@ module.exports = async function createRpn(req, res) {
     });
 
     boms.forEach(bom => {
-        const target = bom.project;
+        const project = bom.project;
 
         bom.json.forEach(item => {
             const match = allParts.find(part => part.id === item.Material);
@@ -56,7 +57,7 @@ module.exports = async function createRpn(req, res) {
               match.ovCount += item.Menge;
               match.name = item.Objektkurztext;
               match.unit = item.ME;
-              match[target] = match[target] ? match[target] + item.Menge : item.Menge;
+              match[project] = match[project] ? match[project] + item.Menge : item.Menge;
             }
         });
     });
@@ -67,6 +68,7 @@ module.exports = async function createRpn(req, res) {
                 part.projects.push(project.tag);
                 if (project.deadline > part.phaseOutDate) {
                     part.phaseOutDate = project.deadline;
+                    part.monthlyCount += (part[project.tag] / meta[0][project.tag]) * 4;
                 }
             }
         });

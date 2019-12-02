@@ -27,12 +27,13 @@
         <th scope="col">Unit</th>
         <th *ngFor="let project of projects" scope="col">{{project}}</th>
         <th scope="col">Overall Need</th>
-        <th scope="col">Min | Max</th>
-        <th scope="col">Phase Out Date</th>
         <ng-container *ngIf="rpn.hasConsumption">
+            <th scope="col">Monthly Need</th>
             <th scope="col">Usage</th>
             <th scope="col">Over-/Under Consumption</th>
         </ng-container>
+        <th scope="col">Min | Max</th>
+        <th scope="col">Phase Out Date</th>
     </thead>
     <tr *ngFor="let part of processedRPN">
         <td class="{{part.id}}">{{part.id}}</td>
@@ -40,15 +41,20 @@
         <td class="{{part.unit}}">{{part.unit}}</td>
         <td *ngFor="let project of projects" [id]="project">{{part[project]}}</td>
         <td>{{part.ovCount | localeNumber}}</td>
-        <td>{{part.min}} | {{part.max}}</td>
-        <td>{{part.phaseOutDate}}</td>
         <ng-container *ngIf="rpn.hasConsumption">
-            <td scope="col">{{part.usage | localeNumber }}</td>
-            <td scope="col" 
-                class="{{part.diff === 'No Refill' ? 'grey' : part.diff > 0 ? 'orange' : 'blue'}}" 
+            <td>{{part.monthlyCount | localeNumber}}</td>
+            <td >{{part.usage | localeNumber }}</td>
+            <td class="{{part.diff === 'No Refill' ? 'grey' : part.diff > 0 ? 'orange' : 'blue'}}" 
                 title="{{part.diff === 'No Refill' ? 'not delivered' : part.diff > 0 ? 'over consumption' : 'under consumption'}}">
                     {{part.diff | localeNumber}}
             </td>
         </ng-container>
+        <ng-container *ngIf="part.min; else noVal">
+            <td>{{part.min | localeNumber}} | {{part.max | localeNumber}}</td>
+        </ng-container>
+        <ng-template #noVal>
+            <td></td>
+        </ng-template>
+        <td>{{part.phaseOutDate}}</td>
     </tr>
 </table>

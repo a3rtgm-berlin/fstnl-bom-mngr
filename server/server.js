@@ -187,6 +187,7 @@ app.get('/api/master/create/:id', createMaster);
 app.get('/api/master/rebuild/:id', (req, res) => {
     const q = req.params.id;
 
+    RPN.findOneAndDelete({id: q}, () => { console.log(`RPN ${q} deleted`)});
     MasterBom.findOneAndDelete({id: q}, (err) => {
         if (err) {
             res.sendStatus(404);
@@ -405,7 +406,7 @@ app.get('/api/lists/update/:id', (req, res) => {
             res.sendStatus(404);
             return console.error(err);
         }
-        utils.updatePartAmount(bom, res);
+        utils.updateSingleBom(bom, res);
     });
 });
 
