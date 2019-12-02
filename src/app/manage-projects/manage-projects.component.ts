@@ -108,7 +108,6 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
       // console.log(this.upToDate, this.listsToCombine.length, this.allProjects.length);
       this.upToDate = this.listsToCombine.length >= this.allProjects.length ? false : true;
     }
-    
     this.projectStates();
   }
 
@@ -127,7 +126,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   projectStates() {
     this.crossId = this.masterId;
     
-    if (this.allProjects) {
+    if (this.allProjects && this.masterId) {
       this.allProjects.forEach((project) => {
         if (project.bomLists.length > 0) {
           const thisId = project.bomLists[0];
@@ -142,7 +141,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
           const masterDate = new Date(this.crossId);
           const projectDate =  new Date(this.crossStateCheck);
-
+          console.log(this.masterId);
           if (projectDate < masterDate) {
             project.state = " deprecated";
           } else if (projectDate > masterDate) {
