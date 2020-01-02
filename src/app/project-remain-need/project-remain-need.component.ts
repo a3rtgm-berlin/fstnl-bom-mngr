@@ -71,7 +71,7 @@ export class ProjectRemainNeedComponent implements OnInit {
         this.projects.forEach(project => {
           const storageTime = this.rpn.parts[0][project] < this.storageTime ? this.rpn.parts[0][project] : this.storageTime;
 
-          part.minmax += Math.round((part[project] / this.rpn.parts[2][project]) * this.rpn.parts[1][project] * storageTime);
+          part.minmax += Math.round(((part[project] / this.rpn.parts[2][project])) * this.rpn.parts[1][project] * storageTime);
           part.min = Math.round(part.minmax * 0.9);
           part.max = Math.round(part.minmax * 1.1);
         });
