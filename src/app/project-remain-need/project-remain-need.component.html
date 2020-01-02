@@ -13,11 +13,11 @@
         </div>
     </div>
     <div class="viewbuttons">
-        <button class="view" (click)="viewVal(weekly)">Week</button>
-        <button class="view" (click)="viewVal(monthly)">Month</button>
-        <button class="view" (click)="viewVal(annual)">Year</button>
-        <button class="view" (click)="viewVal(bom)">BOM</button>
-        <button class="view" (click)="viewVal(rpn)">RPN</button>
+        <button class="view" (click)="viewVal('weekly')">Week</button>
+        <button class="view" (click)="viewVal('monthly')">Month</button>
+        <button class="view" (click)="viewVal('annual')">Year</button>
+        <button class="view" (click)="viewVal('bom')">BOM</button>
+        <button class="view" (click)="viewVal('rpn')">RPN</button>
     </div>
 </div>
 <table class="table table-sm" id="RPN">
@@ -36,9 +36,9 @@
         <th scope="col">Phase Out Date</th>
     </thead>
     <tr *ngFor="let part of processedRPN">
-        <td class="{{item}}">{{part.id}}</td>
-        <td class="{{item}}">{{part.name}}</td>
-        <td class="{{item}}">{{part.unit}}</td>
+        <td class="{{part.id}}">{{part.id}}</td>
+        <td class="{{part.name}}">{{part.name}}</td>
+        <td class="{{part.unit}}">{{part.unit}}</td>
         <td *ngFor="let project of projects" [id]="project">{{part[project]}}</td>
         <td>{{part.ovCount | localeNumber}}</td>
         <ng-container *ngIf="rpn.hasConsumption">

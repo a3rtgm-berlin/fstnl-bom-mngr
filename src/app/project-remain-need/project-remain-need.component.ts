@@ -79,5 +79,9 @@ export class ProjectRemainNeedComponent implements OnInit {
     });
   }
 
+  viewVal(string) {
+    console.log(string);
+  };
+
 
 }
