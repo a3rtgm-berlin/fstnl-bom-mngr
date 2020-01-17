@@ -5,8 +5,8 @@ import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/c
 import { RestService } from '../rest/rest.service';
 import { LoaderService } from '../loader/loader.service';
 
-// const url = 'http://localhost:8000/api/upload';
-const url = 'http://91.250.112.78:49160/api/upload';
+const url = 'http://localhost:8000/api/upload';
+// const url = 'http://91.250.112.78:49160/api/upload';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +45,8 @@ export class UploadService {
 
           if (service.includes('consumption')) {
             this.restService.getRPN(service.split('/')[1]);
+          } else if (service.includes('planogram')) {
+            this.restService.getPlanogram(service.split('/')[1]);
           } else {
             this.restService.getAllProjects();
           }
@@ -53,7 +55,6 @@ export class UploadService {
         }
       });
 
-      console.log("this should be first");
       status[file.name] = {
         progress: progress.asObservable()
       };

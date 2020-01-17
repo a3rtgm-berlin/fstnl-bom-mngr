@@ -89,5 +89,21 @@ function consumptionParser(input) {
         return dataAsJson;
 }
 
-module.exports = { xlsParser, matrixParser, excludeListParser, consumptionParser };
+function planogramParser(input) {
+    // load from buffer,
+    const wb = XLSX.read(input, {type:"array"});
+    const ws = wb.Sheets[wb.SheetNames[0]];
+
+    const dataAsJson = XLSX.utils.sheet_to_json(ws);
+
+    dataAsJson.forEach(part => {
+        part.position = part.position.split(',');
+        part.position = part.position.map(pos => pos.trim());
+        part.id = part.Station + part.Material;
+    });
+
+    return dataAsJson;
+}
+
+module.exports = { xlsParser, matrixParser, excludeListParser, consumptionParser, planogramParser };
 
