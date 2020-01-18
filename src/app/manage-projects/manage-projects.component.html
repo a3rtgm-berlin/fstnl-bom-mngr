@@ -50,7 +50,7 @@
     </div>
 </div>
 
-<div id="list-projects">
+<div id="list-projects" *ngIf="2 | role">
     <ul>
         <li class="nProject">
             <button class="btn btn-success" (click)="openCreateDialog()"><img src="../../assets/img/pls_fat.png"><a>Create New Project</a></button>
