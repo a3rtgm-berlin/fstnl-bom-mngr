@@ -42,11 +42,8 @@ import { BasicAuthInterceptor } from './services/interceptors/basic-auth.interce
 import { UserListComponent } from './settings/user-list/user-list.component';
 import { PlanogramComponent } from './planogram/planogram.component';
 import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram-upload.component';
-<<<<<<< HEAD
 import { DeleteUserComponent } from './settings/delete-user/delete-user.component';
-=======
 import { RolePipe } from './pipes/role.pipe';
->>>>>>> 6d11ada382f0608bcb1b2428ce6ca567a7f8f074
 
 @NgModule({
   declarations: [
@@ -82,11 +79,8 @@ import { RolePipe } from './pipes/role.pipe';
     UserListComponent,
     PlanogramComponent,
     PlanogramUploadComponent,
-<<<<<<< HEAD
     DeleteUserComponent,
-=======
     RolePipe,
->>>>>>> 6d11ada382f0608bcb1b2428ce6ca567a7f8f074
   ],
   entryComponents: [
     CreateProjectComponent,
