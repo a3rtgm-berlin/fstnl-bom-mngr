@@ -42,6 +42,7 @@ import { BasicAuthInterceptor } from './services/interceptors/basic-auth.interce
 import { UserListComponent } from './settings/user-list/user-list.component';
 import { PlanogramComponent } from './planogram/planogram.component';
 import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram-upload.component';
+import { RolePipe } from './pipes/role.pipe';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram
     UserListComponent,
     PlanogramComponent,
     PlanogramUploadComponent,
+    RolePipe,
   ],
   entryComponents: [
     CreateProjectComponent,

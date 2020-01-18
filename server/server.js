@@ -571,7 +571,7 @@ app.post('/api/users/authenticate', passport.authenticate('local', {
         user: {
             id:req.user._id,
             username: req.user.username,
-            email: req.user.email
+            role: req.user.role
         }
     })
 });
