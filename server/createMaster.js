@@ -70,7 +70,9 @@ async function combineLists(lists, id, date, projectTags) {
         json: Array.from(masterList),
         comparison: {},
         date: date,
-        uploadDate: new Date()
+        uploadDate: new Date(),
+        rpn: false,
+        planogram: false
     };
 }
 

@@ -9,9 +9,10 @@ import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector'
 import { MasterBom } from 'src/app/masterBom';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { LoaderService } from '../loader/loader.service';
+import $ from 'jquery';
 
 const url = 'http://localhost:8000/api/';
-//const url = 'http://91.250.112.78:49160/api/';
+// const url = 'http://91.250.112.78:49160/api/';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,7 @@ export class RestService {
   public excludeList: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public arbMatrix: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public rpn: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public planogram: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   setSingleList(val) {
     if (val) {
@@ -357,6 +359,36 @@ export class RestService {
     observable.subscribe(res => {
       this.rpn.next(res);
       this.loader.hideLoader();
+    });
+  }
+
+  public async getPlanogram(id: string) {
+    this.loader.showLoader();
+    const observable = this.http.get<any>(url + 'planogram/' + id);
+
+    observable.subscribe(res => {
+      if (res) {
+        const planogram = res;
+
+        planogram.updated = new Date(planogram.updated);
+        this.planogram.next(planogram);
+        this.loader.hideLoader();
+      }
+    });
+  }
+
+  public createPlanogram(id: string) {
+    this.loader.showLoader();
+    const observable = this.http.get<any>(url + 'planogram/create/' + id);
+
+    observable.subscribe(res => {
+      if (res) {
+        const planogram = res;
+
+        planogram.updated = new Date(planogram.updated);
+        this.planogram.next(planogram);
+        this.loader.hideLoader();
+      }
     });
   }
 }

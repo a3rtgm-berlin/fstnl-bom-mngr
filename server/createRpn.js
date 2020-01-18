@@ -66,9 +66,9 @@ module.exports = async function createRpn(req, res) {
         projects.forEach(project => {
             if (part[project.tag] > 0) {
                 part.projects.push(project.tag);
+                part.monthlyCount += (part[project.tag] / meta[0][project.tag]) * 4;
                 if (project.deadline > part.phaseOutDate) {
                     part.phaseOutDate = project.deadline;
-                    part.monthlyCount += (part[project.tag] / meta[0][project.tag]) * 4;
                 }
             }
         });

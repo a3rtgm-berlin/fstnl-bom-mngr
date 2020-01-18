@@ -39,6 +39,8 @@ import { ConsumptionUploadComponent } from './project-remain-need/consumption-up
 import { LocaleNumberPipe } from './pipes/locale-number.pipe';
 import { MasterOverviewComponent } from './master-overview/master-overview.component';
 import { UserListComponent } from './settings/user-list/user-list.component';
+import { PlanogramComponent } from './planogram/planogram.component';
+import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram-upload.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,8 @@ import { UserListComponent } from './settings/user-list/user-list.component';
     LocaleNumberPipe,
     MasterOverviewComponent,
     UserListComponent,
+    PlanogramComponent,
+    PlanogramUploadComponent,
   ],
   entryComponents: [
     CreateProjectComponent,

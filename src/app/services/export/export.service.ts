@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
+import { MappingService } from '../mapping/mapping.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExportService {
 
-  constructor() { }
+  constructor(public mappingService: MappingService) { }
 
-  xlsxFromJson(json: any, filename: string) {
+  xlsxFromJson(json: any, filename: string, exclude?: any[]) {
     let exportJson = JSON.parse(JSON.stringify(json));
 
     if (!Array.isArray(exportJson)) {
@@ -21,15 +22,23 @@ export class ExportService {
         });
     }
 
-    if (exportJson[0].lists) {
+    if (exclude) {
       exportJson.map(p => {
-        p.lists = p.lists.join(', ');
-
-        delete p.Kategorie;
-        delete p.KatID;
-
+        exclude.forEach(key => {
+          delete p[key];
+        });
         return p;
       });
+    }
+
+    for (const key in exportJson[0]) {
+      if (Array.isArray(exportJson[0][key])) {
+        exportJson.map(item => {
+          item[key] = item[key].join(', ');
+
+          return item;
+        });
+      }
     }
 
     const ws = XLSX.utils.json_to_sheet(exportJson);

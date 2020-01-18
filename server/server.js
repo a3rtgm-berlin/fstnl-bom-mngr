@@ -32,6 +32,7 @@ const User = require("./models/userModel").UserModel;
 const ExcludeList = require("./models/excludeList");
 const ArbMatrix = require("./models/arbMatrix");
 const RPN = require("./models/rpn").RPNModel;
+const Planogram = require("./models/planogram");
 
 // Constants
 // const PORT = 8080;
@@ -148,6 +149,14 @@ app.get('/api/exclude', (req, res) => {
 app.post('/api/upload/consumption/:id', upload.consumption);
 
 /**
+ * @description Handles uploaded planogram files
+ * @param {*} file the planogram file uploaded
+ * @method POST
+ * @returns {void}
+ */
+app.post('/api/upload/planogram/:id', upload.planogram);
+
+/**
  * @description Handles uploaded BOM files
  * @param {*} file the BOM file uploaded
  * @method POST
@@ -172,6 +181,54 @@ app.get('/api/rpn/:id', (req, res) => {
     });
 });
 
+app.get('/api/planogram/:id', (req, res) => {
+    const id = req.params.id;
+
+    Planogram.findOne({id: id}, (err, data) => {
+        if (err) {
+            res.status(500).send(err);
+            return console.error(err);
+        }
+
+        return res.json(data);
+    });
+});
+
+app.get('/api/planogram/create/:id', async (req, res) =>{
+    const id = req.params.id;
+    const master = await MasterBom.findOne({id: id}).exec();
+    const lastPlanogram = await Planogram.findOne({id: {$lt: id}}).sort({id: -1}).exec();
+    const planogram = master.json.map(part => {
+        const oldPos = lastPlanogram ? lastPlanogram.parts.find(p => p.id === part.id) : null;
+        return {
+            Material: part.Material,
+            Station: part.Station,
+            id: part.id,
+            position: oldPos ? oldPos.position || [] : [],
+        }
+    });
+    
+    Planogram.findOneAndUpdate({id: id}, {
+        parts: planogram,
+        updated: new Date(),
+    }, {
+        upsert: true,
+        new: true,
+    }, (err, data) => {
+        if (err) {
+            res.sendStatus(500);
+            console.error(err);
+        }
+        else {
+            master.planogram = true;
+            master.save();
+
+            res.status(201).json(data);
+            console.log(`Planogram ${id} created`);
+        }
+    });
+});
+
 /**
  * @description todo
  * @param
@@ -188,6 +245,7 @@ app.get('/api/master/rebuild/:id', (req, res) => {
     const q = req.params.id;
 
     RPN.findOneAndDelete({id: q}, () => { console.log(`RPN ${q} deleted`)});
+    Planogram.findOneAndDelete({id: q}, () => { console.log(`Planogram ${q} deleted`)});
     MasterBom.findOneAndDelete({id: q}, (err) => {
         if (err) {
             res.sendStatus(404);
