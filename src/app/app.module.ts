@@ -38,11 +38,8 @@ import { ErrorInterceptor } from './services/interceptors/error.interceptor';
 import { ConsumptionUploadComponent } from './project-remain-need/consumption-upload/consumption-upload.component';
 import { LocaleNumberPipe } from './pipes/locale-number.pipe';
 import { MasterOverviewComponent } from './master-overview/master-overview.component';
-<<<<<<< HEAD
 import { BasicAuthInterceptor } from './services/interceptors/basic-auth.interceptor';
-=======
 import { UserListComponent } from './settings/user-list/user-list.component';
->>>>>>> 72edf5ba000bbe34dee3116fb2e0b495075151cf
 import { PlanogramComponent } from './planogram/planogram.component';
 import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram-upload.component';
 

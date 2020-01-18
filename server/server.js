@@ -62,17 +62,6 @@ app.use(session({
 require('./passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
-// const privateKey = fs.readFileSync('./keys/private.key', 'utf8');
-// const publicKey = fs.readFileSync('./keys/public.key', 'utf8');
-
-// const signOptions = {
-//     expiresIn: '3h', //3 hours
-//     algorithm: 'HS512',
-// };
-// const verifyOptions = {
-//     expiresIn: '3h', //3 hours
-//     algorithms: ['HS512'],
-// };
 
 // Connect Flash
 app.use(flash());
@@ -100,15 +89,6 @@ app.get('/', (req, res) => {
     res.send(200, "connected");
 });
 
-app.get('/api/test/', (req, res) => {
-    if (!auth.guard(req, verifcation.privateKey, verifcation.verifyOptions)) {
-        res.sendStatus(401);
-        return;
-    }
-    console.log('success');
-    res.sendStatus(200);
-});
-
 /**
  * @description Handles upload of ArbMatrix files
  * @param {*} file
@@ -116,7 +96,13 @@ app.get('/api/test/', (req, res) => {
  */
 app.post('/api/upload/matrix', upload.matrix);
 app.post('/api/upload/exclude', upload.excludeList);
-app.get('/api/matrix', (req, res) => {
+
+/**
+ * @description gets the work station matrix
+ * @method get
+ * @returns {void}
+ */
+app.get('/api/matrix', (req, res) => auth.guard(req, res, () => {
     ArbMatrix.find((err, data) => {
         if (err) {
             res.sendStatus(404);
@@ -124,8 +110,14 @@ app.get('/api/matrix', (req, res) => {
         }
         res.send(data[0]);
     });
-});
-app.get('/api/exclude', (req, res) => {
+}));
+
+/**
+ * @description gets the exclude list
+ * @method GET
+ * @returns {void}
+ */
+app.get('/api/exclude', (req, res) => auth.guard(req, res, () => {
     ExcludeList.find((err, data) => {
         if (err) {
             res.sendStatus(404);
@@ -133,7 +125,7 @@ app.get('/api/exclude', (req, res) => {
         }
         res.send(data[0]);
     });
-});
+}));
 
 /**
  * @description Handles uploaded consumption files
@@ -164,7 +156,7 @@ app.post('/api/upload/bom', upload.bom);
  * @param id
  * @method get
  */
-app.get('/api/rpn/:id', (req, res) => {
+app.get('/api/rpn/:id', (req, res) => auth.guard(req, res, (role) => {
     const id = req.params.id;
 
     RPN.findOne({id: id}, (err, rpn) => {
@@ -174,9 +166,9 @@ app.get('/api/rpn/:id', (req, res) => {
             createRpn(req, res);
         }
     });
-});
+}));
 
-app.get('/api/planogram/:id', (req, res) => {
+app.get('/api/planogram/:id', (req, res) => auth.guard(req, res, () => {
     const id = req.params.id;
 
     Planogram.findOne({id: id}, (err, data) => {
@@ -187,9 +179,9 @@ app.get('/api/planogram/:id', (req, res) => {
 
         return res.json(data);
     });
-});
+}));
 
-app.get('/api/planogram/create/:id', async (req, res) =>{
+app.get('/api/planogram/create/:id', (req, res) => auth.guard(req, res, async () =>{
     const id = req.params.id;
     const master = await MasterBom.findOne({id: id}).exec();
     const lastPlanogram = await Planogram.findOne({id: {$lt: id}}).sort({id: -1}).exec();
@@ -222,7 +214,7 @@ app.get('/api/planogram/create/:id', async (req, res) =>{
             console.log(`Planogram ${id} created`);
         }
     });
-});
+}));
 
 /**
  * @description todo
@@ -236,7 +228,9 @@ app.get('/api/master/create/:id', createMaster);
  * @param id the ID string of the current month
  * @method get
  */
-app.get('/api/master/rebuild/:id', (req, res) => {
+app.get('/api/master/rebuild/:id', (req, res) => auth.guard(req, res, (role) => {
+    if (role > 1) return res.sendStatus(401);
+
     const q = req.params.id;
 
     RPN.findOneAndDelete({id: q}, () => { console.log(`RPN ${q} deleted`)});
@@ -254,7 +248,7 @@ app.get('/api/master/rebuild/:id', (req, res) => {
             });
         });
     });
-});
+}));
 
 /**
  * @description todo
@@ -279,7 +273,7 @@ app.get('/api/master', (req, res) => {
  * @param
  * @method
  */
-app.get('/api/master/id', (req, res) => {
+app.get('/api/master/id', (req, res) => auth.guard(req, res, () => {
     MasterBom.find((err, data) => {
         if (err) throw err;
         if (data.length > 0) return res.status(200).send(
@@ -290,14 +284,14 @@ app.get('/api/master/id', (req, res) => {
         );
         res.status(200).send(['0000-00']);
     });
-});
+}));
 
 /**
  * @description returns all created Master BOMs
  * @todo ... for a selected project?
  * @returns {[MaterialList]}
  */
-app.get('/api/master/all', (req, res, next) => {
+app.get('/api/master/all', (req, res) => auth.guard(req, res, () => {
     MasterBom.find((err, data) => {
         if (err) {
             res.sendStatus(500);
@@ -310,28 +304,30 @@ app.get('/api/master/all', (req, res, next) => {
             projects: master.projects
         })));
     });
-});
+}));
 
 /**
  * @description returns one selected list by date
  * @todo ... and project
  * @returns {MaterialList}
  */
-app.get('/api/master/get/:id', (req, res, next) => {
+app.get('/api/master/get/:id', (req, res) => auth.guard(req, res, () => {
     const q = req.params.id;
 
     MasterBom.findOne({id: q}, (err, data) => {
         if (err) return console.error(err);
         res.send(data);
     });
-});
+}));
 
 /**
  * @description deletes a master by id
  * @todo ... and project
  * @returns {MaterialList}
  */
-app.delete('/api/master/delete/:id', (req, res) => {
+app.delete('/api/master/delete/:id', (req, res) => auth.guard(req, res, (role) => {
+    if (role > 1) return res.sendStatus(401);
+
     const q = req.params.id;
 
     MasterBom.findOneAndDelete({id: q}, (err) => {
@@ -341,40 +337,42 @@ app.delete('/api/master/delete/:id', (req, res) => {
         }
         res.status(204).send('deleted');
     });
-});
+}));
 
 /**
  * @description returns all uploaded BOM Lists
  * @todo ... for a selected project?
  * @returns {[MaterialList]}
  */
-app.get('/api/lists', (req, res, next) => {
+app.get('/api/lists', (req, res) => auth.guard(req, res, () => {
     MaterialList.find((err, data) => {
         if (err) return console.error(err);
         res.send(data);
     });
-});
+}));
 
 /**
  * @description returns one selected list by date
  * @todo ... and project
  * @returns {MaterialList}
  */
-app.get('/api/lists/:id', (req, res) => {
+app.get('/api/lists/:id', (req, res) => auth.guard(req, res, () => {
     const q = req.params.id;
 
     MaterialList.findOne({id: q}, (err, data) => {
         if (err) return console.error(err);
         res.send(data);
     });
-});
+}));
 
 /**
  * @description deletes a list by ID (Project + Date)
  * @todo ... and project
  * @returns {void}
  */
-app.delete('/api/lists/:id', (req, res, next) => {
+app.delete('/api/lists/:id', (req, res) => auth.guard(req, res, (role) => {
+    if (role > 2) return res.sendStatus(401);
+
     const q = req.params.id;
 
     if (q === 'delete-all') {
@@ -399,12 +397,12 @@ app.delete('/api/lists/:id', (req, res, next) => {
             res.sendStatus(204);
         });
     }
-});
+}));
 
 /**
  * @description returns all metas for the boms of a a project
  */
-app.get('/api/project/meta/:tag', (req, res) => {
+app.get('/api/project/meta/:tag', (req, res) => auth.guard(req, res, () => {
     const q = req.params.tag;
 
     MaterialList.find({project: q}, (err, boms) => {
@@ -423,12 +421,12 @@ app.get('/api/project/meta/:tag', (req, res) => {
         });
         res.send(meta);
     });
-});
+}));
 
 /**
  * @description returns all metas for a single bom
  */
-app.get('/api/lists/meta/:id', (req, res) => {
+app.get('/api/lists/meta/:id', (req, res) => auth.guard(req, res, () => {
     const q = req.params.id;
 
     MaterialList.findOne({id: q}, (err, bom) => {
@@ -444,14 +442,14 @@ app.get('/api/lists/meta/:id', (req, res) => {
             uploadDate: bom.uploadDate
         });
     });
-});
+}));
 
 /**
  * @description rebuilds a given project BOM file with the updated project values
  * @param {String} id the bom id
  * @returns {void}
  */
-app.get('/api/lists/update/:id', (req, res) => {
+app.get('/api/lists/update/:id', (req, res) => auth.guard(req, res, (role) => {
     const q = req.params.id;
 
     MaterialList.findOne({id: q}, (err, bom) => {
@@ -461,7 +459,7 @@ app.get('/api/lists/update/:id', (req, res) => {
         }
         utils.updateSingleBom(bom, res);
     });
-});
+}));
 
 /**
  * @description overrides a list by date
@@ -557,9 +555,8 @@ app.post('/api/users/authenticate', passport.authenticate('local', {
     failureFlash: true
 }), (req, res) => {
     const token = jwt.sign({
-        "admin": req.user.admin,
-        "dev": req.user.dev,
-    }, privateKey, {
+        "role": req.user.role,
+    }, verifcation.privateKey, {
         expiresIn: '3h',
         algorithm: 'HS512',
         header: {

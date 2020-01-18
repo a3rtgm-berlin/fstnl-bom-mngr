@@ -7,7 +7,7 @@ const guard = function (req, res, callback, privateKey = verification.privateKey
             if (err) {
                 return res.sendStatus(401);
             }
-            callback(req, res);
+            callback(decoded.role, req, res);
         });
     } else {
         res.sendStatus(401);
