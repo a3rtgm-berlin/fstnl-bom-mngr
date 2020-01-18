@@ -6,7 +6,7 @@
             <p>{{user.username}}</p>
             <p>{{user.mail}}</p>
             <p>{{user.role}}</p>
-            <button class="deleteuser" (click)="deleteUser(user.username)"></button>
+            <button *ngIf="1 | role" class="deleteuser" (click)="deleteUser(user.username)"></button>
             </ng-container>
         </li>
     </ul>
