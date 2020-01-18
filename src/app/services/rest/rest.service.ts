@@ -10,8 +10,8 @@ import { MasterBom } from 'src/app/masterBom';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { LoaderService } from '../loader/loader.service';
 
-// const url = 'http://localhost:8000/api/';
-const url = 'http://91.250.112.78:49160/api/';
+const url = 'http://localhost:8000/api/';
+//const url = 'http://91.250.112.78:49160/api/';
 
 @Injectable({
   providedIn: 'root'
@@ -206,20 +206,19 @@ export class RestService {
   }
 
   public createUser(userData: User) {
-    const formData: FormData = new FormData();
+    console.log(userData);
+    
+    const req = new HttpRequest('POST', url + 'newuser', userData, {
+      reportProgress: true
+    });
 
-    for (const prop in userData) {
-      if (userData[prop]) {
-        formData.append(prop, userData[prop]);
+    this.http.request(req).subscribe({
+      error: err => console.error(`POST Error`, err),
+      complete: () => {
+        console.log(` POST new Project ${userData.username} has been created`);
+        //this.getAllProjects();
       }
-    }
-
-    const observable = this.http.post<User>(url + 'users/', userData);
-    observable.subscribe(
-      (val) => console.log('User successfully created'),
-      err => console.error('Error in User Creation', err),
-      () => console.log('User created')
-    );
+    });
   }
 
   public deleteProject(tag: string) {

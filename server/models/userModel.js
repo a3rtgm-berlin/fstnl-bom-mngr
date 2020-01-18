@@ -5,8 +5,9 @@ const userSchema = new Schema({
     email: String,
     username: String,
     password: String,
-    admin: Boolean,
-    dev: {type: Boolean, default: false},
+    role: String,
+    //admin: Boolean,
+    //dev: {type: Boolean, default: false},
 }, {
     collection: 'fe-users'
 });

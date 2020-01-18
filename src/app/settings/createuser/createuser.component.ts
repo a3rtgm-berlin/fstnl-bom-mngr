@@ -9,12 +9,22 @@ import { User } from 'src/app/userModel';
 })
 export class CreateuserComponent implements OnInit {
 
-  private userData: User;
-  restService: RestService;
+  userData: User;
 
-  constructor() { }
+  constructor(public restService: RestService) { }
 
   ngOnInit() {
+  }
+
+  public updateUser(mail, username, password, role): void {
+    this.userData = {
+      mail,
+      username,
+      password,
+      role
+    };
+
+    console.log(this.userData);
   }
 
   submitUser() {
@@ -29,7 +39,7 @@ export class CreateuserComponent implements OnInit {
       this.restService.createUser(this.userData);
 
     } else {
-      alert(`please enter project information`);
+      alert(`please enter valid user information`);
     }
   }
 }
