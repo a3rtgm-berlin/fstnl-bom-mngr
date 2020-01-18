@@ -20,6 +20,7 @@ const createMaster = require('./createMaster');
 const createRpn = require('./createRpn');
 const utils = require('./utils');
 const auth = require('./authorization');
+const verifcation = require('./models/verification');
 
 // Classes
 const Comparison = require('./compareLists');
@@ -33,6 +34,7 @@ const User = require("./models/userModel").UserModel;
 const ExcludeList = require("./models/excludeList");
 const ArbMatrix = require("./models/arbMatrix");
 const RPN = require("./models/rpn").RPNModel;
+const Planogram = require("./models/planogram");
 
 // Constants
 // const PORT = 8080;
@@ -60,17 +62,17 @@ app.use(session({
 require('./passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
-const privateKey = fs.readFileSync('./keys/private.key', 'utf8');
-const publicKey = fs.readFileSync('./keys/public.key', 'utf8');
+// const privateKey = fs.readFileSync('./keys/private.key', 'utf8');
+// const publicKey = fs.readFileSync('./keys/public.key', 'utf8');
 
-const signOptions = {
-    expiresIn: '3h', //3 hours
-    algorithm: 'HS512',
-};
-const verifyOptions = {
-    expiresIn: '3h', //3 hours
-    algorithms: ['HS512'],
-};
+// const signOptions = {
+//     expiresIn: '3h', //3 hours
+//     algorithm: 'HS512',
+// };
+// const verifyOptions = {
+//     expiresIn: '3h', //3 hours
+//     algorithms: ['HS512'],
+// };
 
 // Connect Flash
 app.use(flash());
@@ -99,7 +101,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/test/', (req, res) => {
-    if (!auth.guard(req, privateKey, verifyOptions)) {
+    if (!auth.guard(req, verifcation.privateKey, verifcation.verifyOptions)) {
         res.sendStatus(401);
         return;
     }
@@ -142,6 +144,14 @@ app.get('/api/exclude', (req, res) => {
 app.post('/api/upload/consumption/:id', upload.consumption);
 
 /**
+ * @description Handles uploaded planogram files
+ * @param {*} file the planogram file uploaded
+ * @method POST
+ * @returns {void}
+ */
+app.post('/api/upload/planogram/:id', upload.planogram);
+
+/**
  * @description Handles uploaded BOM files
  * @param {*} file the BOM file uploaded
  * @method POST
@@ -166,6 +176,54 @@ app.get('/api/rpn/:id', (req, res) => {
     });
 });
 
+app.get('/api/planogram/:id', (req, res) => {
+    const id = req.params.id;
+
+    Planogram.findOne({id: id}, (err, data) => {
+        if (err) {
+            res.status(500).send(err);
+            return console.error(err);
+        }
+
+        return res.json(data);
+    });
+});
+
+app.get('/api/planogram/create/:id', async (req, res) =>{
+    const id = req.params.id;
+    const master = await MasterBom.findOne({id: id}).exec();
+    const lastPlanogram = await Planogram.findOne({id: {$lt: id}}).sort({id: -1}).exec();
+    const planogram = master.json.map(part => {
+        const oldPos = lastPlanogram ? lastPlanogram.parts.find(p => p.id === part.id) : null;
+        return {
+            Material: part.Material,
+            Station: part.Station,
+            id: part.id,
+            position: oldPos ? oldPos.position || [] : [],
+        }
+    });
+    
+    Planogram.findOneAndUpdate({id: id}, {
+        parts: planogram,
+        updated: new Date(),
+    }, {
+        upsert: true,
+        new: true,
+    }, (err, data) => {
+        if (err) {
+            res.sendStatus(500);
+            console.error(err);
+        }
+        else {
+            master.planogram = true;
+            master.save();
+
+            res.status(201).json(data);
+            console.log(`Planogram ${id} created`);
+        }
+    });
+});
+
 /**
  * @description todo
  * @param
@@ -182,6 +240,7 @@ app.get('/api/master/rebuild/:id', (req, res) => {
     const q = req.params.id;
 
     RPN.findOneAndDelete({id: q}, () => { console.log(`RPN ${q} deleted`)});
+    Planogram.findOneAndDelete({id: q}, () => { console.log(`Planogram ${q} deleted`)});
     MasterBom.findOneAndDelete({id: q}, (err) => {
         if (err) {
             res.sendStatus(404);
@@ -463,7 +522,7 @@ app.post('/api/projects/:tag', (req, res, next) => {
 
 app.post('/api/token/verify', (req, res) => {
     if (req.body.token) {
-        const decoded = jwt.verify(req.body.token, privateKey, verifyOptions, (err, decoded) => {
+        const decoded = jwt.verify(req.body.token, verifcation.privateKey, verifcation.verifyOptions, (err, decoded) => {
             if (err) return res.status(401).send(false);
             return res.status(200).send(true);
         });
@@ -536,17 +595,12 @@ app.post('/api/projects', projectHandler.newProject);
  * @description returns all projects from DB
  * @returns {[Project]}
  */
-app.get('/api/projects', (req, res, next) => {
-    if (!auth.guard(req, privateKey, verifyOptions)) {
-        // res.sendStatus(401);
-        // return;
-    }
-
+app.get('/api/projects', (req, res) => auth.guard(req, res, () => {
     Project.find((err, data) => {
         if (err) return console.error(err);
         res.send(data);
     });
-});
+}));
 
 /**
  * @description returns a projects by name
@@ -560,6 +614,10 @@ app.get('/api/projects/:tag', (req, res, next) => {
         res.send(data);
     });
 });
+
+app.get('/api/projects/:tag', (req, res) => auth.guard(req, res, () => {
+
+}));
 
 /**
  * @description deletes project by name including all its BOM files

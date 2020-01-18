@@ -45,6 +45,8 @@ export class UploadService {
 
           if (service.includes('consumption')) {
             this.restService.getRPN(service.split('/')[1]);
+          } else if (service.includes('planogram')) {
+            this.restService.getPlanogram(service.split('/')[1]);
           } else {
             this.restService.getAllProjects();
           }
@@ -53,7 +55,6 @@ export class UploadService {
         }
       });
 
-      console.log("this should be first");
       status[file.name] = {
         progress: progress.asObservable()
       };

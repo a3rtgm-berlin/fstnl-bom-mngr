@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ThrowStmt, AstMemoryEfficientTransformer } from '@angular/compiler';
 import { RestService } from '../services/rest/rest.service';
 import { ConsumptionUploadComponent } from './consumption-upload/consumption-upload.component';
@@ -40,6 +40,7 @@ export class ProjectRemainNeedComponent implements OnInit {
   @ViewChild('filterCol', {static: false}) filterCol: any;
   @Input() projects: string[] | null;
   @Input() id: string | null;
+  @Output() created: EventEmitter<boolean> = new EventEmitter();
 
   constructor( public restService: RestService, public exportService: ExportService) {
   }
@@ -52,6 +53,7 @@ export class ProjectRemainNeedComponent implements OnInit {
         this.storageVal(26);
       }
     });
+    this.created.emit(true);
   }
 
   downloadRPN() {
@@ -71,7 +73,7 @@ export class ProjectRemainNeedComponent implements OnInit {
         this.projects.forEach(project => {
           const storageTime = this.rpn.parts[0][project] < this.storageTime ? this.rpn.parts[0][project] : this.storageTime;
 
-          part.minmax += Math.round((part[project] / this.rpn.parts[2][project]) * this.rpn.parts[1][project] * storageTime);
+          part.minmax += Math.round(((part[project] / this.rpn.parts[2][project])) * this.rpn.parts[1][project] * storageTime);
           part.min = Math.round(part.minmax * 0.9);
           part.max = Math.round(part.minmax * 1.1);
         });

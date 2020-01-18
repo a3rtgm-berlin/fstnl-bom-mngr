@@ -26,4 +26,30 @@ export class ColorCodeService {
   generateIntInRange(max: number, min: number = 0): number {
     return Math.round((Math.random() * (max - min)) + min);
   }
+
+  createColorMapping(array: any[], key: string): object {
+    let arr = typeof array[0] !== 'object' ? array : array.map(item => item[key]);
+    const colorMapping = {};
+
+    arr = arr.reduce((unqiues, item) => {
+      return unqiues.includes(item) ? unqiues : [...unqiues, item];
+    }, []);
+
+    arr.forEach(item => {
+      let color = this.pickColorFromArray();
+      let unique = false;
+
+      while (!unique) {
+        if (Object.values(colorMapping).length >= (this.colorArray.length - 1) ||
+          !Object.values(colorMapping).includes(color)) {
+            colorMapping[item] = color;
+            unique = true;
+        } else {
+          color = this.pickColorFromArray();
+        }
+      }
+    });
+
+    return colorMapping;
+  }
 }

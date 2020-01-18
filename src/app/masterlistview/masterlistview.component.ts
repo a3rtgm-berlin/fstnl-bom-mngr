@@ -15,16 +15,17 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
   public allBomProjects: any;
   public sorted: any;
   public cols: any;
-  public colors: object = {};
+  // public colors: object = {};
 
 
   @ViewChild('filterCol', {static: false}) filterCol: any;
   @Output() selection: EventEmitter<any> = new EventEmitter();
   @Input() id: string;
+  @Input() colors: object = {};
   @Input() set bom(bom) {
     this.bom$ = bom;
     this.processedBom = this.bom$;
-    this.colorCodeStations();
+    // this.colorCodeStations();
   }
   get bom(): object {
     return this.bom$;
@@ -40,7 +41,7 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
     this.bom$ = changes.bom.currentValue;
     this.processedBom = this.bom$;
     this.cols = Object.keys(this.bom$[0]);
-    this.colorCodeStations();
+    // this.colorCodeStations();
     this.mapFilters();
   }
 
@@ -80,30 +81,9 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
     }
   }
 
-
-  colorCodeStations() {
-    const stations = this.bom$
-      .map(part => part.Station)
-      .reduce((allStations, station) => {
-        return allStations.includes(station) ? allStations : [...allStations, station];
-      }, []);
-
-    this.colors = {};
-    stations.forEach(station => {
-      let color = this.colorCodeService.pickColorFromArray();
-      let unique = false;
-
-      while (!unique) {
-        if (Object.values(this.colors).length >= (this.colorCodeService.colorArray.length - 1) ||
-          !Object.values(this.colors).includes(color)) {
-            this.colors[station] = color;
-            unique = true;
-        } else {
-          color = this.colorCodeService.pickColorFromArray();
-        }
-      }
-    });
-  }
+  // colorCodeStations() {
+  //   this.colors = this.colorCodeService.createColorMapping(this.bom$, 'Station');
+  // }
 
   filterBom(val) {
     if (val !== '' && this.bom$) {
@@ -177,7 +157,8 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
   downloadBom(type) {
     this.exportService.xlsxFromJson(
       type === 'filtered' ? this.processedBom : this.bom,
-      type === 'filtered' ? this.id + '(filtered)' : this.id
+      type === 'filtered' ? this.id + '(filtered)' : this.id,
+      ['Kategorie', 'KatID']
     );
   }
 

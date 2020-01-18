@@ -11,6 +11,8 @@ const Project = require('./models/project').ProjectModel;
 const MultiBom = require('./multiBom');
 const ExcludeList = require('./models/excludeList');
 const RPN = require('./models/rpn').RPNModel;
+const Planogram = require('./models/planogram');
+const MasterBom = require('./models/masterBom');
 
 const uploadDir = "./user-upload/";
 
@@ -214,6 +216,41 @@ function excludeList(req, res) {
     form.parse(req);
 }
 
+function planogram (req, res) {
+    const id = req.params.id;
+    const reader = new FileReader();
+    let form = new IncomingForm();
+
+    form.on('file', (field, file) => {
+        reader.readAsArrayBuffer(file);
+        reader.addEventListener('load', (evt) => {
+            const view = new Uint8Array(reader.result);
+            const planogram = parser.planogramParser(reader.result);
+
+            Planogram.findOneAndUpdate({id: id}, {
+                parts: planogram,
+                updated: new Date(),
+            }, {
+                upsert: true,
+                new: true,
+            }, (err, data) => {
+                if (err) {
+                    res.sendStatus(500);
+                    console.error(err);
+                }
+                else {
+                    MasterBom.findOneAndUpdate({id: id}, {planogram: true});
+        
+                    res.json();
+                    console.log(`Planogram ${id} created`);
+                }
+            });
+        });
+    });
+
+    form.parse(req);
+}
+
 async function saveBomAndUpdateProject(bom) {
     const dbModel = new MaterialList(await updateListId(bom));
 
@@ -259,4 +296,4 @@ async function updateListId (list) {
     return await updateListId;
 }
 
-module.exports = {bom, matrix, excludeList, consumption};
+module.exports = {bom, matrix, excludeList, consumption, planogram};

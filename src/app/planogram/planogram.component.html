@@ -1,0 +1,50 @@
+<div class="functionblock">
+    <div class="dlbuttons btn-group">
+        <button class="create dl" (click)="createPlanogram()"><p>Create New Planogram</p></button>
+        <button class="csv dl" [ngClass]="{'disabled': !planogram}" (click)="downloadPlanogram()"><p>Download Planogram XLSX</p></button>
+    </div>
+    <div class="ftbuttons" id="sider">
+        <div class="input-group">
+            <app-planogram-upload [id]="id"></app-planogram-upload>
+        </div>
+    </div>
+</div>
+<div class="meta-info" *ngIf="planogram">
+    <table class="table table-sm">
+        <tr>
+            <th>Updated</th>
+            <td>{{planogram.updated.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }) || '-'}}</td>
+        </tr>
+    </table>
+</div>
+<table class="table table-sm" id="BOM">
+    <thead class="thead-dark">
+        <th (click)="addSort('Station', $event)" scope="col">Station</th>
+        <th (click)="addSort('BinPos', $event)" scope="col">Position</th>
+        <th (click)="addSort('Material', $event)" scope="col">Part#</th>
+        <th (click)="addSort('Objektkurztext', $event)" scope="col">Part</th>
+        <th (click)="addSort('ME', $event)" scope="col">Unit</th>
+        <th (click)="addSort('Menge', $event)" scope="col">Quantity</th>
+    </thead>
+    <ng-container *ngIf="planogram">
+        <ng-container *ngFor="let item of processedBom">
+            <tr>
+              <td [ngStyle]="{'background': colors[item.Station]}" class="station">{{item.Station}}</td>
+              <td class="bin-pos" *ngIf="item.position">
+                  <ng-container *ngIf="item.position.length > 0; else noPos">
+                      <ul>
+                          <li *ngFor="let pos of item.position">{{pos}}</li>
+                      </ul>
+                  </ng-container>
+                  <ng-template #noPos>
+                      -
+                  </ng-template>
+              </td>
+              <td>{{item.Material}}</td>
+              <td>{{item.Objektkurztext}}</td>
+              <td>{{item.ME}}</td>
+              <td>{{item.Menge | localeNumber}}</td>
+            </tr>
+          </ng-container> 
+    </ng-container>   
+</table>

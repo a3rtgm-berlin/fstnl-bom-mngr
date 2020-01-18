@@ -39,6 +39,8 @@ import { ConsumptionUploadComponent } from './project-remain-need/consumption-up
 import { LocaleNumberPipe } from './pipes/locale-number.pipe';
 import { MasterOverviewComponent } from './master-overview/master-overview.component';
 import { BasicAuthInterceptor } from './services/interceptors/basic-auth.interceptor';
+import { PlanogramComponent } from './planogram/planogram.component';
+import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram-upload.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +73,8 @@ import { BasicAuthInterceptor } from './services/interceptors/basic-auth.interce
     ConsumptionUploadComponent,
     LocaleNumberPipe,
     MasterOverviewComponent,
+    PlanogramComponent,
+    PlanogramUploadComponent,
   ],
   entryComponents: [
     CreateProjectComponent,
