@@ -19,6 +19,7 @@ const projectHandler = require('./projectsHandler');
 const createMaster = require('./createMaster');
 const createRpn = require('./createRpn');
 const utils = require('./utils');
+const auth = require('./authorization');
 
 // Classes
 const Comparison = require('./compareLists');
@@ -97,20 +98,13 @@ app.get('/', (req, res) => {
     res.send(200, "connected");
 });
 
-app.get('/api/test/:id', (req, res) => {
-    var id = req.params.id;
-    console.log(id);
-
-    MasterBom.findOne({id: {$lt: id}}).sort({id: -1}).exec(async (err, data) => {
-        if (err) {
-            res.sendStatus(404);
-            return console.error(err);
-        };
-        if (data) {
-            console.log(data.id);
-            res.status(200).send(data);
-        }
-    });
+app.get('/api/test/', (req, res) => {
+    if (!auth.guard(req, privateKey, verifyOptions)) {
+        res.sendStatus(401);
+        return;
+    }
+    console.log('success');
+    res.sendStatus(200);
 });
 
 /**
@@ -543,6 +537,11 @@ app.post('/api/projects', projectHandler.newProject);
  * @returns {[Project]}
  */
 app.get('/api/projects', (req, res, next) => {
+    if (!auth.guard(req, privateKey, verifyOptions)) {
+        // res.sendStatus(401);
+        // return;
+    }
+
     Project.find((err, data) => {
         if (err) return console.error(err);
         res.send(data);

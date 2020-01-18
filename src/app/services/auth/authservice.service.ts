@@ -4,8 +4,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
-// const url = 'http://localhost:8000/api/';
-const url = 'http://91.250.112.78:49160/api/';
+const url = 'http://localhost:8000/api/';
+// const url = 'http://91.250.112.78:49160/api/';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +26,11 @@ export class AuthserviceService {
   }
 
   constructor(private http: HttpClient) {
-
-   }
+    if (localStorage.getItem('id_token') && localStorage.getItem('user')) {
+      this.authToken = localStorage.getItem('id_token');
+      this.user = JSON.parse(localStorage.getItem('user'));
+    }
+  }
 
   public async isAuthenticated() {
     const logToken = localStorage.getItem('id_token');
@@ -52,7 +55,7 @@ export class AuthserviceService {
     localStorage.setItem('id_token', userData.token);
     localStorage.setItem('user', JSON.stringify(userData.user));
     this.authToken = userData.token;
-    this.user = userData.username;
+    this.user = userData.user;
   }
 
   logoutUser() {
