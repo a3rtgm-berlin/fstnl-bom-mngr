@@ -41,6 +41,7 @@ import { MasterOverviewComponent } from './master-overview/master-overview.compo
 import { UserListComponent } from './settings/user-list/user-list.component';
 import { PlanogramComponent } from './planogram/planogram.component';
 import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram-upload.component';
+import { DeleteUserComponent } from './settings/delete-user/delete-user.component';
 
 @NgModule({
   declarations: [
@@ -76,11 +77,13 @@ import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram
     UserListComponent,
     PlanogramComponent,
     PlanogramUploadComponent,
+    DeleteUserComponent,
   ],
   entryComponents: [
     CreateProjectComponent,
     ProjectSubSettingsComponent,
     DeleteProjectComponent,
+    DeleteUserComponent,
     UpdateProjectComponent,
     BomMetaViewComponent
   ],

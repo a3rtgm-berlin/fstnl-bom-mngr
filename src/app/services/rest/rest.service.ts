@@ -29,6 +29,7 @@ export class RestService {
   public projectBomMeta: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public comparison: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allProjects: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public allUsers: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allMaster: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public master: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public masterId: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -208,7 +209,6 @@ export class RestService {
   }
 
   public createUser(userData: User) {
-    console.log(userData);
     
     const req = new HttpRequest('POST', url + 'newuser', userData, {
       reportProgress: true
@@ -218,7 +218,7 @@ export class RestService {
       error: err => console.error(`POST Error`, err),
       complete: () => {
         console.log(` POST new Project ${userData.username} has been created`);
-        //this.getAllProjects();
+        this.getAllUsers();
       }
     });
   }
@@ -229,6 +229,16 @@ export class RestService {
       (val) => console.log('DELETE call successful value returned in body', val),
       err => console.error('DELETE call in error', err),
       () => this.getAllProjects()
+    );
+  }
+
+  public deleteUser(username: string) {
+    console.log("I want to delet " + username);
+    const observable = this.http.delete<string>(url + 'users/' + username);
+    observable.subscribe(
+      (val) => console.log('DELETE call successful value returned in body', val),
+      err => console.error('DELETE call in error', err),
+      () => this.getAllUsers()
     );
   }
 
@@ -245,12 +255,21 @@ export class RestService {
     this.loader.showLoader(true);
     const observable = this.http.get<Project[]>(url + 'projects');
     const projects = await observable.toPromise();
-    
-    console.log("this should be 2nd");
 
     if (projects) {
       this.setAllProjects(projects);
       console.log(projects);
+    }
+    this.loader.hideLoader();
+  }
+
+  public async getAllUsers() {
+    this.loader.showLoader(true);
+    const observable = this.http.get<User[]>(url + 'allusers');
+    const users = await observable.toPromise();
+
+    if (users) {
+      this.allUsers.next(users);
     }
     this.loader.hideLoader();
   }

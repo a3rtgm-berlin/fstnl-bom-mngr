@@ -622,10 +622,23 @@ app.post('/api/projects', projectHandler.newProject);
  */
 app.get('/api/projects', (req, res, next) => {
     Project.find((err, data) => {
-        if (err) return console.error(err);
+        if (err) {
+            res.sendStatus(418);
+            return console.error(err);
+        }
         res.send(data);
     });
 });
+
+app.get('/api/allusers', (req, res, next) => {
+    User.find((err, data) => {
+        if (err) {
+            res.sendStatus(418);
+            return console.error(err);
+        }
+        res.send(data);
+    }); 
+})
 
 /**
  * @description returns a projects by name
@@ -668,6 +681,17 @@ app.delete('/api/projects/:tag', (req, res, next) => {
             res.sendStatus(404);
         });
     }
+});
+
+app.delete('/api/users/:username', (req, res, next) => {
+    const q = req.params.username;
+    console.log(q);
+    User.findOneAndDelete({username: q}, (err) => {
+        if(err) {
+            res.sendStatus(418);
+            return console.error(err);
+        }
+    });
 });
 
 app.listen(PORT, HOST);

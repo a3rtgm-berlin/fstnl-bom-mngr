@@ -8,21 +8,31 @@ import { User } from 'src/app/userModel';
   styleUrls: ['./createuser.component.scss']
 })
 export class CreateuserComponent implements OnInit {
-
-  userData: User;
+  userData: User = {
+    mail: "",
+    username: "",
+    password: "",
+    role: "",
+  };
+  
+  
 
   constructor(public restService: RestService) { }
 
   ngOnInit() {
   }
 
-  public updateUser(mail, username, password, role): void {
-    this.userData = {
-      mail,
-      username,
-      password,
-      role
-    };
+  public updateUser(mail, username, password): void {
+    this.userData.mail = mail;
+    this.userData.username = username;
+    this.userData.password = password;
+
+    console.log(this.userData);
+  }
+
+  public updateUserRole(mail, username, password, event: any): void {
+    const role = event.target.value;
+    this.userData.role = role;
 
     console.log(this.userData);
   }

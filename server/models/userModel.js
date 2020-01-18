@@ -5,7 +5,7 @@ const userSchema = new Schema({
     email: String,
     username: String,
     password: String,
-    role: String,
+    role: Number,
     //admin: Boolean,
     //dev: {type: Boolean, default: false},
 }, {

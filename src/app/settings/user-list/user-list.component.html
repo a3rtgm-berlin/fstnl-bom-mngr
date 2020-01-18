@@ -1,1 +1,13 @@
-<p>user-list works!</p>
+<div id="userlist">
+    <h1>This is a list of all our users</h1>
+    <ul class="allusers">
+        <li class="user" *ngFor="let user of allusers">
+            <ng-container *ngIf="user.role != 0">
+            <p>{{user.username}}</p>
+            <p>{{user.mail}}</p>
+            <p>{{user.role}}</p>
+            <button class="deleteuser" (click)="deleteUser(user.username)"></button>
+            </ng-container>
+        </li>
+    </ul>
+</div>
