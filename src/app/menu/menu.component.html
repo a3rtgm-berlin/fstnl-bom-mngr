@@ -2,9 +2,9 @@
         <ul routerLinkActive="active">
                 <li class="nav-item"><a class="nav-link" [routerLink]="['/app/projects']" [routerLinkActive]="'act'">Projects</a></li>
                 <li class="nav-item"><a class="nav-link" [routerLink]="['/app/master']" [routerLinkActive]="'act'">Master Lists</a></li>
-                <!--<li class="nav-item"><a class="nav-link" routerLink="#">Archived Projects</a></li>
-                <li class="nav-item"><a class="nav-link" [routerLink]="['/app/settings']" [routerLinkActive]="'act'">Settings</a></li>-->
+                <!--<li class="nav-item"><a class="nav-link" routerLink="#">Archived Projects</a></li>-->
                 <li class="nav-item"><a class="nav-link" (click)="uploadMatrixDialog()">Upload Matrix</a></li>
+                <li class="nav-item"><a class="nav-link" [routerLink]="['/app/settings']" [routerLinkActive]="'act'">Settings</a></li>
                 <li class="nav-item loglink"><a class="nav-link" (click)="logOut()">Log Out</a></li>
                 <!--<li class="nav-item"><a class="nav-link loglink" [routerLink]="['/app/login']">{{switch}}</a></li>-->
         </ul>

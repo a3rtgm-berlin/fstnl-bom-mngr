@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CreateuserComponent} from '../login/createuser/createuser.component';
+import { CreateuserComponent} from './createuser/createuser.component';
 
 @Component({
   selector: 'app-settings',

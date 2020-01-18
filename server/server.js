@@ -520,6 +520,26 @@ app.post('/api/projects/:tag', (req, res, next) => {
     });
 });
 
+
+app.post('/api/newuser/', (req, res, next) => {
+    const q = req.params.username;
+
+    User.findOne({username: q}, req.body, (err, data) => {
+        if(err) {
+            return res.send(418);
+        } 
+        
+        if (!data) {
+            var validUserData = new User(req.body);
+            validUserData.save()
+            res.status(200).send(true);
+        } else {
+            console.log("User with name" + q + "is already exisiting");
+            res.status(200).send(false);
+        }
+    });
+});
+
 app.post('/api/token/verify', (req, res) => {
     if (req.body.token) {
         const decoded = jwt.verify(req.body.token, verifcation.privateKey, verifcation.verifyOptions, (err, decoded) => {

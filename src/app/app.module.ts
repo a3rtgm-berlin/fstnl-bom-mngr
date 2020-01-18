@@ -27,7 +27,7 @@ import { ProjectSubSettingsComponent } from './manage-projects/project-sub-setti
 import { DeleteProjectComponent } from './manage-projects/delete-project/delete-project.component';
 import { LoginComponent } from './login/login.component';
 import { MasterlistviewComponent } from './masterlistview/masterlistview.component';
-import { CreateuserComponent } from './login/createuser/createuser.component';
+import { CreateuserComponent } from './settings/createuser/createuser.component';
 import { SettingsComponent } from './settings/settings.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ProjectRemainNeedComponent } from './project-remain-need/project-remain-need.component';
@@ -38,7 +38,11 @@ import { ErrorInterceptor } from './services/interceptors/error.interceptor';
 import { ConsumptionUploadComponent } from './project-remain-need/consumption-upload/consumption-upload.component';
 import { LocaleNumberPipe } from './pipes/locale-number.pipe';
 import { MasterOverviewComponent } from './master-overview/master-overview.component';
+<<<<<<< HEAD
 import { BasicAuthInterceptor } from './services/interceptors/basic-auth.interceptor';
+=======
+import { UserListComponent } from './settings/user-list/user-list.component';
+>>>>>>> 72edf5ba000bbe34dee3116fb2e0b495075151cf
 import { PlanogramComponent } from './planogram/planogram.component';
 import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram-upload.component';
 
@@ -73,6 +77,7 @@ import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram
     ConsumptionUploadComponent,
     LocaleNumberPipe,
     MasterOverviewComponent,
+    UserListComponent,
     PlanogramComponent,
     PlanogramUploadComponent,
   ],
