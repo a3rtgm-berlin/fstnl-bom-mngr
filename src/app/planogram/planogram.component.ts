@@ -32,11 +32,19 @@ export class PlanogramComponent implements OnInit, OnChanges {
     this.restService.planogram.subscribe(val => {
       this.planogram = val;
       if (this.planogram) {
-        this.bom = this.bom.map(part => ({
+        this.bom = this.planogram.mapping.map(part => {
+          const match = this.bom.find(item => part.id === item.id);
+
+          return {
             ...part,
-            ...this.planogram.parts.find(item => part.id === item.id)
-        }));
+            ...match || {
+              Menge: 'not on MasterBOM',
+              isNotOnBom: true
+            }
+          };
+        });
       }
+      console.log(this.processedBom.filter(x => x.isNotOnBom));
     });
   }
 
@@ -44,7 +52,7 @@ export class PlanogramComponent implements OnInit, OnChanges {
   }
 
   downloadPlanogram(): void {
-    this.exportService.xlsxFromJson(this.planogram.parts, `Planogram-${this.id}`, ['id']);
+    this.exportService.xlsxFromJson(this.planogram.POG, `Planogram-${this.id}`, ['id']);
   }
 
   createPlanogram(): void {

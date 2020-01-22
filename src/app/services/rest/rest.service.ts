@@ -381,24 +381,24 @@ export class RestService {
     });
   }
 
-  public async getPlanogram(id: string) {
+  public async getPlanogram(id: string, type = 'all') {
     this.loader.showLoader();
-    const observable = this.http.get<any>(url + 'planogram/' + id);
+    const observable = this.http.get<any>(url + 'planogram/' + id + '/' + type);
 
     observable.subscribe(res => {
-      if (res) {
-        const planogram = res;
+      const planogram = res;
 
+      if (res) {
         planogram.updated = new Date(planogram.updated);
-        this.planogram.next(planogram);
-        this.loader.hideLoader();
       }
+      this.planogram.next(planogram);
+      this.loader.hideLoader();
     });
   }
 
   public createPlanogram(id: string) {
     this.loader.showLoader();
-    const observable = this.http.get<any>(url + 'planogram/create/' + id);
+    const observable = this.http.get<any>(url + 'planogram/create/master/' + id);
 
     observable.subscribe(res => {
       if (res) {

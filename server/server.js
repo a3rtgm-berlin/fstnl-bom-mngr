@@ -168,8 +168,9 @@ app.get('/api/rpn/:id', (req, res) => auth.guard(req, res, (role) => {
     });
 }));
 
-app.get('/api/planogram/:id', (req, res) => auth.guard(req, res, () => {
+app.get('/api/planogram/:id/:type', (req, res) => auth.guard(req, res, () => {
     const id = req.params.id;
+    const type = req.params.type;
 
     Planogram.findOne({id: id}, (err, data) => {
         if (err) {
@@ -177,11 +178,15 @@ app.get('/api/planogram/:id', (req, res) => auth.guard(req, res, () => {
             return console.error(err);
         }
 
+        if (type !== 'all' && data) {
+            return res.json(data[type]);
+        }
+
         return res.json(data);
     });
 }));
 
-app.get('/api/planogram/create/:id', (req, res) => auth.guard(req, res, async () =>{
+app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, async () => {
     const id = req.params.id;
     const master = await MasterBom.findOne({id: id}).exec();
     const lastPlanogram = await Planogram.findOne({id: {$lt: id}}).sort({id: -1}).exec();
@@ -196,7 +201,8 @@ app.get('/api/planogram/create/:id', (req, res) => auth.guard(req, res, async ()
     });
     
     Planogram.findOneAndUpdate({id: id}, {
-        parts: planogram,
+        mapping: planogram,
+        POG: undefined,
         updated: new Date(),
     }, {
         upsert: true,

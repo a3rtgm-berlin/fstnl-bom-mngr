@@ -95,14 +95,42 @@ function planogramParser(input) {
     const ws = wb.Sheets[wb.SheetNames[0]];
 
     const dataAsJson = XLSX.utils.sheet_to_json(ws);
+    const mapping = [];
 
     dataAsJson.forEach(part => {
-        part.position = part.position.split(',');
-        part.position = part.position.map(pos => pos.trim());
-        part.id = part.Station + part.Material;
+        if (!part.delete) {
+            if (part.Part && part.Part !== 'Empty') {
+                const map = {
+                    Location: [part.Wagon + '-' + part.Bin],
+                    id: part.Station + part.Part,
+                    'Location Count': 1,
+                    Station: part.Station,
+                    Part: part.Part,
+                };
+
+                dataAsJson.forEach(_part => {
+                    if (!_part.Location && _part.Station === part.Station && _part.Part === part.Part) {
+                        _part.delete = true;
+                        map.Location.push(_part.Wagon + '-' + _part.Bin);
+                        map['Location Count'] += 1;
+                    }
+                });
+    
+                mapping.push(map);
+            }
+        }
     });
 
-    return dataAsJson;
+    return {
+        mapping: mapping,
+        POG: dataAsJson.map(item => ({
+            Wagon: item.Wagon,
+            Bin: item.Bin,
+            Station: item.Station,
+            Part: item.Part,
+            ROQ: item.ROQ,
+        }))
+    };
 }
 
 module.exports = { xlsParser, matrixParser, excludeListParser, consumptionParser, planogramParser };

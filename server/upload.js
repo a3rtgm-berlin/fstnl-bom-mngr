@@ -228,7 +228,8 @@ function planogram (req, res) {
             const planogram = parser.planogramParser(reader.result);
 
             Planogram.findOneAndUpdate({id: id}, {
-                parts: planogram,
+                mapping: planogram.mapping,
+                POG: planogram.POG,
                 updated: new Date(),
             }, {
                 upsert: true,
