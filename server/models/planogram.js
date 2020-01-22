@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const planogramSchema = new Schema({
     id: String,
-    parts: [Object],
+    POG: [Object],
+    mapping: [Object],
     updated: Date,
 }, {
     collection: 'planogram'
