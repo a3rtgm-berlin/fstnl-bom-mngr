@@ -7,6 +7,8 @@
     max-width:1192px;
 
     #menu {
+        display:flex;
+        flex-direction:row;
         justify-self:flex-start;
         position:relative;
         width:100%;
@@ -16,6 +18,7 @@
         ul {
             @include flex-standard;
             justify-content: flex-start;
+            flex:1 0 66%;
             list-style:none;
 
             li {
@@ -68,5 +71,10 @@
                 border:1px solid $darkbrandblue;
             }
         }
+
+        #logdata {
+            flex:1 0 33%;
+        }
+
     }
 }

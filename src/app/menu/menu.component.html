@@ -5,7 +5,16 @@
                 <!--<li class="nav-item"><a class="nav-link" routerLink="#">Archived Projects</a></li>-->
                 <li class="nav-item"><a class="nav-link" (click)="uploadMatrixDialog()">Upload Matrix</a></li>
                 <li class="nav-item"><a class="nav-link" [routerLink]="['/app/settings']" [routerLinkActive]="'act'">Settings</a></li>
-                <li class="nav-item loglink"><a class="nav-link" (click)="logOut()">Log Out</a></li>
                 <!--<li class="nav-item"><a class="nav-link loglink" [routerLink]="['/app/login']">{{switch}}</a></li>-->
         </ul>
+        <div id="logdata">
+                <div class="wrapper">
+                        <p>You're logged in as</p>
+                        <div id="userdiv">
+                                <img id="usericon" src="../assets/img/icon_key.png">
+                                <a href="#">{{activeUser}}</a>
+                        </div>
+                </div>
+                <button class="nav-item loglink"><a class="nav-link" (click)="logOut()">Log Out</a></button>
+        </div>
 </div>

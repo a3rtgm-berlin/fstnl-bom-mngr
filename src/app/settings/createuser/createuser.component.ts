@@ -15,8 +15,6 @@ export class CreateuserComponent implements OnInit {
     role: "",
   };
   
-  
-
   constructor(public restService: RestService) { }
 
   ngOnInit() {

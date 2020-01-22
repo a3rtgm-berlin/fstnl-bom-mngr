@@ -8,7 +8,10 @@ export class RolePipe implements PipeTransform {
 
   constructor(public authService: AuthserviceService) {}
 
-  transform(val: number): any {
+  transform(val: number, single?): any {
+    if (single) {
+      return parseInt(this.authService.user.role, 10) === val ? true : false;
+    }
     return parseInt(this.authService.user.role, 10) <= val ? true : false;
   }
 

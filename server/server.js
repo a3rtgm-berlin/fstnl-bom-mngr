@@ -273,7 +273,7 @@ app.get('/api/master', (req, res) => {
  * @param
  * @method
  */
-app.get('/api/master/id', (req, res) => auth.guard(req, res, () => {
+app.get('/api/master/id', (req, res) => {
     MasterBom.find((err, data) => {
         if (err) throw err;
         if (data.length > 0) return res.status(200).send(
@@ -284,7 +284,7 @@ app.get('/api/master/id', (req, res) => auth.guard(req, res, () => {
         );
         res.status(200).send(['0000-00']);
     });
-}));
+});
 
 /**
  * @description returns all created Master BOMs
@@ -554,7 +554,7 @@ app.post('/api/users/authenticate', passport.authenticate('local', {
     failureMessage: 'something went wrong',
     failureFlash: true
 }), (req, res) => {
-    const token = jwt.sign({
+    let token = jwt.sign({
         "role": req.user.role,
     }, verifcation.privateKey, {
         expiresIn: '3h',

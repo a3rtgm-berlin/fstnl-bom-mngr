@@ -36,7 +36,6 @@ export class AuthserviceService {
     const logToken = localStorage.getItem('id_token');
     const req = this.http.post(url + 'token/verify', {token: logToken ? logToken : null});
     const verified = req.toPromise();
-
     return await verified;
   }
 

@@ -24,12 +24,15 @@ export class MenuComponent implements OnInit {
 
   public logged: string;
   public switch: string;
+  public activeUser: string;
 
   ngOnInit() {
     this.authService.loggedIn.subscribe((val) => {
       this.logged = val;
       this.updateLog(this.logged);
     });
+
+    this.activeUser = this.authService.user.username;
   }
 
   uploadMatrixDialog() {
