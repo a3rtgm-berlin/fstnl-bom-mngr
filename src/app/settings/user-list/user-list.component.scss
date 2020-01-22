@@ -1,0 +1,53 @@
+@import "../../../variables";
+
+:host {
+    display:block;
+    margin:20px auto;
+    width:100%;
+
+    #userlist {
+        h3 {
+            color:$brandblue;
+            font-size:100%;
+        }
+        ul.allusers {
+            display:flex;
+            flex-direction:column;
+            width:43.5%;
+
+            li.user {
+                display:flex;
+                flex-direction:row;
+                background:#fcfcfc;
+                border-bottom:1px solid #ccc;
+                padding:5px;
+                box-sizing: border-box;
+                @include outershadow;
+
+                &:last-child {
+                    display:none;
+                    border:none;
+                }
+
+                p {
+                    flex:0 0 25%;
+                    color:#aaa;
+                    margin:0;
+                }
+                button {
+                    flex:0 0 25%;
+                    background:$red;
+                    padding:5px;
+                    border:none;
+                    color:whitesmoke;
+
+                    &:hover {
+                        transform:scale(0.95);
+                        @include innershadow;
+                        transition:0.3s;
+                    }
+                }
+            }
+        }
+    }
+}

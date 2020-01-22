@@ -1,3 +1,4 @@
+<h3>Create new User</h3>
 <form>
     <label>
         <input type="email" placeholder="User Mail" id="mail" name="mail" #mail (change)="updateUser(mail.value, username.value, password.value)">
@@ -9,14 +10,23 @@
         <input type="password" placeholder="Enter Password" id="password" name="password" #password (change)="updateUser(mail.value, username.value, password.value)">
     </label>
     <fieldset (change)="updateUserRole(mail.value, username.value, password.value, $event)">
-        <input type="radio" id="read" name="role" #role value="3">
-        <label for="read">Read</label> 
-        <input type="radio" id="create" name="role" #role value="2">
-        <label for="create">Create</label>
-        <input type="radio" id="admin" name="role" #role value="1">
-        <label for="admin">Admin</label> 
+        <h4>User Rights</h4>
+        <div class="wrapper">
+            <label for="read">
+                <p>Read</p>
+                <input type="radio" id="read" name="role" #role value="3">
+            </label> 
+            <label for="create">
+                <p>Create</p>
+                <input type="radio" id="create" name="role" #role value="2">
+            </label>
+            <label for="admin">
+                <p>Admin</p>
+                <input type="radio" id="admin" name="role" #role value="1">
+            </label> 
+        </div>
     </fieldset>
     <button>
-        <input type="submit" (click)="submitUser()">
+        <input value="Create User" type="submit" (click)="submitUser()">
     </button>
 </form>

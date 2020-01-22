@@ -10,12 +10,8 @@
     </div>
 </div>
 <div class="meta-info" *ngIf="planogram">
-    <table class="table table-sm">
-        <tr>
-            <th>Updated</th>
-            <td>{{planogram.updated.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }) || '-'}}</td>
-        </tr>
-    </table>
+            <h3>Last Updated</h3>
+            <p>{{planogram.updated.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }) || '-'}}</p>
 </div>
 <table class="table table-sm" id="BOM">
     <thead class="thead-dark">
@@ -30,12 +26,13 @@
         <ng-container *ngFor="let item of processedBom">
             <tr>
               <td [ngStyle]="{'background': colors[item.Station]}" class="station">{{item.Station}}</td>
-              <td class="bin-pos" *ngIf="item.Location">
-                  <ng-container *ngIf="item.Location.length > 0; else noPos">
+              <td class="bin-pos" *ngIf="item.Location; else noPos">
+                  <!--<ng-container *ngIf="item.Location.length > 0; else noPos">
                       <ul>
                           <li *ngFor="let pos of item.Location">{{pos}}</li>
                       </ul>
-                  </ng-container>
+                  </ng-container>-->
+                  <ng-container *ngIf="item.Location.length > 0; else noPos"> {{item.Location}}</ng-container>
                   <ng-template #noPos>
                       -
                   </ng-template>

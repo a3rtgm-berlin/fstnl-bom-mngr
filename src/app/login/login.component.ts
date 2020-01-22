@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
           }
 
         this.router.navigate(['app/projects']);
+        
         return;
       }
     });
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
       password: this.password,
     };
 
-    this.authService.authenticateUser(user);
+    this.authService.authenticateUser(user); 
   }
 
   logOut() {

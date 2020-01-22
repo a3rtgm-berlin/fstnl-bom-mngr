@@ -1,0 +1,102 @@
+@import "../../../variables";
+
+:host {
+    padding:20px 0px;
+    box-sizing:border-box;
+
+    h3 {
+        font-size:100%;
+        color:$brandblue;
+        margin:10px 0px;
+    }
+
+    form {
+        display:flex;
+        flex-direction: row;
+        flex-wrap:wrap;
+
+        label {
+            flex:0 0 48%;
+
+            input {
+                width: 90%;
+                margin: 3px auto;
+                border: 1px solid #ccc;
+                padding: 5px;
+                box-sizing: border-box;
+            }
+        }
+        fieldset {
+            flex:1 0 100%;
+
+            h4 {
+                color:#aaa;
+                font-size:80%;
+            }
+
+            .wrapper {
+                display:flex;
+                flex-direction:row;
+                flex-wrap:wrap;
+                width:43%;
+                margin:3px 0;
+                background:#eee;
+                padding:5px;
+                box-sizing: border-box;
+                @include innershadow;
+
+                label {
+                    display:flex;
+                    flex-direction:row;
+                    flex-wrap:wrap;
+                    align-items:center;
+                    flex:1 0 30%;
+                    margin:0;
+
+                    p {
+                        color:#666;
+                        flex:0 0 50%;
+                        display:inline-block;
+                        margin:0;
+                    }
+                    input {
+                        -webkit-appearance: none;
+                        appearance: none;
+                        flex:0 0 50%;
+                        display:inline-block;
+                        max-width: 15px;
+                        height:15px;
+                        margin: 0;
+                        background-color:white;
+                        border:1px solid #fff;
+
+                        &:checked {
+                            transform:scale(1.2);
+                            border:none;
+                            background-color:transparent;
+                            background-image:url("../../../assets/img/icon_ok.png");
+                            background-size:100%;
+
+                        }
+                    }
+                }
+            }
+        }
+        button {
+            border:none;
+            margin:10px 0px;
+            input {
+                border:none;
+                background:$darkbrandblue;
+                color:whitesmoke;
+                padding:5px 20px;
+                box-sizing:border-box;
+            }
+
+            &:hover {
+                outline:1px solid whitesmoke;
+                @include outershadow;
+            }
+        }
+    }
+}

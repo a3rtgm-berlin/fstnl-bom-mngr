@@ -73,7 +73,72 @@
         }
 
         #logdata {
+            display:flex;
+            flex-direction:row;
+            flex-wrap:wrap;
             flex:1 0 33%;
+
+            .wrapper {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                flex:1 0 50%;
+                height:100%;
+                margin-right:5px;
+
+                p {
+                    margin:0;
+                    font-size:80%;
+                    color:#ccc;
+                    text-align:right;
+                    margin-right:5px;
+                }
+
+                #userdiv {
+                    display:flex;
+                    flex-direction: row;
+                    justify-content:flex-end;
+                    margin-right:10px;
+
+                    img {
+                        width:20px;
+                        height:auto;
+                        filter:invert(1);
+                        margin-right:5px;
+                    }
+
+                    #usericon_main {
+                        filter:invert(0) !important;
+                        background:url(../../assets/img/flame.gif);
+                        background-position:center;
+                        background-size:100%;
+                    }
+                    a {
+                        color:$brightblue;
+                        font-size:80%;
+                        pointer-events:none;
+                    }
+                }
+            }
+
+            .loglink {
+                color:whitesmoke;
+                background:$darkbrandblue;
+                border:1px solid $darkbrandblue;
+                font-size:80%;
+                margin-top:5px;
+                margin-right:5px;
+                height:40px;
+                transform:0.3s;
+
+                &:hover {
+                    border:1px solid whitesmoke;
+                    transform:scale(1.01);
+                    transform:0.3s;
+
+                    @include innershadow;
+                }
+            }
         }
 
     }

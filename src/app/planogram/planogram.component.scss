@@ -1,16 +1,19 @@
 @import '../../variables';
 
 :host {
-    display:block;
+    display:flex;
     width:100vw;
     max-width:1192px;
-
+    flex-direction:row;
+    flex-wrap:wrap;
+    
     .functionblock {
-        width:100%;
+        flex:1 0 100%;
         display:flex;
         flex-direction:row;
         flex-wrap:wrap;
         justify-content:flex-end;
+        order:2;
 
         .dlbuttons {
             order:1;
@@ -21,6 +24,22 @@
             order:3;
             margin:0px !important;
             padding:0px 10px;
+        }
+    }
+
+    .meta-info {
+        flex:1 0 100%;
+        order:1;
+        text-align:right;
+
+        h3 {
+            font-size:90%;
+            color:$brandblue;
+        }
+
+        p {
+            font-size:80%;
+            color:#aaa;
         }
     }
 
@@ -128,8 +147,10 @@
         }
     }
 
-
     table {
+        flex:1 0 100%;
+        order:3;
+
         thead {
             padding:0px;
             margin:0px;
@@ -259,7 +280,7 @@
                     color:#ddd;
                 }
                 &.bin-pos {
-                    padding:0;
+                    //padding:0;
                     ul {
                         list-style: none;
                         margin-bottom: 0;
