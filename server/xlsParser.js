@@ -109,10 +109,12 @@ function planogramParser(input) {
                 };
 
                 dataAsJson.forEach(_part => {
-                    if (!_part.Location && _part.Station === part.Station && _part.Part === part.Part) {
-                        _part.delete = true;
-                        map.Location.push(_part.Wagon + '-' + _part.Bin);
-                        map['Location Count'] += 1;
+                    if (_part.Wagon !== part.Wagon && _part.Bin !== part.Bin) {
+                        if (_part.Station === part.Station && _part.Part === part.Part) {
+                            _part.delete = true;
+                            map.Location.push(_part.Wagon + '-' + _part.Bin);
+                            map['Location Count'] += 1;
+                        }
                     }
                 });
     
