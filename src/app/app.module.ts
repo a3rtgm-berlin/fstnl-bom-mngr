@@ -17,7 +17,7 @@ import { ComparisonMetaViewComponent } from './compare-orders/comparison-meta-vi
 import { ComparisonListViewComponent } from './compare-orders/comparison-list-view/comparison-list-view.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { CreateProjectComponent } from './manage-projects/create-project/create-project.component';
-
+import { MatTableModule } from '@angular/material' 
 import { ModalService } from './services/modal/modal.service';
 import { DomService } from './services/dom/dom.service';
 import { MatrixFilesComponent } from './matrix-files/matrix-files.component';
@@ -93,6 +93,7 @@ import { RolePipe } from './pipes/role.pipe';
   imports: [
     BrowserModule,
     HttpClientModule,
+    MatTableModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,

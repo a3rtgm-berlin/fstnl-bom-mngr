@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, ViewChild, ElementR
 import { MaterialList } from '../../materialListModel';
 import $ from 'jquery';
 import { ColorCodeService } from 'src/app/services/color-code/color-code.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-material-list-view',
@@ -25,7 +26,18 @@ export class MaterialListViewComponent implements OnInit, OnChanges {
     return this.master$;
   }
 
-  constructor(public colorCodeService: ColorCodeService) { }
+  constructor(public colorCodeService: ColorCodeService, public router: Router) {
+    if (this.router.url.endsWith('/movingfile')) {
+      this.tab = 'Moving File';
+    } else if (this.router.url.endsWith('/rpn')) {
+      this.tab = 'RPN';
+    } else if (this.router.url.endsWith('/planogram')) {
+      this.tab = 'Planogram';
+    } else {
+      this.tab = 'MasterBOM';
+    }
+
+   }
 
   ngOnInit() {
   }

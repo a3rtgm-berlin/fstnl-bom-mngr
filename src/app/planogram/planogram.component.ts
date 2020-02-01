@@ -2,6 +2,7 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitte
 import { RestService } from '../services/rest/rest.service';
 import { ColorCodeService } from '../services/color-code/color-code.service';
 import { ExportService } from '../services/export/export.service';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-planogram',
@@ -25,6 +26,8 @@ export class PlanogramComponent implements OnInit, OnChanges {
   _bom: any;
   processedBom: any;
 
+  displayedColumns: string[] = ['Station', 'Location', 'Location Count', 'Material'];
+  dataSource = new MatTableDataSource();
   constructor(public restService: RestService, public exportService: ExportService) {}
 
   ngOnInit() {
@@ -39,7 +42,9 @@ export class PlanogramComponent implements OnInit, OnChanges {
           } : {...part, Menge: 'Not On MasterBOM'};
         });
       }
-      console.log(this.processedBom.filter(x => x.isNotOnPOG));
+      this.dataSource = new MatTableDataSource(this.processedBom);
+      //console.log(this.processedBom.filter(x => x.isNotOnPOG));
+      console.log(this.processedBom);
     });
   }
 
@@ -52,6 +57,10 @@ export class PlanogramComponent implements OnInit, OnChanges {
 
   addSort(column, event){
     alert("Filter function will be added soon");
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   createPlanogram(): void {

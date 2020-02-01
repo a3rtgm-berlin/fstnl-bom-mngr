@@ -11,6 +11,8 @@
   "author": "a3rtgm-ds",
   "license": "ISC",
   "dependencies": {
+    "@angular/cdk": "^8.2.3",
+    "@angular/material": "^8.2.3",
     "@auth0/angular-jwt": "^3.0.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.3.1",

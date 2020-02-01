@@ -11,8 +11,8 @@ import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { LoaderService } from '../loader/loader.service';
 import $ from 'jquery';
 
-//const url = 'http://localhost:8000/api/';
-const url = 'http://91.250.112.78:49160/api/';
+const url = 'http://localhost:8000/api/';
+//const url = 'http://91.250.112.78:49160/api/';
 
 @Injectable({
   providedIn: 'root'

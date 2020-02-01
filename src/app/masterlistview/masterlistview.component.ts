@@ -88,6 +88,7 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
   filterBom(val) {
     if (val !== '' && this.bom$) {
       this.processedBom = this.bom$.filter((row) => {
+        // return row[this.filterCol.nativeElement.value].toString().includes(val);
         return row[this.filterCol.nativeElement.value].toString().includes(val);
       });
     } else {

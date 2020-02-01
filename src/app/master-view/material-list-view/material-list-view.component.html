@@ -1,4 +1,5 @@
 <div class="d-flex flex-column single-list">
+    <ng-container *ngIf="2 | role">
         <label><strong>{{master$.id}}</strong> {{master$ ? "[ Masterlist loaded ]" : "[ Masterlist not found! ]"}}</label>
         <div class="btn-group">
             <button type="button" class="btn btn-primary label">Master-List-ID</button>
@@ -27,21 +28,22 @@
         <div class="btn-group tabspanel" #tabsPanel>
             <button *ngFor="let currentTab of tabs" class="btn {{currentTab === tab ? 'btn-primary' : 'btn-outline-primary'}}" (click)="selectTab($event, currentTab)">View {{currentTab}}</button>
         </div>
+    </ng-container>
         <div class="btn-group xl">
             <div [ngSwitch]="tab">
-                <ng-template [ngSwitchCase]="'MasterBOM'">
+                <ng-template *ngIf="2 | role" [ngSwitchCase]="'MasterBOM'">
                     <app-masterlistview 
                         [bom]="master$.json ? master$.json : null"
                         [colors]="colors"
                         [id]="master$.id">
                     </app-masterlistview>
                 </ng-template>
-                <ng-template [ngSwitchCase]="'Moving File'">
+                <ng-template *ngIf="2 | role" [ngSwitchCase]="'Moving File'">
                     <app-compare-orders 
                         [comparison]="master$.comparison ? master.comparison : null">
                     </app-compare-orders>
                 </ng-template>
-                <ng-template [ngSwitchCase]="'RPN'">
+                <ng-template *ngIf="2 | role" [ngSwitchCase]="'RPN'">
                     <app-project-remain-need
                         [projects]="master$.projects"
                         [id]="master$.id"

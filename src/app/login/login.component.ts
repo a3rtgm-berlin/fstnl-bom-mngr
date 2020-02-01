@@ -27,14 +27,14 @@ export class LoginComponent implements OnInit {
 
     this.authService.loggedIn.subscribe(async res => {
       if (res) {
-        console.log(this.authService.user.username);
-          if (this.authService.user.role == "3") {
-            this.router.navigate(['app/master/view/' + this.masterId]);
-            return;
-          }
+        console.log(this.authService.user.role);
+        if (this.authService.user.role == '3') {
+          this.router.navigate(['app/master/view/' + this.masterId + '/planogram']);
+          return;
+        }
 
         this.router.navigate(['app/projects']);
-        
+
         return;
       }
     });
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
       password: this.password,
     };
 
-    this.authService.authenticateUser(user); 
+    this.authService.authenticateUser(user);
   }
 
   logOut() {
