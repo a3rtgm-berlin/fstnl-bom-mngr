@@ -13,7 +13,7 @@ const url = 'http://91.250.112.78:49160/api/';
 
 export class AuthserviceService {
   authToken: any;
-  user: any;
+  user: any = {};
 
   loggedIn: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
@@ -29,6 +29,7 @@ export class AuthserviceService {
     if (localStorage.getItem('id_token') && localStorage.getItem('user')) {
       this.authToken = localStorage.getItem('id_token');
       this.user = JSON.parse(localStorage.getItem('user'));
+      this.setLoginState(true);
     }
   }
 

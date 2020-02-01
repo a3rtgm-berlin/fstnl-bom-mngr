@@ -10,9 +10,9 @@
         <div id="logdata">
                 <div class="wrapper">
                         <p>You're logged in as</p>
-                        <div id="userdiv">
+                        <div *ngIf="logged" id="userdiv">
                                 <!--<img *ngIf="!0 | role : true" id="usericon" src="../assets/img/icon_key.png">-->
-                                <img *ngIf="0 | role : true;else non_overlord" id="usericon_main" src="../assets/img/overlord_icon.png">
+                                <img *ngIf="0 | role : true; else non_overlord" id="usericon_main" src="../assets/img/overlord_icon.png">
                                 <ng-template #non_overlord><img id="usericon" src="../assets/img/icon_key.png"></ng-template>
                                 <a href="#">{{activeUser}}</a>
                         </div>

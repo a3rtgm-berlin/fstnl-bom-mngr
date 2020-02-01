@@ -223,9 +223,9 @@ function planogram (req, res) {
 
     form.on('file', (field, file) => {
         reader.readAsArrayBuffer(file);
-        reader.addEventListener('load', (evt) => {
+        reader.addEventListener('load', async (evt) => {
             const view = new Uint8Array(reader.result);
-            const planogram = parser.planogramParser(reader.result);
+            const planogram = await parser.planogramParser(reader.result, id);
 
             Planogram.findOneAndUpdate({id: id}, {
                 mapping: planogram.mapping,

@@ -88,6 +88,7 @@ export class RestService {
 
   setMaster(val) {
     if (val) {
+      console.log(val);
       this.master.next(val);
     } else {
       this.master.next(null);

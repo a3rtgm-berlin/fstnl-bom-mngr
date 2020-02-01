@@ -15,11 +15,13 @@ module.exports = class Comparison {
         
         this.lastList = {
             id: sortedLists[0].id,
-            json: this.concatModulesAtStation(sortedLists[0].json)
+            json: sortedLists[0].json
+            // json: this.concatModulesAtStation(sortedLists[0].json)
         };
         this.currentList = {
             id: sortedLists[1].id,
-            json: this.concatModulesAtStation(sortedLists[1].json)
+            json: sortedLists[1].json
+            // json: this.concatModulesAtStation(sortedLists[1].json)
         };
 
         this.setMeta();
@@ -75,10 +77,10 @@ module.exports = class Comparison {
                             currentItem.status = 'remain';
                         }
                     }
-                } else {
-                    $added.add(currentItem);
-                    return true;
+                    return false;
                 }
+                $added.add(currentItem);
+                return true;
             });
         });
 

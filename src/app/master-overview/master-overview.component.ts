@@ -26,4 +26,22 @@ export class MasterOverviewComponent implements OnInit {
     this.router.navigate([`app/master/view/${evt.target.parentNode.id}`]);
   }
 
+  deleteMaster(evt, id) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    if (confirm(`Delete current Master ${id}?`)) {
+      this.restService.deleteMaster(id);
+    }
+  }
+
+  rebuildMaster(evt, id) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    if (confirm(`Recalculate Master ${id}?`)) {
+      this.restService.rebuildMaster(id);
+    }
+  }
+
 }

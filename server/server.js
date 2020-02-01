@@ -75,8 +75,8 @@ app.use((req, res, next) => {
 });
 
 // Connect DB
-//mongoose.connect('mongodb://test:test@91.250.112.78:27017/testDB', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
-mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+mongoose.connect('mongodb://test:test@91.250.112.78:27017/testDB', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+// mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
 // mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
 
 // Set server options
@@ -188,10 +188,44 @@ app.get('/api/planogram/:id/:type', (req, res) => auth.guard(req, res, () => {
 
 app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, async () => {
     const id = req.params.id;
+    const matrix = await ArbMatrix.findOne({}).exec();
     const master = await MasterBom.findOne({id: id}).exec();
     const lastPlanogram = await Planogram.findOne({id: {$lt: id}}).sort({id: -1}).exec();
-    const planogram = master.json.map(part => {
-        const oldPos = lastPlanogram ? lastPlanogram.parts.find(p => p.id === part.id) : null;
+    const pog = master.reduce((res, part) => {
+        if (!res.find(item => item.Station === part.Station)) {
+            const station = matrix.json.find(station => station.Area === part.Station);
+            const cartSize = station ? station.CartSize : 60;
+            const rows = cartSize / 10;
+
+            for (let i = 1; i <= part.stationCarts; i++) {
+                for (let j = 1; j <= rows; j++) {
+                    for (let k = 1; k <= cartSize / rows; k++) {
+                        const wagon = 'W' + i;
+                        const bin = j + '-' + k;
+                        const oldPart = lastPlanogram.POG.find(bin => 
+                            bin.Wagon === wagon,
+                            bin.Bin === bin,
+                            bin.Station === part.Station
+                        );
+
+                        res.push({
+                            Wagon: 'W' + i,
+                            Bin: j + '-' + k,
+                            Station: part.Station,
+                            Part: oldPart ? oldPart.Part : '',
+                            ROQ: oldPart ? oldPart.ROQ : '',
+                            isNotOnBom: ''
+                        })
+                    }
+                }
+            }
+        }
+
+        return res;
+    }, []);
+
+    const mapping = master.json.map(part => {
+        const oldPos = lastPlanogram ? lastPlanogram.mapping.find(p => p.id === part.id) : null;
         return {
             Material: part.Material,
             Station: part.Station,
@@ -201,8 +235,8 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
     });
     
     Planogram.findOneAndUpdate({id: id}, {
-        mapping: planogram,
-        POG: undefined,
+        mapping: mapping,
+        POG: pog,
         updated: new Date(),
     }, {
         upsert: true,

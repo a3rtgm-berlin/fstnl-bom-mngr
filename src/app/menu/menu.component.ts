@@ -30,9 +30,8 @@ export class MenuComponent implements OnInit {
     this.authService.loggedIn.subscribe((val) => {
       this.logged = val;
       this.updateLog(this.logged);
+      this.activeUser = this.authService.user.username || null;
     });
-
-    this.activeUser = this.authService.user.username;
   }
 
   uploadMatrixDialog() {
@@ -53,7 +52,6 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  
   logOut() {
     this.authService.logoutUser();
     this.router.navigate(['app/login']);

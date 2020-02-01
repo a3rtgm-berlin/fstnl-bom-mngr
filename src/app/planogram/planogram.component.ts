@@ -33,18 +33,13 @@ export class PlanogramComponent implements OnInit, OnChanges {
       this.planogram = val;
       if (this.planogram) {
         this.bom = this.planogram.mapping.map(part => {
-          const match = this.bom.find(item => part.id === item.id);
-
-          return {
+          return !part.isNotOnBOM ? {
             ...part,
-            ...match || {
-              Menge: 'not on MasterBOM',
-              isNotOnBom: true
-            }
-          };
+            ...this.bom.find(item => part.id === item.id)
+          } : {...part, Menge: 'Not On MasterBOM'};
         });
       }
-      console.log(this.processedBom.filter(x => x.isNotOnBom));
+      console.log(this.processedBom.filter(x => x.isNotOnPOG));
     });
   }
 
