@@ -55,6 +55,10 @@ export class PlanogramComponent implements OnInit, OnChanges {
     this.exportService.xlsxFromJson(this.planogram.POG, `Planogram-${this.id}`, ['id']);
   }
 
+  addSort(column, event){
+    alert("Filter function will be added soon");
+  }
+
   createPlanogram(): void {
     if (confirm(`Create New Planogram from Master? Any existing Planogram with ID ${this.id} will be overwritten!`)) {
       this.restService.createPlanogram(this.id);

@@ -26,7 +26,7 @@
         <ng-container *ngFor="let item of processedBom">
             <tr>
               <td [ngStyle]="{'background': colors[item.Station]}" class="station">{{item.Station}}</td>
-              <td class="bin-pos" *ngIf="item.Location; else noPos">
+              <td class="bin-pos" *ngIf="item.Location">
                   <!--<ng-container *ngIf="item.Location.length > 0; else noPos">
                       <ul>
                           <li *ngFor="let pos of item.Location">{{pos}}</li>
