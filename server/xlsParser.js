@@ -137,7 +137,7 @@ function planogramParser(input, id) {
                 master.json.forEach(part => {
                     if (!mapping.find(item => item.id === part.id)) {
                         mapping.push({
-                            Location: undefined,
+                            Location: [],
                             'Location Count': 'Not on POG',
                             id: part.id,
                             Station: part.Station,

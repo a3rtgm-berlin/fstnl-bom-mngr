@@ -28,7 +28,7 @@
         <ng-container *ngFor="let item of processedBom">
             <tr [ngClass]="{'not-on-bom': item.isNotOnBOM, 'not-on-pog': item.isNotOnPOG}">
               <td [ngStyle]="{'background': colors[item.Station]}" class="station">{{item.Station}}</td>
-              <td class="wagon" *ngIf="item.Location; else noPos">
+              <td class="wagon">
                   <ng-container *ngIf="item.Location.length > 0; else noPos">
                       <ul>
                           <li *ngFor="let pos of item.Location">{{pos[0]}}</li>
@@ -39,7 +39,7 @@
                       -
                   </ng-template>
               </td>
-              <td class="bin" *ngIf="item.Location; else noPos">
+              <td class="bin">
                   <ng-container *ngIf="item.Location.length > 0; else noPos">
                       <ul>
                           <li *ngFor="let pos of item.Location">{{pos[1]}}</li>
