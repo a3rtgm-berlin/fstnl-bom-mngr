@@ -125,7 +125,7 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
   projectStates() {
     this.crossId = this.masterId;
-    
+
     if (this.allProjects && this.masterId) {
       this.allProjects.forEach((project) => {
         if (project.bomLists.length > 0) {

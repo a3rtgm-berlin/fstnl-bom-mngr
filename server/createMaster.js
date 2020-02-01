@@ -2,6 +2,7 @@ const MaterialList = require("./models/list").MaterialListModel;
 const MasterBom = require('./models/masterBom');
 const Comparison = require('./compareLists');
 const ArbMatrix = require('./models/arbMatrix');
+const Planogram = require('./models/planogram');
 
 
 const createMasterBom = function (req, res) {
@@ -29,12 +30,18 @@ const createMasterBom = function (req, res) {
                 return console.error(err);
             }
 
-            if (lastMaster && lastMaster.id < id) {
-                let compare = new Promise((res, rej) => {
-                    res(new Comparison([dbModel, lastMaster]));
-                });
-                const comparison = await compare;
-                dbModel.comparison = comparison;
+            if (lastMaster) {
+                if (lastMaster.planogram) {
+                    const mapping = await Planogram.find({id: lastMaster.id}).exec();
+                    lastMaster.json = mapping || lastMaster.json;
+                }
+                if (lastMaster.id < id) {
+                    let compare = new Promise((res, rej) => {
+                        res(new Comparison([dbModel, lastMaster]));
+                    });
+                    const comparison = await compare;
+                    dbModel.comparison = comparison;
+                }
             }
 
             dbModel.save((err) => {

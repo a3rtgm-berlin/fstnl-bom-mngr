@@ -255,6 +255,18 @@
             border-bottom:2px solid #eee;
             background:#f8f8f8;
             text-align:center;
+            &.not-on-bom {
+                background: $yellowpaper;
+                td {
+                    color:whitesmoke;
+                }
+            }
+            &.not-on-pog {
+                background: $redpaper;
+                td {
+                    color: whitesmoke;
+                }
+            }
             th {
                 position:relative;
                 span {
@@ -279,7 +291,7 @@
                 &.station {
                     color:#ddd;
                 }
-                &.bin-pos {
+                &.wagon, &.bin {
                     //padding:0;
                     ul {
                         list-style: none;

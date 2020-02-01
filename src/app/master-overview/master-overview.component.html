@@ -4,12 +4,19 @@
         <th scope="col">Moving File</th>
         <th scope="col">Date</th>
         <th scope="col">Projects</th>
+        <th scope="col" *ngIf="1 | role">Actions</th>
     </thead>
     <tr (click)="navigate($event)" [id]="master.id" *ngFor="let master of allMaster">
         <td>{{master.id}}</td>
         <td>{{master.moving}}</td>
         <td>{{master.date}}</td>
         <td>{{master.projects.join(', ')}}</td>
+        <td *ngIf="1 | role">
+            <div class="btnbox">
+                <button class="subbtn refresh" title="Update selected BOM by Project Stats" (click)="rebuildMaster($event, master.id)"></button>
+                <button class="subbtn delete" title="Delete Selected BOM" (click)="deleteMaster($event, master.id)"></button>
+            </div>
+        </td>
     </tr>
 
 </table>

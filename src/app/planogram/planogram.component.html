@@ -16,7 +16,9 @@
 <table class="table table-sm" id="BOM">
     <thead class="thead-dark">
         <th (click)="addSort('Station', $event)" scope="col">Station</th>
-        <th (click)="addSort('BinPos', $event)" scope="col">Location</th>
+        <th (click)="addSort('Wagon', $event)" scope="col">Wagon</th>
+        <th (click)="addSort('Bin', $event)" scope="col">Bin</th>
+        <th (click)="addSort('Location Count', $event)" scope="col">Location Count</th>
         <th (click)="addSort('Material', $event)" scope="col">Part#</th>
         <th (click)="addSort('Objektkurztext', $event)" scope="col">Part</th>
         <th (click)="addSort('ME', $event)" scope="col">Unit</th>
@@ -24,19 +26,31 @@
     </thead>
     <ng-container *ngIf="planogram">
         <ng-container *ngFor="let item of processedBom">
-            <tr>
+            <tr [ngClass]="{'not-on-bom': item.isNotOnBOM, 'not-on-pog': item.isNotOnPOG}">
               <td [ngStyle]="{'background': colors[item.Station]}" class="station">{{item.Station}}</td>
-              <td class="bin-pos" *ngIf="item.Location; else noPos">
-                  <!--<ng-container *ngIf="item.Location.length > 0; else noPos">
+              <td class="wagon" *ngIf="item.Location; else noPos">
+                  <ng-container *ngIf="item.Location.length > 0; else noPos">
                       <ul>
-                          <li *ngFor="let pos of item.Location">{{pos}}</li>
+                          <li *ngFor="let pos of item.Location">{{pos[0]}}</li>
                       </ul>
-                  </ng-container>-->
-                  <ng-container *ngIf="item.Location.length > 0; else noPos"> {{item.Location}}</ng-container>
+                  </ng-container>
+                  <!-- <ng-container *ngIf="item.Location.length > 0; else noPos"> {{item.Location}}</ng-container> -->
                   <ng-template #noPos>
                       -
                   </ng-template>
               </td>
+              <td class="bin" *ngIf="item.Location; else noPos">
+                  <ng-container *ngIf="item.Location.length > 0; else noPos">
+                      <ul>
+                          <li *ngFor="let pos of item.Location">{{pos[1]}}</li>
+                      </ul>
+                  </ng-container>
+                  <!-- <ng-container *ngIf="item.Location.length > 0; else noPos"> {{item.Location}}</ng-container> -->
+                  <ng-template #noPos>
+                      -
+                  </ng-template>
+              </td>
+              <td>{{item['Location Count']}}</td>
               <td>{{item.Material || item.Part}}</td>
               <td>{{item.Objektkurztext}}</td>
               <td>{{item.ME}}</td>

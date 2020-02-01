@@ -1,4 +1,5 @@
 const XLSX = require('../node_modules/xlsx');
+const MasterBom = require("./models/masterBom");
 
 
 function xlsParser(input, tag, suffix = null) {
@@ -89,50 +90,77 @@ function consumptionParser(input) {
         return dataAsJson;
 }
 
-function planogramParser(input) {
-    // load from buffer,
-    const wb = XLSX.read(input, {type:"array"});
-    const ws = wb.Sheets[wb.SheetNames[0]];
+function planogramParser(input, id) {
+    return new Promise((res) => {
+        // load from buffer,
+        const wb = XLSX.read(input, {type:"array"});
+        const ws = wb.Sheets[wb.SheetNames[0]];
 
-    const dataAsJson = XLSX.utils.sheet_to_json(ws);
-    const mapping = [];
+        const dataAsJson = XLSX.utils.sheet_to_json(ws);
+        const mapping = [];
 
-    dataAsJson.forEach(part => {
-        if (!part.delete) {
-            if (part.Part && part.Part !== 'Empty') {
-                const map = {
-                    Location: [part.Wagon + '-' + part.Bin],
-                    id: part.Station + part.Part,
-                    'Location Count': 1,
-                    Station: part.Station,
-                    Part: part.Part,
-                };
+        MasterBom.findOne({id: id}, (err, master) => {
+            if (err) console.error(err);
 
-                dataAsJson.forEach(_part => {
-                    if (_part.Wagon !== part.Wagon && _part.Bin !== part.Bin) {
-                        if (_part.Station === part.Station && _part.Part === part.Part) {
-                            _part.delete = true;
-                            map.Location.push(_part.Wagon + '-' + _part.Bin);
-                            map['Location Count'] += 1;
-                        }
+            dataAsJson.forEach(part => {
+                if (!part.delete) {
+                    if (part.Part && part.Part !== 'Empty') {
+                        const map = {
+                            Location: [[part.Wagon, part.Bin]],
+                            id: part.Station + part.Part,
+                            'Location Count': 1,
+                            Station: part.Station,
+                            Part: part.Part,
+                            isNotOnPOG: false
+                        };
+                        const match = master ? master.json.find(item => item.id === map.id) : undefined;
+
+                        map.isNotOnBOM = match ? false : true;
+                        part.isNotOnBOM = match ? '' : 'x';
+    
+                        dataAsJson.forEach(_part => {
+                            if (_part.Wagon !== part.Wagon && _part.Bin !== part.Bin) {
+                                if (_part.Station === part.Station && _part.Part === part.Part) {
+                                    _part.delete = true;
+                                    map.Location.push([_part.Wagon, _part.Bin]);
+                                    map['Location Count'] += 1;
+                                }
+                            }
+                        });
+            
+                        mapping.push(map);
+                    }
+                }
+            });
+
+            if (master) {
+                master.json.forEach(part => {
+                    if (!mapping.find(item => item.id === part.id)) {
+                        mapping.push({
+                            Location: undefined,
+                            'Location Count': 'Not on POG',
+                            id: part.id,
+                            Station: part.Station,
+                            Part: part.Part,
+                            isNotOnPOG: true
+                        });
                     }
                 });
-    
-                mapping.push(map);
             }
-        }
+    
+            res({
+                mapping: mapping,
+                POG: dataAsJson.map(item => ({
+                    Wagon: item.Wagon,
+                    Bin: item.Bin,
+                    Station: item.Station,
+                    Part: item.Part,
+                    ROQ: item.ROQ,
+                    isNotOnBOM: item.isNotOnBOM
+                }))
+            });
+        });
     });
-
-    return {
-        mapping: mapping,
-        POG: dataAsJson.map(item => ({
-            Wagon: item.Wagon,
-            Bin: item.Bin,
-            Station: item.Station,
-            Part: item.Part,
-            ROQ: item.ROQ,
-        }))
-    };
 }
 
 module.exports = { xlsParser, matrixParser, excludeListParser, consumptionParser, planogramParser };
