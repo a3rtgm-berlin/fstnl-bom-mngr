@@ -13,7 +13,7 @@ const url = 'http://localhost:8000/api/';
 
 export class AuthserviceService {
   authToken: any;
-  user: any;
+  user: any = {};
 
   loggedIn: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 

@@ -30,7 +30,7 @@ export class MenuComponent implements OnInit {
     this.authService.loggedIn.subscribe((val) => {
       this.logged = val;
       this.updateLog(this.logged);
-      this.activeUser = this.authService.user.username;
+      this.activeUser = this.authService.user.username || null;
     });
   }
 
