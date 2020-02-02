@@ -26,7 +26,7 @@ export class PlanogramComponent implements OnInit, OnChanges {
   _bom: any;
   processedBom: any;
 
-  displayedColumns: string[] = ['Station', 'Location', 'Location Count', 'Material'];
+  displayedColumns: string[] = ['Station', 'Location Wagon', 'Location Bin', 'Location Count', 'Material', 'Objektkurztext', 'ME', 'Menge'];
   dataSource = new MatTableDataSource();
   constructor(public restService: RestService, public exportService: ExportService) {}
 
@@ -43,6 +43,7 @@ export class PlanogramComponent implements OnInit, OnChanges {
         });
       }
       this.dataSource = new MatTableDataSource(this.processedBom);
+      console.log(this.dataSource);
       //console.log(this.processedBom.filter(x => x.isNotOnPOG));
       console.log(this.processedBom);
     });
