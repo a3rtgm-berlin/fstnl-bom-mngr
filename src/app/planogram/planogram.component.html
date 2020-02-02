@@ -27,7 +27,7 @@
     <ng-container matColumnDef="Location Wagon">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef> Wagon </th>
         <td  mat-cell *matCellDef="let element">
-            <ng-container *ngIf="element.Location.length > 0; else noPos">
+            <ng-container *ngIf="element.Location; else noPos">
                 <ul>
                     <li *ngFor="let pos of element.Location">{{pos[0]}}</li>
                 </ul>
@@ -41,7 +41,7 @@
     <ng-container matColumnDef="Location Bin">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef> Wagon </th>
         <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="element.Location.length > 0; else noPos">
+            <ng-container *ngIf="element.Location; else noPos">
                 <ul>
                     <li *ngFor="let pos of element.Location">{{pos[1]}}</li>
                 </ul>
