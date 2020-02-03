@@ -15,12 +15,12 @@ module.exports = class Comparison {
         
         this.lastList = {
             id: sortedLists[0].id,
-            json: sortedLists[0].json
+            json: JSON.parse(JSON.stringify(sortedLists[0].json))
             // json: this.concatModulesAtStation(sortedLists[0].json)
         };
         this.currentList = {
             id: sortedLists[1].id,
-            json: sortedLists[1].json
+            json: JSON.parse(JSON.stringify(sortedLists[1].json))
             // json: this.concatModulesAtStation(sortedLists[1].json)
         };
 
