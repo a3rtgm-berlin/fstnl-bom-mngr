@@ -283,6 +283,11 @@
                 }
             }
 
+            &.obsolete {
+                @include innershadow;
+                color:#222;
+            }
+
             &.modified {
                 th {
                     background:$darkpaper;
