@@ -78,9 +78,10 @@ module.exports = class Comparison {
                         }
                     }
                     return false;
+                } else {
+                    $added.add(currentItem);
+                    return true;
                 }
-                $added.add(currentItem);
-                return true;
             });
         });
 
@@ -101,7 +102,7 @@ module.exports = class Comparison {
             if ($successors.length === 0) {
                 $removed.add(oldItem);
             } else {
-                oldItem.status = $successors[0][this.quantitySelector] - oldItem[this.quantitySelector];
+                oldItem.change = $successors[0][this.quantitySelector] - oldItem[this.quantitySelector];
             }
         });
 
