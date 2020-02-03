@@ -25,6 +25,21 @@
             margin:0px !important;
             padding:0px 10px;
         }
+
+        .filter {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin:10px;
+
+            input {
+                width:250px;
+                font-size:80%;
+                color:#888;
+                border:1px solid #aaa;
+                @include innershadow;
+            }
+        }
     }
 
     .meta-info {
@@ -151,7 +166,7 @@
         flex:1 0 100%;
         order:3;
 
-        thead {
+        thead, .mat-header-row {
             padding:0px;
             margin:0px;
             height:40px;
@@ -273,6 +288,18 @@
                 }
             }
             td {
+                height:30px;
+
+                &.mat-cell {
+                    padding:0;
+                    line-height:30px;
+
+                    &:first-child {
+                        color:whitesmoke;
+                        background:darkgrey;
+                    }
+                }
+
                 font-size:80%;
                 font-weight:300;
                 color:#444;
@@ -288,6 +315,7 @@
                 &.station {
                     color:#ddd;
                 }
+
                 &.wagon, &.bin {
                     //padding:0;
                     ul {
