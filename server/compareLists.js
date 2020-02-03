@@ -15,12 +15,12 @@ module.exports = class Comparison {
         
         this.lastList = {
             id: sortedLists[0].id,
-            json: sortedLists[0].json
+            json: JSON.parse(JSON.stringify(sortedLists[0].json))
             // json: this.concatModulesAtStation(sortedLists[0].json)
         };
         this.currentList = {
             id: sortedLists[1].id,
-            json: sortedLists[1].json
+            json: JSON.parse(JSON.stringify(sortedLists[1].json))
             // json: this.concatModulesAtStation(sortedLists[1].json)
         };
 
@@ -78,9 +78,10 @@ module.exports = class Comparison {
                         }
                     }
                     return false;
+                } else {
+                    $added.add(currentItem);
+                    return true;
                 }
-                $added.add(currentItem);
-                return true;
             });
         });
 
@@ -101,7 +102,7 @@ module.exports = class Comparison {
             if ($successors.length === 0) {
                 $removed.add(oldItem);
             } else {
-                oldItem.status = $successors[0][this.quantitySelector] - oldItem[this.quantitySelector];
+                oldItem.change = $successors[0][this.quantitySelector] - oldItem[this.quantitySelector];
             }
         });
 
