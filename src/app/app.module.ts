@@ -17,7 +17,9 @@ import { ComparisonMetaViewComponent } from './compare-orders/comparison-meta-vi
 import { ComparisonListViewComponent } from './compare-orders/comparison-list-view/comparison-list-view.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { CreateProjectComponent } from './manage-projects/create-project/create-project.component';
-import { MatTableModule } from '@angular/material' 
+import { MatTableModule } from '@angular/material';
+import { MatSortModule } from '@angular/material';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import { ModalService } from './services/modal/modal.service';
 import { DomService } from './services/dom/dom.service';
 import { MatrixFilesComponent } from './matrix-files/matrix-files.component';
@@ -44,6 +46,8 @@ import { PlanogramComponent } from './planogram/planogram.component';
 import { PlanogramUploadComponent } from './planogram/planogram-upload/planogram-upload.component';
 import { DeleteUserComponent } from './settings/delete-user/delete-user.component';
 import { RolePipe } from './pipes/role.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AngularStickyThingsModule} from '@w11k/angular-sticky-things';
 
 @NgModule({
   declarations: [
@@ -94,9 +98,13 @@ import { RolePipe } from './pipes/role.pipe';
     BrowserModule,
     HttpClientModule,
     MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    AngularStickyThingsModule
   ],
   exports: [
     XlsLoaderComponent

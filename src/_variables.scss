@@ -1,8 +1,14 @@
+@import "~@angular/cdk/overlay-prebuilt.css";
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~@angular/material/theming';
+
 $brandblue: #0c5a9e;
 $darkbrandblue: #003b69;
+$dbbinverse: #ffc496;
 $brightblue:#83d0f5;
 $brandorange: #ff6600;
 $brightbrandorange: #FF944D;
+$bboinverse: #006bb2;
 $lightgrey: #fbfbfb;
 $red:#ed677a;
 $darkred:#BA5060;
@@ -66,6 +72,12 @@ $greenpaper:linear-gradient(45deg, $brightgreen, $green);
     -webkit-box-shadow: inset 0px 0px 25px -15px rgba(0,0,0,0.5);
     -moz-box-shadow: inset 0px 0px 25px -15px rgba(0,0,0,0.5);
     box-shadow: inset 0px 0px 25px -15px rgba(0,0,0,0.5);
+}
+
+@mixin removeshadow {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 body {

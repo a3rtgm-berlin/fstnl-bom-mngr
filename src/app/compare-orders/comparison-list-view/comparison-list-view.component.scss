@@ -271,12 +271,13 @@
                     background:$yellowpaper;
                     span {
                         strong {
-                            display:block;
+                            display:inline;
                             margin:3px auto;
-                            padding:3px;
+                            padding:3px 10px;
                             font-size:80%;
                             font-weight:300;
                             color:#222;
+                            margin-left:10px;
                             @include innershadow;
                         }
                     }
@@ -284,8 +285,14 @@
             }
 
             &.obsolete {
-                @include innershadow;
-                color:#222;
+                th {
+                    @include innershadow;
+
+                    span {
+                        
+                    color:#222 !important;
+                    }
+                }
             }
 
             &.modified {
