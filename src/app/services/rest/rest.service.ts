@@ -12,7 +12,9 @@ import { LoaderService } from '../loader/loader.service';
 import $ from 'jquery';
 
 //const url = 'http://localhost:8000/api/';
-const url = 'http://91.250.112.78:49160/api/';
+//const url = 'http://91.250.112.78:49160/api/';
+//const url = 'https://api.creative-collective.de/api/';
+const url = 'https://btbom.creative-collective.de/api/';
 
 @Injectable({
   providedIn: 'root'
