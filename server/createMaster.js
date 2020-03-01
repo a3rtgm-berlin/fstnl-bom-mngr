@@ -31,10 +31,10 @@ const createMasterBom = function (req, res) {
             }
 
             if (lastMaster) {
-                if (lastMaster.planogram) {
-                    const mapping = await Planogram.find({id: lastMaster.id}).exec();
-                    lastMaster.json = mapping || lastMaster.json;
-                }
+                // if (lastMaster.planogram) {
+                //     const mapping = await Planogram.find({id: lastMaster.id}).exec();
+                //     lastMaster.json = mapping || lastMaster.json;
+                // }
                 if (lastMaster.id < id) {
                     let compare = new Promise((res, rej) => {
                         res(new Comparison([dbModel, lastMaster]));

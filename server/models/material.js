@@ -13,15 +13,15 @@ class Item {
         this.KatID = catId;
 
         // relevant rows from csv
-        this.Material = d["MaterialP"];
-        this.Objektkurztext = d["Objektkurztext"];
-        this.MengeProZug = this.convertLocaleStringToNumber(d["Menge"]);
-        this.Menge = this.MengeProZug * trainsPending;
-        this.ME = d["ME"];
+        this.Material = d["MaterialP"]; // Part#
+        this.Objektkurztext = d["Objektkurztext"]; // Description
+        this.MengeProZug = this.convertLocaleStringToNumber(d["Menge"]); // Quantity Per Train
+        this.Menge = this.MengeProZug * trainsPending; // Total Quantity
+        this.ME = d["ME"]; // Unit
         this.MArt = d["MArt"];
         this.ArbPlatz = d["ArbPlatz"];
-        this.Station = d["ArbPlatz"] ? this.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location";
-        this.id = this.Station + this.Material;
+        this.Station = d["ArbPlatz"] ? this.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location"; // Location
+        this.id = this.Station + this.Material; // Location Index
     }
 
     mapMatrix(station, arbMatrix) {

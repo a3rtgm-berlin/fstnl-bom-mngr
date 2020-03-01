@@ -192,7 +192,8 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
     const matrix = await ArbMatrix.findOne({}).exec();
     const master = await MasterBom.findOne({id: id}).exec();
     const lastPlanogram = await Planogram.findOne({id: {$lt: id}}).sort({id: -1}).exec();
-    const pog = master.reduce((res, part) => {
+    
+    const pog = master.json.reduce((res, part) => {
         if (!res.find(item => item.Station === part.Station)) {
             const station = matrix.json.find(station => station.Area === part.Station);
             const cartSize = station ? station.CartSize : 60;
@@ -203,11 +204,15 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
                     for (let k = 1; k <= cartSize / rows; k++) {
                         const wagon = 'W' + i;
                         const bin = j + '-' + k;
-                        const oldPart = lastPlanogram.POG.find(bin => 
-                            bin.Wagon === wagon,
-                            bin.Bin === bin,
-                            bin.Station === part.Station
-                        );
+                        let oldPart;
+                       
+                        if (lastPlanogram) {
+                            oldPart = lastPlanogram.POG.find(bin => 
+                                bin.Wagon === wagon,
+                                bin.Bin === bin,
+                                bin.Station === part.Station
+                            );
+                        }
 
                         res.push({
                             Wagon: 'W' + i,
@@ -685,10 +690,6 @@ app.get('/api/projects/:tag', (req, res, next) => {
         res.send(data);
     });
 });
-
-app.get('/api/projects/:tag', (req, res) => auth.guard(req, res, () => {
-
-}));
 
 /**
  * @description deletes project by name including all its BOM files
