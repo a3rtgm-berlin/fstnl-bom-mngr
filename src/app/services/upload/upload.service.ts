@@ -5,12 +5,15 @@ import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/c
 import { RestService } from '../rest/rest.service';
 import { LoaderService } from '../loader/loader.service';
 
-const url = 'http://localhost:8000/api/upload';
-//const url = 'http://91.250.112.78:49160/api/upload';
+//const url = 'http://localhost:8000/api/upload';
+//const url = 'http://91.250.112.78:49160/api/';
+//const url = 'https://api.creative-collective.de/api/';
+const url = 'https://btbom.creative-collective.de/api/upload/';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class UploadService {
 
   constructor(private http: HttpClient, private router: Router, private restService: RestService, private loader: LoaderService) {}
@@ -28,7 +31,7 @@ export class UploadService {
         formData.append('suffix', suffix);
       }
 
-      const req = new HttpRequest('POST', `${url}/${service}`, formData, {
+      const req = new HttpRequest('POST', `${url}${service}`, formData, {
         reportProgress: true
       });
 
