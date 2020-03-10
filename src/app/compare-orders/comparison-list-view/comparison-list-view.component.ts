@@ -1,6 +1,9 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import $ from 'jquery';
 import { ExportService } from '../../services/export/export.service';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
 import { ColorCodeService } from 'src/app/services/color-code/color-code.service';
 
 @Component({
@@ -16,9 +19,13 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
   //public cols: string[] = [];
   public cols: any;
   public activeCols: any;
+  thisCount: any;
+  thisFilter: any;
 
 
   @ViewChild('filterCol', {static: false}) filterCol: any;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @Output() selection: EventEmitter<any> = new EventEmitter();
   
   @Input() id: string;
@@ -31,9 +38,16 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     return this.bom$;
   }
 
+  displayedColumns: string[] = ['Status' ,'Station', 'Material', 'Part', 'Unit', 'Quantity', 'Change'];
+  dataSource = new MatTableDataSource();
   constructor(public exportService: ExportService) {}
 
   ngOnInit() {
+      this.dataSource = new MatTableDataSource(this.processedBom);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.thisCount = this.dataSource.data.length;
+      this.thisFilter = this.dataSource.data.length;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -149,11 +163,42 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     }
   }
 
+  applyFilter(filterValue: string) {
+    
+    this.dataSource = new MatTableDataSource(this.processedBom);
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (filterValue !== '' && this.dataSource.filteredData.length >= 2) {
+      $("#filter2").addClass("active");
+      this.thisFilter = this.dataSource.filteredData.length;
+      this.dataSource = new MatTableDataSource(this.dataSource.filteredData);
+      this.dataSource.paginator = this.paginator;
+    } else {
+      
+      this.thisFilter = this.dataSource.filteredData.length;
+      $("#filter2").removeClass("active");
+    }
+  }
+
+  applyFilterSnd(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.thisFilter = this.dataSource.filteredData.length;
+    this.dataSource.paginator = this.paginator;
+  }
+
+
   downloadBom(type) {
     this.exportService.xlsxFromJson(
       type === 'filtered' ? this.processedBom : this.bom,
       type === 'filtered' ? 'BOM-' + this.id + '(filtered)' : 'BOM-' + this.id
     );
+  }
+
+  scrollTop() {
+    $('body,html').animate({
+      scrollTop: 0
+    }, 800);
+    return false;
   }
 
 }

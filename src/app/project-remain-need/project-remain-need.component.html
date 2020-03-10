@@ -21,7 +21,109 @@
         <button class="view" (click)="viewVal('rpn')">RPN</button>
     </div>
 </div>
-<table class="table table-sm" id="RPN">
+
+<!-- NEW TABLE -->
+
+<div id="user_functions" stickyThing marginTop="0">
+    <div class="filter">
+        <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
+        <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
+        <div class="loopbutton"></div>
+        <div class="marker"><span>{{thisFilter}} | {{thisCount}}</span></div>
+    </div>
+    <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 50, 100, dataSource.data.length]" showFirstLastButtons></mat-paginator>
+    <div id="totopbutton"><div class="inner" (click)="scrollTop()"></div></div>
+</div>
+
+<table class="table table-sm" id="RPN" mat-table matSort [dataSource]="dataSource">
+    
+    <ng-container matColumnDef="Id" #boundaryStation>
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part # </th>
+        <td mat-cell *matCellDef="let element" > {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Description">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+        <td  class="wagon" mat-cell *matCellDef="let element" > {{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Unit">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Unit </th>
+        <td class="bin" mat-cell *matCellDef="let element" >{{element.unit}}</td>
+    </ng-container>
+
+    <ng-container *ngFor="let project of projects" matColumnDef="{{project}}">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> {{project}} </th>
+        <td mat-cell *matCellDef="let element" > {{element[project]}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Overall Need">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Overall Need </th>
+        <td mat-cell *matCellDef="let element" > {{element.ovCount | localeNumber}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="MonNeed">
+        
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Monthly Need </th>
+        <ng-container  *ngIf="rpn.hasConsumption; else noCon">
+            <td mat-cell *matCellDef="let element" > {{element.monthlyCount | localeNumber}} </td>
+        </ng-container>
+        <ng-template #noCon>
+            -
+        </ng-template>
+    </ng-container>
+
+    <ng-container matColumnDef="Usage">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Usage </th>
+        
+        <ng-container  *ngIf="rpn.hasConsumption; else noCon">
+            <td mat-cell *matCellDef="let element" > {{element.usage | localeNumber}} </td>
+        </ng-container>
+        
+        <ng-template #noCon>
+            -
+        </ng-template>
+    </ng-container>
+
+    <ng-container matColumnDef="Consumption">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Over-/Under Consumption </th>
+        
+        <ng-container  *ngIf="rpn.hasConsumption; else noCon">
+            <td mat-cell *matCellDef="let element" class="{{element.diff === 'No Refill' ? 'grey' : element.diff > 0 ? 'orange' : 'blue'}}" 
+                title="{{element.diff === 'No Refill' ? 'not delivered' : element.diff > 0 ? 'over consumption' : 'under consumption'}}">
+                    {{element.diff | localeNumber}}
+            </td>
+        </ng-container>
+        
+        <ng-template #noCon>
+            -
+        </ng-template>
+    </ng-container>
+
+    <ng-container matColumnDef="MinMax">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Min | Max </th>
+        <td class="bin" mat-cell *matCellDef="let element" >
+            <ng-container *ngIf="element.min; else noVal">
+                {{element.min | localeNumber}} | {{element.max | localeNumber}}
+            </ng-container>
+            <ng-template #noVal>
+                -
+            </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Phase Out Date">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Phase Out Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.phaseOutDate | localeNumber}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+   
+</table>
+
+<!-- OLD TABLE <table class="table table-sm" id="RPN">
     <thead class="thead-dark">
         <th scope="col">Part #</th>
         <th scope="col">Description</th>
@@ -58,4 +160,4 @@
         </ng-template>
         <td>{{part.phaseOutDate}}</td>
     </tr>
-</table>
+</table>-->

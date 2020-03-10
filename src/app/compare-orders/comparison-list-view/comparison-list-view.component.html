@@ -1,5 +1,5 @@
-<div class="sticky">
-    <div id="sider">
+
+    <!--<div id="sider">
         <div class="input-group">
             <label>Select column</label><label>Enter filter</label><label>matches total</label>
             <input type="text" class="form-control cnt" disabled value="{{processedBom ? processedBom.length : '-'}}">
@@ -12,7 +12,7 @@
                 </ng-container>
             </select>
         </div>
-    </div>
+    </div>-->
     <div id="sider" class="borderless">
         <div class="button-grp">
             <button class="csv" (click)="downloadBom('unfiltered')"><p>Download Full XLSX</p></button>
@@ -22,8 +22,75 @@
         </div>
     </div>
 
+    <!-- NEW TABLE -->
 
-    <table class="table table-sm" id="BOM">
+<div id="user_functions" stickyThing marginTop="0">
+    <div class="filter">
+        <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
+        <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
+        <div class="loopbutton"></div>
+        <div class="marker"><span>{{thisFilter}} | {{thisCount}}</span></div>
+    </div>
+    <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 50, 100, dataSource.data.length]" showFirstLastButtons></mat-paginator>
+    <div id="totopbutton"><div class="inner" (click)="scrollTop()"></div></div>
+</div>
+
+<table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
+    <ng-container matColumnDef="Status" #boundaryStation>
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let element" >
+            <span [ngSwitch]="element.status">
+            <span *ngSwitchCase="'movedFrom'" class="movedFrom">
+                Moved <strong style="font-weight: 400">from: {{element.moved}}</strong>
+            </span>
+            <span *ngSwitchCase="'movedTo'" class="movedTo">
+                Moved <strong style="font-weight: 400">to: {{element.moved}}</strong>
+            </span>
+            <span *ngSwitchDefault 
+            [ngClass]="{'remain' : element.status === 'remain', 'remove' : element.status === 'remove', 'add' : element.status === 'add', 'obsolete' : element.status === 'obsolete'}" >
+                {{element.status}}
+            </span>
+            </span> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Station">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Station </th>
+        <td mat-cell *matCellDef="let element" > {{element.Station}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Material">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part # </th>
+        <td mat-cell *matCellDef="let element" >{{element.Material}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Part">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part </th>
+        <td mat-cell *matCellDef="let element" > {{element.Objektkurztext}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Unit">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Unit </th>
+        <td mat-cell *matCellDef="let element" > {{element.ME}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Quantity">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
+        <td mat-cell *matCellDef="let element" > {{element.Menge}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Change">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Change </th>
+        <td mat-cell *matCellDef="let element"> {{element.change}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+   
+</table>
+
+    <!--OLD TABLE <table class="table table-sm" id="BOM">
         <thead class="thead-dark">
             <th (click)="addSort('status', $event)" scope="col">Status</th>
             <th (click)="addSort('Station', $event)" scope="col">Station</th>
@@ -56,5 +123,4 @@
                 <td>{{item.change}}</td>
             </tr>
         </ng-container>           
-    </table>
-</div>
+    </table>-->

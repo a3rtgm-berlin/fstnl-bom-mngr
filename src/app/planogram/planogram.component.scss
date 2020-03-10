@@ -158,7 +158,7 @@
         margin:10px auto;
         padding:5px;
         background:whitesmoke;
-        z-index:100;
+        z-index:50;
         @include removeshadow;
 
         &.is-sticky {
@@ -306,13 +306,23 @@
             th {
                 position:sticky;
                 text-align:center;
-                padding:0px 10px;
+                padding:0px;
+                vertical-align:middle;
                 background:transparent;
                 font-weight:400;
                 color:whitesmoke;
                 font-size:90%;
                 z-index:1;
                 @include removeshadow;
+
+                ::ng-deep .mat-sort-header-container {
+                    justify-content:center;
+                }
+
+                ::ng-deep .mat-sort-header-button {
+                    justify-content:center;
+                    width:100%;
+                }
                 
                 &.is-sticky {
                     opacity:0.8;
@@ -424,6 +434,7 @@
             }
             td {
                 height:30px;
+                vertical-align: middle;
 
                 &.mat-cell {
                     padding:0;

@@ -1,5 +1,5 @@
 <div class="btn-group functions">
-    <div id="sider">
+    <!--<div id="sider">
         <div class="input-group">
             <label>Select column</label><label>Enter filter</label><label>matches total</label>
             <input type="text" class="form-control cnt" disabled value="{{processedBom ? processedBom.length : '-'}}">
@@ -12,7 +12,8 @@
                 </ng-container>
             </select>
         </div>
-    </div>
+    </div>-->
+
     <div id="sider" class="borderless">
         <div class="button-grp">
             <button class="csv" (click)="downloadBom('full')"><p>Download Full XLSX</p></button>
@@ -22,7 +23,70 @@
         </div>
     </div>
 </div>
-<table class="table table-sm" id="BOM">
+
+<!-- NEW TABLE -->
+
+<div id="user_functions" stickyThing marginTop="0">
+    <div class="filter">
+        <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
+        <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
+        <div class="loopbutton"></div>
+        <div class="marker"><span>{{thisFilter}} | {{thisCount}}</span></div>
+    </div>
+    <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 50, 100, dataSource.data.length]" showFirstLastButtons></mat-paginator>
+    <div id="totopbutton"><div class="inner" (click)="scrollTop()"></div></div>
+</div>
+
+<table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
+    <ng-container matColumnDef="Station" #boundaryStation>
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Station </th>
+        <td [ngStyle]="{'background': colors[element.Station]}" mat-cell *matCellDef="let element" > {{element.Station}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Material">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part # </th>
+        <td  class="wagon" mat-cell *matCellDef="let element" >{{element.Material}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Part">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part </th>
+        <td class="bin" mat-cell *matCellDef="let element" >{{element.Objektkurztext}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Unit">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Unit </th>
+        <td mat-cell *matCellDef="let element" > {{element.ME}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Projects">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Projects </th>
+        <td mat-cell *matCellDef="let element" > {{element.lists.join(', ')}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Menge">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
+        <td mat-cell *matCellDef="let element" > {{element.Menge | localeNumber}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Station Carts">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Station Carts </th>
+        <td mat-cell *matCellDef="let element"> {{element.stationCarts}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Station Bins">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Station Bins </th>
+        <td mat-cell *matCellDef="let element"> {{element.stationBins}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+   
+</table>
+
+<!-- OLD TABLE <table class="table table-sm" id="BOM">
     <thead class="thead-dark">
         <th (click)="addSort('Station', $event)" scope="col">Station</th>
         <th (click)="addSort('Material', $event)" scope="col">Part#</th>
@@ -45,4 +109,4 @@
         <td>{{item.stationBins}}</td>
       </tr>
     </ng-container>    
-</table>
+</table>-->
