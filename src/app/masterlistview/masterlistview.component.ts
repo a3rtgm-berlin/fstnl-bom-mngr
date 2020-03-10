@@ -1,24 +1,31 @@
-import { Component, OnInit, Input, OnChanges, EventEmitter, ViewChild, Output, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, EventEmitter, ViewChild, AfterViewInit, Output, SimpleChanges } from '@angular/core';
 import $ from 'jquery';
 import { ColorCodeService } from '../services/color-code/color-code.service';
 import { ExportService } from '../services/export/export.service';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-masterlistview',
   templateUrl: './masterlistview.component.html',
   styleUrls: ['./masterlistview.component.scss']
 })
-export class MasterlistviewComponent implements OnInit, OnChanges {
+export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit {
 
   public bom$: any;
   public processedBom: any;
   public allBomProjects: any;
   public sorted: any;
   public cols: any;
+  thisCount: any;
+  thisFilter: any;
   // public colors: object = {};
 
 
   @ViewChild('filterCol', {static: false}) filterCol: any;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @Output() selection: EventEmitter<any> = new EventEmitter();
   @Input() id: string;
   @Input() colors: object = {};
@@ -31,10 +38,24 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
     return this.bom$;
   }
 
+  
+
+  displayedColumns: string[] = ['Station', 'Material', 'Part', 'Unit', 'Projects', 'Menge', 'Station Carts', 'Station Bins'];
+  dataSource = new MatTableDataSource();
   constructor(public colorCodeService: ColorCodeService, public exportService: ExportService) { }
 
   ngOnInit() {
     console.log(this.processedBom.lists);
+    
+    this.dataSource = new MatTableDataSource(this.processedBom);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.thisCount = this.dataSource.data.length;
+    this.thisFilter = this.dataSource.data.length;
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -155,12 +176,42 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
     }
   }
 
+  applyFilter(filterValue: string) {
+    
+    this.dataSource = new MatTableDataSource(this.processedBom);
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (filterValue !== '' && this.dataSource.filteredData.length >= 2) {
+      $("#filter2").addClass("active");
+      this.thisFilter = this.dataSource.filteredData.length;
+      this.dataSource = new MatTableDataSource(this.dataSource.filteredData);
+      this.dataSource.paginator = this.paginator;
+    } else {
+      
+      this.thisFilter = this.dataSource.filteredData.length;
+      $("#filter2").removeClass("active");
+    }
+  }
+
+  applyFilterSnd(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.thisFilter = this.dataSource.filteredData.length;
+    this.dataSource.paginator = this.paginator;
+  }
+
   downloadBom(type) {
     this.exportService.xlsxFromJson(
       type === 'filtered' ? this.processedBom : this.bom,
       type === 'filtered' ? this.id + '(filtered)' : this.id,
       ['Kategorie', 'KatID']
     );
+  }
+
+  scrollTop() {
+    $('body,html').animate({
+      scrollTop: 0
+    }, 800);
+    return false;
   }
 
 }

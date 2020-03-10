@@ -86,7 +86,7 @@
         <td mat-cell *matCellDef="let element"> {{element.Menge | localeNumber}} </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'not-on-bom': row.isNotOnBOM, 'not-on-pog': row.isNotOnPOG}"></tr>
 
    
