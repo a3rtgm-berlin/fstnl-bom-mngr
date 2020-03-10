@@ -1,24 +1,24 @@
-const Config = require('./config');
+module.exports = class MovingFile {
+    constructor(boms) {
+        this.quantity = 'Quantity Total';
+        this.comparators = [
+            'Location',
+            'Part',
+        ];
 
-module.exports = class Comparison {
-    constructor(lists) {
-        this.client = 'BOM';
-        this.comparators = Config[this.client].comparators;
-        this.quantitySelector = Config[this.client].quantity;
-
-        const sortedLists = lists.sort((a, b) => {
+        const sortedLists = boms.sort((a, b) => {
             var dateA = a.date.split('.');
             var dateB = b.date.split('.');
             var diff = new Date(dateA[2], dateA[1] - 1, dateA[0]) - new Date(dateB[2], dateB[1] - 1, dateB[0]);
             return diff !== 0 ? diff : a.uploadDate - b.uploadDate;
         });
         
-        this.lastList = {
+        this.lastBom = {
             id: sortedLists[0].id,
             json: JSON.parse(JSON.stringify(sortedLists[0].json))
             // json: this.concatModulesAtStation(sortedLists[0].json)
         };
-        this.currentList = {
+        this.currentBom = {
             id: sortedLists[1].id,
             json: JSON.parse(JSON.stringify(sortedLists[1].json))
             // json: this.concatModulesAtStation(sortedLists[1].json)
@@ -27,12 +27,12 @@ module.exports = class Comparison {
         this.setMeta();
     }
 
-    concatModulesAtStation(list) {
-        return list.map(item => {
-            list.forEach((compItem, i) => {
+    concatModulesAtStation(bom) {
+        return bom.map(item => {
+            bom.forEach((compItem, i) => {
                 if (!item.delete) {
                     if (item.Station === compItem.Station && item.Material === compItem.Material && item.KatID !== compItem.KatID) {
-                        item[this.quantitySelector] += compItem[this.quantitySelector];
+                        item[this.quantity] += compItem[this.quantity];
                         compItem.delete = true;
                     }
                 }
@@ -45,7 +45,7 @@ module.exports = class Comparison {
     compareLists() {
         const $added = new Set();
         const $removed = new Set();
-        const comparedList = {
+        const movingMeta = {
             added: 0,
             removed: 0,
             modified: 0,
@@ -54,8 +54,8 @@ module.exports = class Comparison {
             obsolete: 0,
         };
 
-        this.currentList.json.forEach((currentItem) => {
-            let $ancestors = this.lastList.json;
+        this.currentBom.json.forEach((currentItem) => {
+            let $ancestors = this.lastBom.json;
 
             this.comparators.some((prop, i) => {
                 $ancestors = $ancestors.filter((oldItem) => {
@@ -64,17 +64,17 @@ module.exports = class Comparison {
 
                 if ($ancestors.length > 0) {
                     if (i >= this.comparators.length - 1) {
-                        const diff = currentItem[this.quantitySelector] - $ancestors[0][this.quantitySelector];
+                        const diff = currentItem[this.quantity] - $ancestors[0][this.quantity];
 
-                        currentItem.change = diff;
+                        currentItem.Change = diff;
 
                         if (diff !== 0) {
-                            comparedList.modified += 1;
-                            currentItem.status = 'modified';
+                            movingMeta.modified += 1;
+                            currentItem.Status = 'modified';
                         }
                         else {
-                            comparedList.remain += 1;
-                            currentItem.status = 'remain';
+                            movingMeta.remain += 1;
+                            currentItem.Status = 'remain';
                         }
                     }
                     return false;
@@ -85,8 +85,8 @@ module.exports = class Comparison {
             });
         });
 
-        this.lastList.json.forEach((oldItem) => {
-            const $successors = this.currentList.json.filter((currentItem) => {
+        this.lastBom.json.forEach((oldItem) => {
+            const $successors = this.currentBom.json.filter((currentItem) => {
                 let remains = true;
 
                 this.comparators.some((prop) => {
@@ -102,7 +102,7 @@ module.exports = class Comparison {
             if ($successors.length === 0) {
                 $removed.add(oldItem);
             } else {
-                oldItem.change = $successors[0][this.quantitySelector] - oldItem[this.quantitySelector];
+                oldItem.Change = $successors[0][this.quantity] - oldItem[this.quantity];
             }
         });
 
@@ -113,46 +113,46 @@ module.exports = class Comparison {
                 $added.delete(currentItem);
                 $removed.delete($ancestor);
 
-                $ancestor.status = "movedTo";
+                $ancestor.Status = "movedTo";
                 $ancestor.moved = currentItem.Station;
-                this.currentList.json.push($ancestor);
+                this.currentBom.json.push($ancestor);
 
-                currentItem.status = "movedFrom";
+                currentItem.Status = "movedFrom";
                 currentItem.moved = $ancestor.Station;
 
-                comparedList.moved += 1;
+                movingMeta.moved += 1;
             } else {
-                currentItem.status = 'added';
-                comparedList.added += 1;
+                currentItem.Status = 'added';
+                movingMeta.added += 1;
             }
         });
 
         $removed.forEach((e, oldItem, s) => {
-            oldItem.status = "removed";
-            comparedList.removed += 1;
-            this.currentList.json.push(oldItem);
+            oldItem.Status = "removed";
+            movingMeta.removed += 1;
+            this.currentBom.json.push(oldItem);
         });
 
-        this.currentList.json.forEach(item => {
-            if (item.status === "removed") {
-                if (!this.currentList.json.find(currentItem => 
+        this.currentBom.json.forEach(item => {
+            if (item.Status === "removed") {
+                if (!this.currentBom.json.find(currentItem => 
                     currentItem.Material === item.Material && 
                     currentItem.Station !== item.Station && 
-                    currentItem.status !== "removed")) {
-                        item.status = "obsolete";
-                        comparedList.removed -= 1;
-                        comparedList.obsolete += 1;
+                    currentItem.Status !== "removed")) {
+                        item.Status = "obsolete";
+                        movingMeta.removed -= 1;
+                        movingMeta.obsolete += 1;
                     }
             }
         });
 
-        return comparedList;
+        return movingMeta;
     }
 
     setMeta() {
         this.meta = {};
-        this.meta.current = this.currentList.id;
-        this.meta.last = this.lastList.id;
+        this.meta.current = this.currentBom.id;
+        this.meta.last = this.lastBom.id;
         this.meta.changes = this.compareLists();
     }
 };

@@ -20,7 +20,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   @ViewChild ('selectBom', {static: false}) selectBom: any;
 
   public project$: any;
-  bomList$: any;
+  boms$: any;
   totalDiff: any;
   modalController = true;
   multiBom: any;
@@ -40,7 +40,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   ngOnInit() {
     this.tglSwitch = 'overview';
-    this.bomList$ = this.project$.bomLists;
+    this.boms$ = this.project$.boms;
     this.setWeeks(this.project$.deadline);
 
     for (let i = 0; i < this.project$.multiBom; i++) {
@@ -56,20 +56,20 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   ngOnChanges(changes: SimpleChanges) {
     this.project$ = changes.project.currentValue;
-    this.bomList$ = this.project$.bomLists;
+    this.boms$ = this.project$.boms;
     this.autoSelectMultiBom();
   }
 
   setSwitch(targ, evt) {
     this.tglSwitch = targ;
-    $(evt.target).addClass("active");
-    $(evt.target).siblings().removeClass("active");
+    $(evt.target).addClass('active');
+    $(evt.target).siblings().removeClass('active');
   }
 
   setWeeks(date) {
-    let date1 = new Date(date);
-    let date2 = new Date();
-    let diffInWeeks =(date2.getTime() - date1.getTime()) / 1000;
+    const date1 = new Date(date);
+    const date2 = new Date();
+    let diffInWeeks = (date2.getTime() - date1.getTime()) / 1000;
     diffInWeeks /= (60 * 60 * 24 * 7);
     this.totalDiff = Math.abs(Math.round(diffInWeeks));
   }
@@ -96,7 +96,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   autoSelectMultiBom() {
     this.mltBmToMerge = [];
     ['A', ...this.mltBmArray].forEach(i => {
-      this.mltBmToMerge.push(this.bomList$.find(id => id.includes(i)));
+      this.mltBmToMerge.push(this.boms$.find(id => id.includes(i)));
     });
   }
 

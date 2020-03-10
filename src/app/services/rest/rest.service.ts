@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { MaterialList } from '../../materialListModel';
+import { Bom } from '../../bomModel';
 import { Project } from '../../projectModel';
 import { User } from '../../userModel';
-import { Router } from '@angular/router';
-import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
-import { MasterBom } from 'src/app/masterBom';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { MasterBom } from '../../masterBom';
 import { LoaderService } from '../loader/loader.service';
-import $ from 'jquery';
 
-//const url = 'http://localhost:8000/api/';
-//const url = 'http://91.250.112.78:49160/api/';
-//const url = 'https://api.creative-collective.de/api/';
-const url = 'https://btbom.creative-collective.de/api/';
+const url = 'http://localhost:8000/api/';
+// const url = 'http://91.250.112.78:49160/api/';
+// const url = 'https://btbom.creative-collective.de/api/';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +24,7 @@ export class RestService {
   public singleList: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allLists: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public projectBomMeta: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public comparison: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public movingFile: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allProjects: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allUsers: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public allMaster: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -64,11 +59,11 @@ export class RestService {
     }
   }
 
-  setComparison(val) {
+  setMovingFile(val) {
     if (val) {
-      this.comparison.next(val);
+      this.movingFile.next(val);
     } else {
-      this.comparison.next(null);
+      this.movingFile.next(null);
     }
   }
 
@@ -106,11 +101,11 @@ export class RestService {
   }
 
   public async getAllLists() {
-    const observable = this.http.get<MaterialList[]>(url + 'lists');
-    const materialLists = await observable.toPromise();
+    const observable = this.http.get<Bom[]>(url + 'lists');
+    const boms = await observable.toPromise();
 
-    if (materialLists) {
-      this.setAllLists(materialLists.map((el) => {
+    if (boms) {
+      this.setAllLists(boms.map((el) => {
           el.uploadDate = new Date(el.uploadDate);
           return el;
         })
@@ -119,13 +114,13 @@ export class RestService {
   }
 
   public async getList(id: string) {
-    const observable = this.http.get<MaterialList>(url + 'lists/' + id);
-    const materialList = await observable.toPromise();
-    if (materialList) {
-      materialList.uploadDate = new Date(materialList.uploadDate);
+    const observable = this.http.get<Bom>(url + 'lists/' + id);
+    const bom = await observable.toPromise();
+    if (bom) {
+      bom.uploadDate = new Date(bom.uploadDate);
     }
 
-    this.setSingleList(materialList);
+    this.setSingleList(bom);
   }
 
   public deleteList(id: string) {
@@ -138,12 +133,12 @@ export class RestService {
     );
   }
 
-  public insertList(materialList: MaterialList): Observable<MaterialList> {
-    return this.http.post<MaterialList>(url + 'lists/', materialList);
+  public insertList(bom: Bom): Observable<Bom> {
+    return this.http.post<Bom>(url + 'lists/', bom);
   }
 
-  public replaceList(materialList: MaterialList): Observable<void> {
-    return this.http.put<void>(url + 'lists/' + materialList.id, materialList);
+  public replaceList(bom: Bom): Observable<void> {
+    return this.http.put<void>(url + 'lists/' + bom.id, bom);
   }
 
   public updateList(id: string) {
@@ -164,7 +159,7 @@ export class RestService {
 
     if (meta) {
       meta.forEach(bom => {
-        bom.uploadDate =new Date(bom.uploadDate);
+        bom.uploadDate = new Date(bom.uploadDate);
       });
       this.setProjectBomMeta(meta);
     }
@@ -183,9 +178,9 @@ export class RestService {
   public async compareLists(id1: string, id2: string) {
     this.loader.showLoader(true);
     const observable = this.http.get(`${url}master/compare/${id1}/${id2}`);
-    const comparison = await observable.toPromise();
+    const movingFile = await observable.toPromise();
 
-    this.setComparison(comparison);
+    this.setMovingFile(movingFile);
     this.loader.hideLoader();
   }
 
@@ -193,7 +188,7 @@ export class RestService {
     const formData: FormData = new FormData();
 
     for (const prop in projectData) {
-      if (prop !== 'bomLists') {
+      if (prop !== 'boms') {
         formData.append(prop, projectData[prop]);
       }
     }
@@ -212,7 +207,6 @@ export class RestService {
   }
 
   public createUser(userData: User) {
-    
     const req = new HttpRequest('POST', url + 'newuser', userData, {
       reportProgress: true
     });
@@ -220,7 +214,7 @@ export class RestService {
     this.http.request(req).subscribe({
       error: err => console.error(`POST Error`, err),
       complete: () => {
-        console.log(` POST new Project ${userData.username} has been created`);
+        console.log(`POST new Project ${userData.username} has been created`);
         this.getAllUsers();
       }
     });
@@ -236,7 +230,6 @@ export class RestService {
   }
 
   public deleteUser(username: string) {
-    console.log("I want to delet " + username);
     const observable = this.http.delete<string>(url + 'users/' + username);
     observable.subscribe(
       (val) => console.log('DELETE call successful value returned in body', val),
@@ -249,7 +242,7 @@ export class RestService {
     const observable = this.http.post(url + 'projects/' + project.tag, project);
     observable.subscribe(
       (val) => console.log('Update call successful value', val),
-      err => {console.error('Error in Update Call', err); this.getAllProjects()},
+      err => { console.error('Error in Update Call', err); this.getAllProjects(); },
       () => this.getAllProjects()
     );
   }
@@ -337,7 +330,7 @@ export class RestService {
 
   public async getAllMaster() {
     this.loader.showLoader(true, 1200);
-    const observable = this.http.get<MaterialList[]>(url + 'master/all');
+    const observable = this.http.get<Bom[]>(url + 'master/all');
     const masterLists = await observable.toPromise();
 
     if (masterLists) {

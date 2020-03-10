@@ -10,7 +10,7 @@ const projectSchema = new Schema({
     description: String,
     trainsCount: Number,
     deadline: Date,
-    bomLists: [String],
+    boms: [String],
     multiBom: {
         type: Number,
         default: 0

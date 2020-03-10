@@ -5,22 +5,15 @@ const path = require('../node_modules/path');
 const parser = require('./xlsParser');
 const csvHandler = require('./csvHandler');
 // DB Models
-const MaterialList = require("./models/list").MaterialListModel;
-const ArbMatrix = require('./models/arbMatrix');
+const Bom = require("./models/bom");
+const ArbMatrix = require('./models/matrix');
 const Project = require('./models/project').ProjectModel;
-const MultiBom = require('./multiBom');
-const ExcludeList = require('./models/excludeList');
-const RPN = require('./models/rpn').RPNModel;
+const ExcludeList = require('./models/exclude');
+const RPN = require('./models/rpn');
 const Planogram = require('./models/planogram');
 const MasterBom = require('./models/masterBom');
 
-const uploadDir = "./user-upload/";
-
-const processedBoms = new Set();
-
 async function bom(req, res) {
-    processedBoms.clear();
-
     let form = new IncomingForm(),
         tag, suffix;
 
@@ -49,10 +42,6 @@ async function bom(req, res) {
                 // retrieve data as {json: obj, csv: string, date: string, uploadDate: Date}
                 let newDatum = parser.xlsParser(reader.result, tag, suffix);
                 newDatum.name = file.name;
-    
-                // save files to server dir
-                // fs.writeFile(path.join(uploadDir, file.name), view);
-                // fs.writeFile(path.join(uploadDir, `${file.name}.csv`), newDatum.csv);
     
                 // send csv to csvHandler and wait for resolution
                 // return the new data-object
@@ -253,7 +242,7 @@ function planogram (req, res) {
 }
 
 async function saveBomAndUpdateProject(bom) {
-    const dbModel = new MaterialList(await updateListId(bom));
+    const dbModel = new Bom(await updateListId(bom));
 
     const success = new Promise((res) => {
         dbModel.save((err) => {
@@ -265,8 +254,8 @@ async function saveBomAndUpdateProject(bom) {
             Project.findOne({tag: bom.project}, (err, project) => {
                 if (err) throw err;
                 if (project) {
-                    project.bomLists.push(bom.id);
-                    project.bomLists.sort().reverse();
+                    project.boms.push(bom.id);
+                    project.boms.sort().reverse();
                     project.save();
                 }
             });
@@ -281,7 +270,7 @@ async function saveBomAndUpdateProject(bom) {
 async function updateListId (list) {
     
     const updateListId = new Promise((res, rej) => {
-        MaterialList.find({id: { $regex: `.*${list.id}.*`}}, (err, data) => {
+        Bom.find({id: { $regex: `.*${list.id}.*`}}, (err, data) => {
             if (err) return console.error(err);
 
             console.log(list.id);

@@ -1,7 +1,7 @@
-const MaterialList = require("./models/list").MaterialListModel;
+const Bom = require("./models/bom");
 const Project = require("./models/project").ProjectModel;
-const ExcludeList = require("./models/excludeList");
-const ArbMatrix = require("./models/arbMatrix");
+const ExcludeList = require("./models/exclude");
+const ArbMatrix = require("./models/matrix");
 
 function updateSingleBom(bom, res) {
     Project.findOne({tag: bom.project}, (err, project) => {
@@ -50,7 +50,7 @@ function updateExcludesAndMatrix(boms) {
                         return part;
                     });
                 bom.json = await updatePartAmount(mergeDuplicates(bom.json), bom.project);
-                MaterialList.findOneAndUpdate({id: bom.id}, {json: bom.json, updated: new Date()}, (err) => {
+                Bom.findOneAndUpdate({id: bom.id}, {json: bom.json, updated: new Date()}, (err) => {
                     if (err) {
                         res.sendStatus(500);
                         console.err(err);

@@ -4,7 +4,7 @@
     width:100%;
     margin:20px auto;
     
-    .compare-list {
+    .moving-file {
         display:flex !important;
         flex-direction:row !important;
         flex-wrap:wrap;
@@ -15,7 +15,7 @@
             margin: 2px auto 2px 0px;
         }
 
-        .comparison-container {
+        .moving-file-container {
             flex:0 0 100%;
             overflow-x:hidden;
         }

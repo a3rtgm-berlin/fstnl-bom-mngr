@@ -25,18 +25,18 @@
 
     <table class="table table-sm" id="BOM">
         <thead class="thead-dark">
-            <th (click)="addSort('status', $event)" scope="col">Status</th>
-            <th (click)="addSort('Station', $event)" scope="col">Station</th>
-            <th (click)="addSort('Material', $event)" scope="col">Part#</th>
-            <th (click)="addSort('Objektkurztext', $event)" scope="col">Part</th>
-            <th (click)="addSort('ME', $event)" scope="col">Unit</th>
-            <th (click)="addSort('Menge', $event)" scope="col">Quantity</th>
-            <th (click)="addSort('change', $event)" scope="col">Change</th>
+            <th (click)="addSort('Status', $event)" scope="col">Status</th>
+            <th (click)="addSort('Location', $event)" scope="col">Location</th>
+            <th (click)="addSort('Part', $event)" scope="col">Part</th>
+            <th (click)="addSort('Description', $event)" scope="col">Description</th>
+            <th (click)="addSort('Unit', $event)" scope="col">Unit</th>
+            <th (click)="addSort('Quantity Total', $event)" scope="col">Quantity</th>
+            <th (click)="addSort('Change', $event)" scope="col">Change</th>
         </thead>
         <ng-container *ngFor="let item of processedBom">
-            <tr class="{{item.status}}">
+            <tr class="{{item.Status}}">
                 <th>
-                    <span [ngSwitch]="item.status">
+                    <span [ngSwitch]="item.Status">
                     <span *ngSwitchCase="'movedFrom'">
                         Moved <strong style="font-weight: 400">from: {{item.moved}}</strong>
                     </span>
@@ -44,16 +44,16 @@
                         Moved <strong style="font-weight: 400">to: {{item.moved}}</strong>
                     </span>
                     <span *ngSwitchDefault>
-                        {{item.status}}
+                        {{item.Status}}
                     </span>
                     </span>
                 </th>
-                <td>{{item.Station}}</td>
-                <td>{{item.Material}}</td>
-                <td>{{item.Objektkurztext}}</td>
-                <td>{{item.ME}}</td>
-                <td>{{item.Menge}}</td>
-                <td>{{item.change}}</td>
+                <td>{{item.Location}}</td>
+                <td>{{item.Part}}</td>
+                <td>{{item.Description}}</td>
+                <td>{{item.Unit}}</td>
+                <td>{{item['Quantity Total']}}</td>
+                <td>{{item.Change}}</td>
             </tr>
         </ng-container>           
     </table>

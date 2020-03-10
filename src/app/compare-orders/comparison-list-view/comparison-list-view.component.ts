@@ -1,7 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import $ from 'jquery';
 import { ExportService } from '../../services/export/export.service';
-import { ColorCodeService } from 'src/app/services/color-code/color-code.service';
 
 @Component({
   selector: 'app-comparison-list-view',
@@ -13,14 +12,13 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
   public bom$: any;
   public processedBom: any;
   public sorted: any;
-  //public cols: string[] = [];
   public cols: any;
   public activeCols: any;
 
 
   @ViewChild('filterCol', {static: false}) filterCol: any;
   @Output() selection: EventEmitter<any> = new EventEmitter();
-  
+
   @Input() id: string;
   @Input() set bom(bom) {
     this.bom$ = bom;
@@ -40,7 +38,7 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     this.bom$ = changes.bom.currentValue;
     this.processedBom = this.bom$;
     this.cols = Object.keys(this.bom$[0]);
-   
+
     this.mapFilters();
 
   }
@@ -48,30 +46,29 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
   mapFilters() {
     this.cols = this.cols.map((col) => ({
        value: col,
-       //name: this.mapColName(col)
        name: this.mapColName(col),
     }));
 
   }
 
   mapColName(col) {
-    if (col === "ME") {
+    if (col === "Unit") {
       col = "Unit"
       return col;
     }
-    if (col === "Objektkurztext"){
+    if (col === "Description"){
+      col = "Description"
+      return col;
+    }
+    if (col === "Part") {
       col = "Part"
       return col;
     }
-    if (col === "id") {
-      col = "Part#"
+    if (col === "Quantity Total") {
+      col = "Quantity Total"
       return col;
     }
-    if (col === "Menge") {
-      col = "Quantity"
-      return col;
-    }
-    if (col === "Station") {
+    if (col === "Location") {
       return col;
     }
     if (col === "Status") {
@@ -141,12 +138,16 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
   }
 
   dynamicSort(...props) {
-    var args = arguments;
-  
-     return function (a,b) {
-      var result = a[args[0]] < b[args[0]] ? -1 : a[args[0]] > b[args[0]] ? 1 : 0 || a[args[1]] < b[args[1]] ? -1 : a[args[1]] > b[args[1]] ? 1 : 0 || a[args[2]] < b[args[2]] ? -1 : a[args[2]] > b[args[2]] ? 1 : 0;
-      return result;
-    }
+    const args = arguments;
+
+    return function (a, b) {
+      return a[args[0]] < b[args[0]] ? -1 :
+        a[args[0]] > b[args[0]] ? 1 : 0 ||
+        a[args[1]] < b[args[1]] ? -1 :
+        a[args[1]] > b[args[1]] ? 1 : 0 ||
+        a[args[2]] < b[args[2]] ? -1 :
+        a[args[2]] > b[args[2]] ? 1 : 0;
+    };
   }
 
   downloadBom(type) {

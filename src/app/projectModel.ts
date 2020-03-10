@@ -1,5 +1,3 @@
-import { MaterialList } from './materialListModel';
-
 export interface Project {
     name: string;
     tag: string;
@@ -7,10 +5,10 @@ export interface Project {
     description: string;
     trainsCount: number;
     deadline: Date;
-    bomLists: string[];
+    boms: string[];
     multiBom: number;
     active: boolean;
     isArchived: boolean;
     createdBy: string;
     created: Date;
-};
+}

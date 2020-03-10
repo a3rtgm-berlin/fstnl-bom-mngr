@@ -8,7 +8,7 @@ const masterBomSchema = new Schema({
         required: true,
         default: {}
     },
-    comparison: Object,
+    movingFile: Object,
     date: String,
     uploadDate: Date,
     projects: [String],

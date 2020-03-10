@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
-import { MaterialList } from '../../materialListModel';
+import { Bom } from '../../bomModel';
 import $ from 'jquery';
-import { ColorCodeService } from 'src/app/services/color-code/color-code.service';
+import { ColorCodeService } from '../../services/color-code/color-code.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,11 +18,11 @@ export class MaterialListViewComponent implements OnInit, OnChanges {
 
   @ViewChild('tabsPanel', {static: false}) tabsPanel: ElementRef;
 
-  @Input() set master(master: MaterialList) {
+  @Input() set master(master: Bom) {
     this.master$ = master;
   }
 
-  get master(): MaterialList {
+  get master(): Bom {
     return this.master$;
   }
 
@@ -54,7 +54,7 @@ export class MaterialListViewComponent implements OnInit, OnChanges {
   }
 
   colorCodeStations() {
-    this.colors = this.colorCodeService.createColorMapping(this.master$.json, 'Station');
+    this.colors = this.colorCodeService.createColorMapping(this.master$.json, 'Location');
   }
 
   setLocalStateOnMaster($event: any, attr: string) {

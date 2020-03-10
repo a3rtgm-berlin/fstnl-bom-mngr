@@ -1,7 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
-import { MaterialList } from '../materialListModel';
-import { Observable } from 'rxjs';
+import { Bom } from '../bomModel';
 import { RestService } from '../services/rest/rest.service';
 import { LoaderService } from '../services/loader/loader.service';
 
@@ -12,10 +11,8 @@ import { LoaderService } from '../services/loader/loader.service';
 })
 export class MasterViewComponent implements OnInit {
 
-  public master: MaterialList;
+  public master: Bom;
   public masterId: string;
-
-  public observable;
 
   constructor(private route: ActivatedRoute, private router: Router, private restService: RestService, private loader: LoaderService) {
     route.params.subscribe(res => {

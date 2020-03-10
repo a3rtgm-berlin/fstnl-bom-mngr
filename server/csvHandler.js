@@ -1,34 +1,34 @@
 const d3 = require('../node_modules/d3');
-const ArbMatrix = require('./models/arbMatrix');
-const ExcludeList = require('./models/excludeList');
-const mat = require('./models/material');
+const ArbMatrix = require('./models/matrix');
+const ExcludeList = require('./models/exclude');
+const Part = require('./models/part');
 const dsv = d3.dsvFormat(";");
 const getTrainsRemaining = require('./projectsHandler').getTrainsRemaining;
 const getTrainsCount = require('./projectsHandler').getTrainsCount;
 
 async function csvToJson (csv, project) {
-    var arbMatrix = null,
-        excludeList = [],
-        trainsPending;
+    var trainsPending = await getTrainsCount(project),
+        arbMatrix = await ArbMatrix.findOne({}).exec(),
+        excludeList = await ExcludeList.findOne({}).exec();
 
-    let promiseMatrix = new Promise((res, rej) => {
-        ArbMatrix.findOne({}, (err, data) => {
-            if (err) return console.error(err);
+    // let promiseMatrix = new Promise((res, rej) => {
+    //     ArbMatrix.findOne({}, (err, data) => {
+    //         if (err) return console.error(err);
     
-            res(data);
-        });
-    });
+    //         res(data);
+    //     });
+    // });
 
-    let promiseExcludeList = new Promise((res, rej) => {
-        ExcludeList.findOne({}, (err, data) => {
-            if (err) return console.error(err);
-            res(data);
-        });
-    });
+    // let promiseExcludeList = new Promise((res, rej) => {
+    //     ExcludeList.findOne({}, (err, data) => {
+    //         if (err) return console.error(err);
+    //         res(data);
+    //     });
+    // });
 
-    arbMatrix = await promiseMatrix;
-    excludeList = await promiseExcludeList;
-    trainsPending = await getTrainsCount(project);
+    // arbMatrix = await promiseMatrix;
+    // excludeList = await promiseExcludeList;
+    // trainsPending = await getTrainsCount(project);
 
 
     const json = dsv.parse(csv, (d) => {
@@ -36,10 +36,10 @@ async function csvToJson (csv, project) {
     });
 
     return json.reduce((cleanJson, part) => {
-        match = cleanJson.find(_part => _part.id === part.id);
+        match = cleanJson.find(_part => _part['Location Index'] === part['Location Index']);
         if (match) {
-            match.Menge += part.Menge;
-            match.MengeProZug += part.MengeProZug;
+            match['Quantity Total'] += part['Quantity Total'];
+            match['Quantity Per Train'] += part['Quantity Per Train'];
             return cleanJson;
         } else {
             return [...cleanJson, part];
@@ -58,7 +58,7 @@ function filterData (d, arbMatrix, excludeList, trainsPending) {
         if (!excludeList.includes(d["MaterialP"])) {
             if (d.SchGut === "X") {
                 if (d.MArt === "ROH" || d.MArt === "HALB") {
-                    return new mat.Item(d, catId, catName, arbMatrix, trainsPending);
+                    return new Part(d, catId, catName, arbMatrix, trainsPending);
                 }
             }
         }

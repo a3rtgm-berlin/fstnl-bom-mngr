@@ -1,16 +1,14 @@
-const MaterialList = require("./models/list").MaterialListModel;
+const Bom = require("./models/bom");
 const Project = require("./models/project").ProjectModel;
 const MasterBom = require('./models/masterBom');
-const RPNModel = require('./models/rpn').RPNModel;
-const projectHandler = require('./projectsHandler');
+const RPN = require('./models/rpn');
 const template = require('./rpn.template.json');
 
 module.exports = async function createRpn(req, res) {
-    var rpn,
-        id = req.params.id,
+    var id = req.params.id,
         master = await MasterBom.findOne({id: id}).exec(),
         projectsRegex = master.projects.map(tag => new RegExp(tag)),
-        boms = await MaterialList.find({
+        boms = await Bom.find({
             $and: [
                 {id: {$regex: id}},
                 {id: {$in: projectsRegex}}
@@ -74,12 +72,12 @@ module.exports = async function createRpn(req, res) {
         });
     });
 
-    const RPN = new RPNModel({
+    const rpn = new RPN({
         id: id,
         parts: [...meta, ...allParts]
     });
 
-    RPN.save((err, rpn) => {
+    rpn.save((err, rpn) => {
         if (err) {
             res.sendStatus(503);
             return console.error(err);

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MaterialList } from './materialListModel';
+import { Bom } from './bomModel';
 import { ModalService } from './services/modal/modal.service';
 import $ from 'jquery';
 

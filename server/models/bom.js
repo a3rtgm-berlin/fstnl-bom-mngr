@@ -1,7 +1,7 @@
-const mongoose = require("../../node_modules/mongoose");
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const materialListSchema = new Schema({
+const bomSchema = new Schema({
     id: String,
     name: String,
     project: String,
@@ -18,4 +18,4 @@ const materialListSchema = new Schema({
     collection: 'order-data'
 });
 
-module.exports = { MaterialListModel: mongoose.model('MaterialList', materialListSchema), materialListSchema };
+module.exports = mongoose.model('Bom', bomSchema);

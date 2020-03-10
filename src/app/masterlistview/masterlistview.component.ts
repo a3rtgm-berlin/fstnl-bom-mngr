@@ -34,7 +34,7 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
   constructor(public colorCodeService: ColorCodeService, public exportService: ExportService) { }
 
   ngOnInit() {
-    console.log(this.processedBom.lists);
+    console.log(this.processedBom.Boms);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -48,33 +48,32 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
   mapFilters() {
     this.cols = this.cols.map((col) => ({
        value: col,
-       //name: this.mapColName(col)
        name: this.mapColName(col),
     }));
 
   }
 
   mapColName(col) {
-    if (col === "ME") {
-      col = "Unit"
+    if (col === 'Unit') {
+      col = 'Unit';
       return col;
     }
-    if (col === "Objektkurztext"){
-      col = "Part"
+    if (col === 'Description') {
+      col = 'Description';
       return col;
     }
-    if (col === "id") {
-      col = "Part#"
+    if (col === 'Part') {
+      col = 'Part';
       return col;
     }
-    if (col === "Menge") {
-      col = "Quantity"
+    if (col === 'Quantity Total') {
+      col = 'Quantity';
       return col;
     }
-    if (col === "Station") {
+    if (col === 'Location') {
       return col;
     }
-    if (col === "Status") {
+    if (col === 'Status') {
       return col;
     } else {
       return false;
@@ -149,10 +148,15 @@ export class MasterlistviewComponent implements OnInit, OnChanges {
     const args = arguments;
 
     return (a, b) => {
-      const result = a[args[0]] < b[args[0]] ? -1 : a[args[0]] > b[args[0]] ? 1 : 0 || a[args[1]] < b[args[1]] ? -1 : a[args[1]] > b[args[1]] ? 1 : 0 || a[args[2]] < b[args[2]] ? -1 : a[args[2]] > b[args[2]] ? 1 : 0;
+      const result = a[args[0]] < b[args[0]] ? -1 :
+        a[args[0]] > b[args[0]] ? 1 : 0 ||
+        a[args[1]] < b[args[1]] ? -1 :
+        a[args[1]] > b[args[1]] ? 1 : 0 ||
+        a[args[2]] < b[args[2]] ? -1 :
+        a[args[2]] > b[args[2]] ? 1 : 0;
 
       return result;
-    }
+    };
   }
 
   downloadBom(type) {

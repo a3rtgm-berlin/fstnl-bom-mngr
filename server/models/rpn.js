@@ -9,6 +9,4 @@ const rpnSchema = new Schema({
     collection: 'rpn'
 });
 
-const RPNModel = mongoose.model('RPN', rpnSchema);
-
-module.exports = { RPNModel: RPNModel, rpnSchema };
+module.exports = mongoose.model('RPN', rpnSchema);
