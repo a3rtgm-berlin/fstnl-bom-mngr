@@ -67,7 +67,9 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
           'Id', 'Description', 'Unit', 'Overall Need', 'MonNeed', 'Usage', 'Consumption', 'MinMax', 'Phase Out Date'
         ]
 
+
         this.displayedColumns = sliceColumns.slice(0, 3).concat(this.projects).concat(sliceColumns.slice(3));
+
         console.log(this.displayedColumns);
         this.dataSource = new MatTableDataSource(this.processedRPN);
         this.dataSource.sort = this.sort;
