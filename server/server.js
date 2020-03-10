@@ -194,7 +194,7 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
     
     const planogram = master.json.reduce((res, part) => {
         if (!res.find(item => item['Location'] === part['Location'])) {
-            const location = matrix.json.find(location => location['Location'] === part['Location']);
+            const location = matrix.json.find(row => row['Location'] === part['Location']);
             const wagonSize = location ? location.WagonSize : 60;
             const rows = wagonSize / 10;
 

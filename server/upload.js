@@ -218,7 +218,7 @@ function planogram (req, res) {
 
             Planogram.findOneAndUpdate({id: id}, {
                 mapping: planogram.mapping,
-                POG: planogram.POG,
+                planogram: planogram.planogram,
                 updated: new Date(),
             }, {
                 upsert: true,

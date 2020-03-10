@@ -28,9 +28,9 @@
 </div>
 
 <table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
-    <ng-container matColumnDef="Station" #boundaryStation>
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Station </th>
-        <td [ngStyle]="{'background': colors[element.Station]}" mat-cell *matCellDef="let element" > {{element.Station}} </td>
+    <ng-container matColumnDef="Location" #boundaryLocation>
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+        <td [ngStyle]="{'background': colors[element.Location]}" mat-cell *matCellDef="let element" > {{element.Location}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Location Wagon">
@@ -47,7 +47,7 @@
         </td>
     </ng-container>
 
-    <ng-container matColumnDef="Location Bin">
+    <ng-container matColumnDef="Bin Location">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Bin-Location </th>
         <td class="bin" mat-cell *matCellDef="let element" >
             <ng-container *ngIf="element.Location; else noPos">
@@ -61,9 +61,9 @@
         </td>
     </ng-container>
 
-    <ng-container matColumnDef="Location Count">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location Count </th>
-        <td mat-cell *matCellDef="let element" > {{element['Location Count']}} </td>
+    <ng-container matColumnDef="Bin Count">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Bin Count </th>
+        <td mat-cell *matCellDef="let element" > {{element['Bin Count']}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Material">
