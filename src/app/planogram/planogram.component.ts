@@ -37,8 +37,8 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
 
   displayedColumns: string[] = [
     'Location',
-    'Location Wagon',
-    'Bin Location',
+    'Wagon',
+    'Bin',
     'Bin Count',
     'Part',
     'Description',

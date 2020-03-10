@@ -10,13 +10,12 @@ import { RestService } from '../services/rest/rest.service';
 })
 export class ProjectListComponent implements OnInit {
 
-  public materialLists: Bom[];
+  public boms: Bom[];
   public selectedBoms: Set<Bom> = new Set<Bom>();
 
   constructor(private restService: RestService, private router: Router) {
     this.restService.allMaster.subscribe(res => {
-      this.materialLists = res;
-      console.log(res);
+      this.boms = res;
     });
   }
 
@@ -26,9 +25,9 @@ export class ProjectListComponent implements OnInit {
 
   setSelectedBoms(event$) {
     if (event$.status) {
-      this.selectedBoms.add(event$.materialList);
+      this.selectedBoms.add(event$.bom);
     } else {
-      this.selectedBoms.delete(event$.materialList);
+      this.selectedBoms.delete(event$.bom);
     }
   }
 
