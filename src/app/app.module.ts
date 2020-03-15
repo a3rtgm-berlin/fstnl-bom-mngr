@@ -9,7 +9,7 @@ import { XlsLoaderComponent } from './xls-loader/xls-loader.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { CompareOrdersComponent } from './compare-orders/compare-orders.component';
 import { MasterViewComponent } from './master-view/master-view.component';
-import { QueryFormComponent } from './query-form/query-form.component';
+// import { QueryFormComponent } from './query-form/query-form.component';
 import { MaterialListViewComponent } from './master-view/material-list-view/material-list-view.component';
 import { MaterialListsCollectionViewComponent } from './project-list/material-lists-collection-view/material-lists-collection-view.component';
 import { ComparisonRowViewComponent } from './compare-orders/comparison-row-view/comparison-row-view.component';

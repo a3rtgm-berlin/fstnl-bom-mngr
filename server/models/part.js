@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 module.exports = class Part {
     /**
      * constructs a new Material Object from the csv data
@@ -14,11 +16,11 @@ module.exports = class Part {
         // relevant rows from csv
         this['Part'] = d["MaterialP"]; // Part#
         this['Description'] = d["Objektkurztext"]; // Description
-        this['Quantity Per Train'] = this.convertLocaleStringToNumber(d["Menge"]); // Quantity Per Train
+        this['Quantity Per Train'] = utils.convertLocaleStringToNumber(d["Menge"]); // Quantity Per Train
         this['Quantity Total'] = this['Quantity Per Train'] * trainsPending; // Total Quantity
         this['Unit'] = d["ME"]; // Unit
         this['ArbPlatz'] = d["ArbPlatz"];
-        this['Location'] = d["ArbPlatz"] ? this.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location"; // Location
+        this['Location'] = d["ArbPlatz"] ? utils.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location"; // Location
         this['Location Index'] = this['Location'] + this['Part']; // Location Index
         // this.Material = d["MaterialP"]; // Part#
         // this.Objektkurztext = d["Objektkurztext"]; // Description
@@ -31,17 +33,17 @@ module.exports = class Part {
         // this.id = this.Station + this.Material; // Location Index
     }
 
-    mapMatrix(arbPlatz, arbMatrix) {
-        if (!arbPlatz) return "No Location";
-        if (!arbMatrix) return arbPlatz;
+    // mapMatrix(arbPlatz, arbMatrix) {
+    //     if (!arbPlatz) return "No Location";
+    //     if (!arbMatrix) return arbPlatz;
 
-        const map = arbMatrix.find((map) => map.ArbPlatz === arbPlatz) ? arbMatrix.find((map) => map.ArbPlatz === arbPlatz).Location : '!' + arbPlatz;
+    //     const map = arbMatrix.find((map) => map.ArbPlatz === arbPlatz) ? arbMatrix.find((map) => map.ArbPlatz === arbPlatz).Location : '!' + arbPlatz;
 
-        if (map === "Not Valid" || map === "(Leer)") return "No Location";
-        return map;
-    }
+    //     if (map === "Not Valid" || map === "(Leer)") return "No Location";
+    //     return map;
+    // }
 
-    convertLocaleStringToNumber (x) {
-        return parseFloat(x.trim().replace('.', '').replace(',', '.'));
-    }
-}
+    // convertLocaleStringToNumber (x) {
+    //     return parseFloat(x.trim().replace('.', '').replace(',', '.'));
+    // }
+};

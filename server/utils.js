@@ -11,7 +11,7 @@ function updateSingleBom(bom, res) {
         }
 
         bom.json.forEach((part) => {
-            part.Menge = part.MengeProZug * project.trainsCount;
+            part['Quantity Total'] = part['Quantity Per Train'] * project.trainsCount;
         });
         bom.save();
         res.json();
@@ -27,7 +27,7 @@ async function updatePartAmount(json, tag) {
             }
     
             json.forEach((part) => {
-                part.Menge = part.MengeProZug * project.trainsCount;
+                part['Quantity Total'] = part['Quantity Per Train'] * project.trainsCount;
             });
     
             res(json);
@@ -43,9 +43,9 @@ function updateExcludesAndMatrix(boms) {
             
             boms.forEach(async bom => {
                 bom.json = bom.json
-                    .filter(part => !exclude.exclude.includes(part.Material))
+                    .filter(part => !exclude.exclude.includes(part.Part))
                     .map(part => {
-                        part.Station = this.mapMatrix(part.ArbPlatz, matrix.json);
+                        part.Location = this.mapMatrix(part.ArbPlatz, matrix.json);
                         part.id = part.Station + part.Material;
                         return part;
                     });
@@ -68,11 +68,11 @@ function updateExcludesAndMatrix(boms) {
     });
 }
 
-function mapMatrix(station, arbMatrix) {
-    if (!station) return "No Location";
-    if (!arbMatrix) return station;
+function mapMatrix(arbPlatz, arbMatrix) {
+    if (!arbPlatz) return "No Location";
+    if (!arbMatrix) return arbPlatz;
 
-    const map = arbMatrix.find((map) => map.ArbPlatz === station) ? arbMatrix.find((map) => map.ArbPlatz === station).Area : '!' + station;
+    const map = arbMatrix.find((map) => map.ArbPlatz === arbPlatz) ? arbMatrix.find((map) => map.ArbPlatz === arbPlatz).Location : '!' + arbPlatz;
 
     if (map === "Not Valid" || map === "(Leer)") return "No Location";
     return map;

@@ -138,8 +138,150 @@
     
 
     }
+
+    #user_functions {
+        position:relative;
+        flex:1 0 100%;
+        display:flex;
+        flex-direction:row;
+        order:3;
+        margin:10px auto;
+        padding:5px;
+        background:whitesmoke;
+        z-index:50;
+        @include removeshadow;
+
+        &.is-sticky {
+            padding:15px;
+            transform-origin: center;
+            transition:0.3s;
+            @include outershadow;
+
+            #totopbutton {
+                opacity:1;
+                pointer-events:all;
+
+                &:hover {
+                    cursor:pointer;
+                    transform:scale(1.01);
+                    transition:0.3s;
+                    transform-origin: center;
+                }
+            }
+        }
+
+        .filter {
+            flex:0 0 50%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: row;
+
+            input {
+                flex:1 0 30%;
+                width:250px;
+                font-size:80%;
+                color:#888;
+                border:1px solid #444;
+                opacity:0.3;
+                margin:0px 3px;
+                height:40px;
+                line-height:40px;
+                pointer-events:none;
+                border-radius:0px;
+
+                @include innershadow;
+
+                &.active {
+                    pointer-events: all;
+                    opacity:1;
+                }
+            }
+
+            .loopbutton {
+                height:40px;
+                width:40px;
+                margin:0px 3px;
+                background:$bboinverse;
+                background-image:url('../../assets/img/magnifier.png');
+                background-position:center;
+                background-repeat: no-repeat;
+                background-size:15px;
+                filter:invert(1);
+            }
+
+            .marker {
+                flex:0 0 25%;
+                max-width:150px;
+                margin:0px 3px;
+                height:40px;
+                line-height:40px;
+                background:#222;
+                color:whitesmoke;
+                font-size:80%;
+                text-align:center;
+                @include outershadow;
+            }
+        }
+
+        mat-paginator {
+            flex:1 0 50%;
+            order:3;
+            height:40px;
+            line-height:40px;
+            margin-left:3px;
+            box-sizing:border-box;
+
+            ::ng-deep .mat-paginator-outer-container {
+                height:40px !important;
+                min-height:40px !important;
+                margin-top: 0px !important;
+                margin-bottom: 0px !important;
+
+                ::ng-deep .mat-paginator-container {
+                    height:40px !important;
+                    min-height:40px !important;
+                    margin-top: 0px !important;
+                    margin-bottom: 0px !important;
+
+                    ::ng-deep .mat-paginator-page-size {
+                        height:40px !important;
+                        min-height:40px !important;
+                        margin-top: 0px !important;
+                        margin-bottom: 0px !important;
+
+                        ::ng-deep .mat-paginator-page-size-select {
+                            margin:0px 4px;
+                        }
+                    }
+                }
+            }
+        }
+
+        #totopbutton {
+            opacity:0;
+            pointer-events:none;
+            padding:20px 0px;
+            position:absolute;
+            top:0;
+            right:-48px;
+
+            .inner {
+            background:$dbbinverse;
+            height:40px;
+            width:40px;
+            background-image:url('../../assets/img/arrowup.png');
+            filter:invert(1);
+            background-size:15px;
+            background-position: center;
+            background-repeat: no-repeat;
+            }
+        }
+    }
+
     #BOM {
-        thead {
+        thead, .mat-header-row {
+            position:relative;
             padding:0px;
             margin:0px;
             height:40px;
@@ -148,14 +290,30 @@
             background:$darkpaper;
 
             th {
-                position:relative;
+                position:sticky;
                 text-align:center;
-                padding:0px 10px;
+                padding:0px;
+                vertical-align:middle;
                 background:transparent;
                 font-weight:400;
                 color:whitesmoke;
                 font-size:90%;
                 z-index:1;
+                @include removeshadow;
+
+                ::ng-deep .mat-sort-header-container {
+                    justify-content:center;
+                }
+
+                ::ng-deep .mat-sort-header-button {
+                    justify-content:center;
+                    width:100%;
+                }
+                
+                &.is-sticky {
+                    opacity:0.8;
+                    @include outershadow;
+                }
 
                 &.filter:before {
                     content:'';
@@ -255,8 +413,11 @@
                 font-size:80%;
                 font-weight:300;
                 color:#444;
+                text-align: center;
+                vertical-align: middle;
+                padding: 0;
 
-                &.station {
+                &.mat-column-Station {
                     color:#ddd;
                 }
             }

@@ -16,13 +16,13 @@ module.exports = async function createRpn(req, res) {
         }).exec(),
         allParts = master.json
             .reduce((res, part) => {
-                return res.includes(part.Material) ? res : [...res, part.Material];
+                return res.includes(part.Part) ? res : [...res, part.Part];
             }, [])
             .map(part => {
                 const map = {
-                    id: part,
-                    name: '',
-                    unit: '',
+                    Part: part,
+                    Description: '',
+                    Unit: '',
                     ovCount: 0,
                     monthlyCount: 0,
                     phaseOutDate: '',
@@ -49,13 +49,13 @@ module.exports = async function createRpn(req, res) {
         const project = bom.project;
 
         bom.json.forEach(item => {
-            const match = allParts.find(part => part.id === item.Material);
+            const match = allParts.find(part => part.Part === item.Part);
 
             if (match) {
-              match.ovCount += item.Menge;
-              match.name = item.Objektkurztext;
-              match.unit = item.ME;
-              match[project] = match[project] ? match[project] + item.Menge : item.Menge;
+              match.ovCount += item['Quantity Total'];
+              match.Description = item.Description;
+              match.Unit = item.Unit;
+              match[project] = match[project] ? match[project] + item['Quantity Total'] : item['Quantity Total'];
             }
         });
     });
