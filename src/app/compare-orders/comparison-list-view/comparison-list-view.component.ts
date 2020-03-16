@@ -1,13 +1,10 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import $ from 'jquery';
 import { ExportService } from '../../services/export/export.service';
-<<<<<<< HEAD
-=======
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { ColorCodeService } from 'src/app/services/color-code/color-code.service';
->>>>>>> dev
 
 @Component({
   selector: 'app-comparison-list-view',

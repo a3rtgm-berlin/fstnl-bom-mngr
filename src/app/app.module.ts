@@ -19,7 +19,7 @@ import { ManageProjectsComponent } from './manage-projects/manage-projects.compo
 import { CreateProjectComponent } from './manage-projects/create-project/create-project.component';
 import { MatTableModule } from '@angular/material';
 import { MatSortModule } from '@angular/material';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { ModalService } from './services/modal/modal.service';
 import { DomService } from './services/dom/dom.service';
 import { MatrixFilesComponent } from './matrix-files/matrix-files.component';
@@ -57,7 +57,6 @@ import {AngularStickyThingsModule} from '@w11k/angular-sticky-things';
     MaterialListViewComponent,
     CompareOrdersComponent,
     MasterViewComponent,
-    QueryFormComponent,
     MaterialListsCollectionViewComponent,
     ComparisonRowViewComponent,
     ComparisonMetaViewComponent,
