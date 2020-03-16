@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { ProjectSubSettingsComponent } from '../project-sub-settings/project-sub-settings.component';
 import { UpdateProjectComponent } from '../update-project/update-project.component';
-import { XlsLoaderComponent } from '../../xls-loader/xls-loader.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { RestService } from '../../services/rest/rest.service';
 import $ from 'jquery';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { BomMetaViewComponent } from 'src/app/bom-meta-view/bom-meta-view.component';
+import { AlertService } from '../../services/alert/alert.service';
+import { BomMetaViewComponent } from '../../bom-meta-view/bom-meta-view.component';
 
 @Component({
   selector: 'app-project-list-view',

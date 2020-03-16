@@ -4,7 +4,6 @@ import { ExportService } from '../../services/export/export.service';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
-import { ColorCodeService } from 'src/app/services/color-code/color-code.service';
 
 @Component({
   selector: 'app-comparison-list-view',
