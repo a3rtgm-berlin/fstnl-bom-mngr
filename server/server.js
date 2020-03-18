@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require("body-parser");
 // const mongoose = require("mongoose");
-const mongoose = require("../node_modules/mongoose");
+const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
@@ -74,9 +74,9 @@ app.use((req, res, next) => {
 });
 
 // Connect DB
-// mongoose.connect('mongodb://test:test@btbom:27017/testDB', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/testDB', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
 // mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
-mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/fstnl-bom-mngr', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
+// mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/fstnl-bom-mngr', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
 // mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
 
 // Set server options
@@ -86,7 +86,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set routes
 app.get('/', (req, res) => {
-    res.send(200, "connected");
+    Bom.find((e, data) => {
+        console.log(data.length);
+    });
+    res.status(200).send("connected");
 });
 
 /**
