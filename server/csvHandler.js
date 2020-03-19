@@ -11,26 +11,6 @@ async function csvToJson (csv, project) {
         arbMatrix = await ArbMatrix.findOne({}).exec(),
         excludeList = await ExcludeList.findOne({}).exec();
 
-    // let promiseMatrix = new Promise((res, rej) => {
-    //     ArbMatrix.findOne({}, (err, data) => {
-    //         if (err) return console.error(err);
-    
-    //         res(data);
-    //     });
-    // });
-
-    // let promiseExcludeList = new Promise((res, rej) => {
-    //     ExcludeList.findOne({}, (err, data) => {
-    //         if (err) return console.error(err);
-    //         res(data);
-    //     });
-    // });
-
-    // arbMatrix = await promiseMatrix;
-    // excludeList = await promiseExcludeList;
-    // trainsPending = await getTrainsCount(project);
-
-
     const json = dsv.parse(csv, (d) => {
         return filterData(d, arbMatrix.json, excludeList.exclude, trainsPending);
     });
@@ -55,7 +35,7 @@ function filterData (d, arbMatrix, excludeList, trainsPending) {
         catId = d["MaterialP"];
         catName = d["Objektkurztext"];
     } else {
-        if (!excludeList.includes(d["MaterialP"])) {
+        if (!excludeList.map(row => row.Part).includes(d["MaterialP"])) {
             if (d.SchGut === "X") {
                 if (d.MArt === "ROH" || d.MArt === "HALB") {
                     return new Part(d, catId, catName, arbMatrix, trainsPending);

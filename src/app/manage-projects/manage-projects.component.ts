@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ViewChild, Directive, AfterViewInit } from '@
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ModalService } from '../services/modal/modal.service';
 import { RestService } from '../services/rest/rest.service';
-// import { Project } from '../projectModel';
 import { Month } from '../dateModel';
 import { Router } from '@angular/router';
 

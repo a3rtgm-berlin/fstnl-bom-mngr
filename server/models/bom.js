@@ -15,7 +15,7 @@ const bomSchema = new Schema({
     uploadDate: Date,
     updated: Date
 }, {
-    collection: 'order-data'
+    collection: 'bom'
 });
 
 module.exports = mongoose.model('Bom', bomSchema);

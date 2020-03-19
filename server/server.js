@@ -27,9 +27,9 @@ const MultiBom = require('./multiBom');
 
 // DB Models
 const Bom = require("./models/bom");
-const Project = require("./models/project").ProjectModel;
+const Project = require("./models/project");
 const MasterBom = require('./models/masterBom');
-const User = require("./models/user").UserModel;
+const User = require("./models/user");
 const ExcludeList = require("./models/exclude");
 const ArbMatrix = require("./models/matrix");
 const RPN = require("./models/rpn");
@@ -86,8 +86,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set routes
 app.get('/', (req, res) => {
-    Bom.find((e, data) => {
-        console.log(data.length);
+    User.find((e, data) => {
+        console.log(data);
     });
     res.status(200).send("connected");
 });
@@ -549,7 +549,7 @@ app.post('/api/lists/multibom', (req, res) => {
                 });
             });
 
-            res.sendStatus(201);
+            res.status(201).send('updated');
         }
     });
 });

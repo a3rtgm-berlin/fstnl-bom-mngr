@@ -1,5 +1,5 @@
 const Bom = require("./models/bom");
-const Project = require("./models/project").ProjectModel;
+const Project = require("./models/project");
 const ExcludeList = require("./models/exclude");
 const ArbMatrix = require("./models/matrix");
 
@@ -43,10 +43,10 @@ function updateExcludesAndMatrix(boms) {
             
             boms.forEach(async bom => {
                 bom.json = bom.json
-                    .filter(part => !exclude.exclude.includes(part.Part))
+                    .filter(part => !exclude.exclude.map(row => row.Part).includes(part.Part))
                     .map(part => {
                         part.Location = this.mapMatrix(part.ArbPlatz, matrix.json);
-                        part.id = part.Station + part.Material;
+                        part['Location Index'] = part.Location + part.Part;
                         return part;
                     });
                 bom.json = await updatePartAmount(mergeDuplicates(bom.json), bom.project);
@@ -72,7 +72,8 @@ function mapMatrix(arbPlatz, arbMatrix) {
     if (!arbPlatz) return "No Location";
     if (!arbMatrix) return arbPlatz;
 
-    const map = arbMatrix.find((map) => map.ArbPlatz === arbPlatz) ? arbMatrix.find((map) => map.ArbPlatz === arbPlatz).Location : '!' + arbPlatz;
+    const match = arbMatrix.find((map) => map.ArbPlatz === arbPlatz);
+    const map = match ? match.Location : '!' + arbPlatz;
 
     if (map === "Not Valid" || map === "(Leer)") return "No Location";
     return map;
@@ -84,10 +85,10 @@ function convertLocaleStringToNumber (x) {
 
 function mergeDuplicates(json) {
     return json.reduce((cleanJson, part) => {
-        match = cleanJson.find(_part => _part.id === part.id);
+        match = cleanJson.find(_part => _part['Location Index'] === part['Location Index']);
         if (match) {
-            match.Menge += part.Menge;
-            match.MengeProZug += part.MengeProZug;
+            match['Quantity Total'] += part['Quantity Total'];
+            match['Quantity Per Train'] += part['Quantity Per Train'];
             return cleanJson;
         } else {
             return [...cleanJson, part];

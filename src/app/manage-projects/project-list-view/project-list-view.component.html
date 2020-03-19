@@ -23,7 +23,7 @@
     <div *ngIf="project$.multiBom == 0" class="prjct_bdy">
         <div class="prjct_bom">
             <select class="boms" (change)="targetSingleBom($event)" #selectBom>
-                <option class="act-lst" *ngFor="let bom of bomList$" >{{bom}}</option>
+                <option class="act-lst" *ngFor="let bom of boms$" >{{bom}}</option>
             </select>
             <div class="btnbox">
                 <button class="subbtn refresh" title="Update selected BOM by Project Stats" (click)="updateSingleBOM()"></button>
@@ -60,7 +60,7 @@
             <li class="overview" *ngIf="tglSwitch === 'overview'">
                 <div class="prjct_ovw">
                     <select class="boms" [(ngModel)]="selectedSingleBom" (change)="targetSingleBom($event)" #selectBom>
-                        <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
+                        <option class="act-lst" *ngFor="let bom of boms$">{{bom}}</option>
                     </select>
                     <div class="btnbox">
                         <button class="subbtn refresh" (click)="updateSingleBOM()"></button>
@@ -95,7 +95,7 @@
             <li class="mltBm_A" *ngIf="tglSwitch === 'A'">
                 <div class="prjct_bom">
                     <select class="boms" (change)="selectMultiBoms($event, 0)">
-                        <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
+                        <option class="act-lst" *ngFor="let bom of boms$">{{bom}}</option>
                     </select>
                 </div>
                 <div class="prjct_upl">
@@ -107,7 +107,7 @@
                 <li *ngIf="tglSwitch === i"  [ngClass]="{mltBm_mid : true, mltBm_last: last }">
                         <div class="prjct_bom">
                             <select class="boms" (change)="selectMultiBoms($event, j + 1)">
-                                <option class="act-lst" *ngFor="let bom of bomList$">{{bom}}</option>
+                                <option class="act-lst" *ngFor="let bom of boms$">{{bom}}</option>
                             </select>
                         </div>
                         <div class="prjct_upl">

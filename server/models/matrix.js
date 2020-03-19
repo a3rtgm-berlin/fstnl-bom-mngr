@@ -13,7 +13,7 @@ const arbMatrixSchema = new Schema({
         default: new Date()
     }
 }, {
-    collection: 'matrix-data'
+    collection: 'matrix'
 });
 
 module.exports = mongoose.model('ArbMatrix', arbMatrixSchema);

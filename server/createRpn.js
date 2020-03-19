@@ -1,5 +1,5 @@
 const Bom = require("./models/bom");
-const Project = require("./models/project").ProjectModel;
+const Project = require("./models/project");
 const MasterBom = require('./models/masterBom');
 const RPN = require('./models/rpn');
 const template = require('./rpn.template.json');

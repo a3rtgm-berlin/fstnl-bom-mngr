@@ -10,8 +10,8 @@ module.exports = class Part {
      */
     constructor (d, catId, catName, arbMatrix, trainsPending) {
         // Keep category from last INV-row
-        this.Kategorie = catName;
-        this.KatID = catId;
+        // this.Kategorie = catName;
+        // this.KatID = catId;
 
         // relevant rows from csv
         this['Part'] = d["MaterialP"]; // Part#
@@ -32,18 +32,4 @@ module.exports = class Part {
         // this.Station = d["ArbPlatz"] ? this.mapMatrix(d["ArbPlatz"], arbMatrix) : "No Location"; // Location
         // this.id = this.Station + this.Material; // Location Index
     }
-
-    // mapMatrix(arbPlatz, arbMatrix) {
-    //     if (!arbPlatz) return "No Location";
-    //     if (!arbMatrix) return arbPlatz;
-
-    //     const map = arbMatrix.find((map) => map.ArbPlatz === arbPlatz) ? arbMatrix.find((map) => map.ArbPlatz === arbPlatz).Location : '!' + arbPlatz;
-
-    //     if (map === "Not Valid" || map === "(Leer)") return "No Location";
-    //     return map;
-    // }
-
-    // convertLocaleStringToNumber (x) {
-    //     return parseFloat(x.trim().replace('.', '').replace(',', '.'));
-    // }
 };

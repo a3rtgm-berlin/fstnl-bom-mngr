@@ -103,35 +103,35 @@ async function calculateCarts(list) {
             location.parts += 1;
             return res;
         } else {
-            const newStation = {
+            const newLocation = {
                 Location: item.Location,
                 parts: 1,
                 wagons: 1,
                 bins: 2
             }
-            return [...res, newStation];
+            return [...res, newLocation];
         }
     }, [])
-    locations.forEach(station => {
-        const stationFromMatrix = arbMatrix.json.find(stat => stat.Location === station.Location);
-        const wagonSize = stationFromMatrix ? stationFromMatrix.WagonSize : 60;
+    locations.forEach(location => {
+        const locationFromMatrix = arbMatrix.json.find(stat => stat.Location === location.Location);
+        const wagonSize = locationFromMatrix ? locationFromMatrix.WagonSize : 60;
 
-        station.wagons = Math.ceil(station.parts / wagonSize);
-        station.bins = station.parts * 2;
+        location.wagons = Math.ceil(location.parts / wagonSize);
+        location.bins = location.parts * 2;
     });
 
     list.forEach((mat1, e1, i) => {
-        mat1.StationParts = null;
-        mat1.StationWagons = null;
-        mat1.StationBins = null;
+        mat1.LocationParts = null;
+        mat1.LocationWagons = null;
+        mat1.LocationBins = null;
 
         if (mat1.location !== "No Location") {
-            const location = locations.find(station => station.Location === mat1.Location);
+            const location = locations.find(location => location.Location === mat1.Location);
 
             if (location) {
-                mat1.StationParts = location.parts;
-                mat1.StationWagons = location.wagons;
-                mat1.StationBins = location.bins;
+                mat1.LocationParts = location.parts;
+                mat1.LocationWagons = location.wagons;
+                mat1.LocationBins = location.bins;
             }
         }
     });

@@ -40,7 +40,16 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
 
 
 
-  displayedColumns: string[] = ['Station', 'Material', 'Part', 'Unit', 'Projects', 'Menge', 'Station Carts', 'Station Bins'];
+  displayedColumns: string[] = [
+    'Location',
+    'Part',
+    'Description',
+    'Unit',
+    'Projects',
+    'Quantity Total',
+    'LocationWagons',
+    'LocationBins'
+  ];
   dataSource = new MatTableDataSource();
   constructor(public colorCodeService: ColorCodeService, public exportService: ExportService) { }
 
@@ -62,6 +71,7 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
     this.bom$ = changes.bom.currentValue;
     this.processedBom = this.bom$;
     this.cols = Object.keys(this.bom$[0]);
+    console.log(this.bom, this.cols);
     // this.colorCodeStations();
     this.mapFilters();
   }
@@ -88,7 +98,7 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
       return col;
     }
     if (col === 'Quantity Total') {
-      col = 'Quantity';
+      col = 'Quantity Total';
       return col;
     }
     if (col === 'Location') {

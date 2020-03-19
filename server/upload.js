@@ -7,7 +7,7 @@ const csvHandler = require('./csvHandler');
 // DB Models
 const Bom = require("./models/bom");
 const ArbMatrix = require('./models/matrix');
-const Project = require('./models/project').ProjectModel;
+const Project = require('./models/project');
 const ExcludeList = require('./models/exclude');
 const RPN = require('./models/rpn');
 const Planogram = require('./models/planogram');
@@ -168,36 +168,17 @@ function excludeList(req, res) {
         // Parse & save to disk
         reader.readAsArrayBuffer(file);
         reader.addEventListener('load', (evt) => {
-            const view = new Uint8Array(reader.result);
             const excludeList = parser.excludeListParser(reader.result);
 
-            // fs.writeFile(path.join(uploadDir, '/arb-matrix/', file.name), view);
-            // fs.writeFile(path.join(uploadDir, '/arb-matrix/', 'excludeList.json'), JSON.stringify(excludeList));
-
-            ExcludeList.find((err, data) => {
+            ExcludeList.findOneAndUpdate({}, {exclude: excludeList}, {
+                upsert: true,
+                new: true,
+            }, (err, data) => {
                 if (err) {
                     res.status(500).send(err);
                     return console.error(err);
                 }
-
-                if (data.length > 0) {
-                    ExcludeList.findOneAndUpdate({}, {exclude: excludeList}, {}, (err) => {
-                        if (err) {
-                            res.status(500).send(err);
-                            return console.error(err);
-                        }
-                        res.status(203).send([file.name]);
-                    });
-                } else {
-                    const dbModel = new ExcludeList({exclude: excludeList});
-                    dbModel.save((err) => {
-                        if (err) {
-                            res.status(500).send(err);
-                            return console.error(err);
-                        }
-                        res.status(203).send([file.name]);
-                    });
-                }
+                res.status(203).send([file.name]);
             });
         });
     });
@@ -278,7 +259,6 @@ async function updateListId (list) {
                 list.id = list.id + '-' + data.length;
             }
 
-            console.log(list.id);
             res(list);
         });
     });

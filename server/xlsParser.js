@@ -61,7 +61,7 @@ function excludeListParser(input) {
         // create JSON from sheet
         const dataAsJson = XLSX.utils.sheet_to_json(ws);
     
-        return dataAsJson.map(d => Object.values(d)[0].toString());
+        return dataAsJson;
 }
 
 function consumptionParser(input) {
@@ -83,7 +83,7 @@ function consumptionParser(input) {
         // // Create new Worksheet from range
         const dataAsJson = XLSX.utils.sheet_to_json(ws, {range: newRange, raw: false})
             .map(part => ({
-                id: part['Cust Part #'],
+                part: part['Cust Part #'],
                 usage: part['Usage']
             }));
     
