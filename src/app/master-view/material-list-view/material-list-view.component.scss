@@ -12,6 +12,26 @@
         align-items:flex-start;
         width:100%;
 
+        .meta-view {
+            width:100%;
+
+            thead {
+                th {
+                    font-size: 90%;
+                    font-weight: 700;
+                    color: #003b69;
+                }
+            }
+
+            tr {
+                td {
+                    border-radius: 0px;
+                    color: #888;
+                    font-weight: 400;
+                }
+            }
+        }
+
         label {
             display:none;
             background:white;

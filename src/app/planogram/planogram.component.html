@@ -16,7 +16,8 @@
 
 <!-- NEW TABLE -->
 
-<div id="user_functions" stickyThing marginTop="0">
+<div #spacer></div>
+<div id="user_functions" [spacer]="spacer" stickyThing marginTop="0">
     <div class="filter">
         <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
         <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
