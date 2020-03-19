@@ -31,10 +31,10 @@ const createMasterBom = function (req, res) {
             }
 
             if (lastMaster) {
-                // if (lastMaster.planogram) {
-                //     const mapping = await Planogram.find({id: lastMaster.id}).exec();
-                //     lastMaster.json = mapping || lastMaster.json;
-                // }
+                if (lastMaster.planogram) {
+                    const mapping = await Planogram.find({id: lastMaster.id}).exec();
+                    lastMaster.json = mapping || lastMaster.json;
+                }
                 if (lastMaster.id < id) {
                     let compare = new Promise((res, rej) => {
                         res(new MovingFile([dbModel, lastMaster]));
@@ -86,15 +86,6 @@ async function combineLists(boms, id, date, projectTags) {
 async function calculateCarts(list) {
     var locations, arbMatrix;
 
-    // let promiseMatrix = new Promise((res, rej) => {
-    //     ArbMatrix.findOne({}, (err, data) => {
-    //         if (err) return console.error(err);
-    
-    //         res(data);
-    //     });
-    // });
-
-    // arbMatrix = await promiseMatrix;
     arbMatrix = await ArbMatrix.findOne({}).exec();
     locations = Array.from(list).reduce((res, item) => {
         const location = res.find(el => el.Location === item.Location);
@@ -121,17 +112,17 @@ async function calculateCarts(list) {
     });
 
     list.forEach((mat1, e1, i) => {
-        mat1.LocationParts = null;
-        mat1.LocationWagons = null;
-        mat1.LocationBins = null;
+        mat1['Location Parts'] = null;
+        mat1['Location Wagons'] = null;
+        mat1['Location Bins'] = null;
 
         if (mat1.location !== "No Location") {
             const location = locations.find(location => location.Location === mat1.Location);
 
             if (location) {
-                mat1.LocationParts = location.parts;
-                mat1.LocationWagons = location.wagons;
-                mat1.LocationBins = location.bins;
+                mat1['Location Parts'] = location.parts;
+                mat1['Location Wagons'] = location.wagons;
+                mat1['Location Bins'] = location.bins;
             }
         }
     });

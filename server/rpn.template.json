@@ -1,26 +1,26 @@
 [
     {
-        "id": "Weeks remaining", 
-        "name": "Time between now and set deadline",
-        "unit": "",
+        "Part": "Weeks remaining", 
+        "Description": "Time between now and set deadline",
+        "Unit": "",
         "ovCount": "",
         "monthlyCount": "",
         "phaseOutDate": "",
         "projects": ""
     },
     {
-        "id": "Trains per Week", 
-        "name": "Average value calculated from train count and deadline",
-        "unit": "",
+        "Part": "Trains per Week", 
+        "Description": "Average value calculated from train count and deadline",
+        "Unit": "",
         "ovCount": "",
         "monthlyCount": "",
         "phaseOutDate": "",
         "projects": ""
     },
     {
-        "id": "Trains left", 
-        "name": "Number of trains left in the project",
-        "unit": "",
+        "Part": "Trains left", 
+        "Description": "Number of trains left in the project",
+        "Unit": "",
         "ovCount": "",
         "monthlyCount": "",
         "phaseOutDate": "",

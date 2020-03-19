@@ -25,8 +25,8 @@
 </div>
 
 <!-- NEW TABLE -->
-
-<div id="user_functions" stickyThing marginTop="0">
+<div #spacer></div>
+<div id="user_functions" stickyThing [spacer]="spacer" marginTop="0">
     <div class="filter">
         <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
         <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
@@ -40,7 +40,7 @@
 <table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
     <ng-container matColumnDef="Location" #boundaryLocation>
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
-        <td [ngStyle]="{'background': colors[element.Location]}" mat-cell *matCellDef="let element" > {{element.Location}} </td>
+        <td class="location" [ngStyle]="{'background': colors[element.Location]}" mat-cell *matCellDef="let element" > {{element.Location}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Part">
@@ -70,14 +70,14 @@
         <td mat-cell *matCellDef="let element" > {{element['Quantity Total'] | localeNumber}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="LocationWagons">
+    <ng-container matColumnDef="Location Wagons">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location Wagons </th>
-        <td mat-cell *matCellDef="let element"> {{element.locationWagons}} </td>
+        <td mat-cell *matCellDef="let element"> {{element['Location Wagons']}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="LocationBins">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Station Bins </th>
-        <td mat-cell *matCellDef="let element"> {{element.locationsBins}} </td>
+    <ng-container matColumnDef="Location Bins">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location Bins </th>
+        <td mat-cell *matCellDef="let element"> {{element['Location Bins']}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

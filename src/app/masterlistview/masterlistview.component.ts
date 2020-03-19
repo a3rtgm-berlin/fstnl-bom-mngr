@@ -2,9 +2,9 @@ import { Component, OnInit, Input, OnChanges, EventEmitter, ViewChild, AfterView
 import $ from 'jquery';
 import { ColorCodeService } from '../services/color-code/color-code.service';
 import { ExportService } from '../services/export/export.service';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-masterlistview',
@@ -47,15 +47,13 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
     'Unit',
     'Projects',
     'Quantity Total',
-    'LocationWagons',
-    'LocationBins'
+    'Location Wagons',
+    'Location Bins'
   ];
   dataSource = new MatTableDataSource();
   constructor(public colorCodeService: ColorCodeService, public exportService: ExportService) { }
 
   ngOnInit() {
-    console.log(this.processedBom.Boms);
-
     this.dataSource = new MatTableDataSource(this.processedBom);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -70,55 +68,12 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
   ngOnChanges(changes: SimpleChanges) {
     this.bom$ = changes.bom.currentValue;
     this.processedBom = this.bom$;
-    this.cols = Object.keys(this.bom$[0]);
-    console.log(this.bom, this.cols);
-    // this.colorCodeStations();
-    this.mapFilters();
+    console.log(this.bom);
   }
-
-  mapFilters() {
-    this.cols = this.cols.map((col) => ({
-       value: col,
-       name: this.mapColName(col),
-    }));
-
-  }
-
-  mapColName(col) {
-    if (col === 'Unit') {
-      col = 'Unit';
-      return col;
-    }
-    if (col === 'Description') {
-      col = 'Description';
-      return col;
-    }
-    if (col === 'Part') {
-      col = 'Part';
-      return col;
-    }
-    if (col === 'Quantity Total') {
-      col = 'Quantity Total';
-      return col;
-    }
-    if (col === 'Location') {
-      return col;
-    }
-    if (col === 'Status') {
-      return col;
-    } else {
-      return false;
-    }
-  }
-
-  // colorCodeStations() {
-  //   this.colors = this.colorCodeService.createColorMapping(this.bom$, 'Station');
-  // }
 
   filterBom(val) {
     if (val !== '' && this.bom$) {
       this.processedBom = this.bom$.filter((row) => {
-        // return row[this.filterCol.nativeElement.value].toString().includes(val);
         return row[this.filterCol.nativeElement.value].toString().includes(val);
       });
     } else {

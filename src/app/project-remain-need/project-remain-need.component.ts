@@ -3,9 +3,9 @@ import { ThrowStmt, AstMemoryEfficientTransformer } from '@angular/compiler';
 import { RestService } from '../services/rest/rest.service';
 import { ConsumptionUploadComponent } from './consumption-upload/consumption-upload.component';
 import { Project } from '../projectModel';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import $ from 'jquery';
 import { ExportService } from '../services/export/export.service';
 
@@ -61,12 +61,17 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
         this.rpn = res;
         this.storageVal(26);
 
-        const sliceColumns = [
-          'Id', 'Description', 'Unit', 'Overall Need', 'MonNeed', 'Usage', 'Consumption', 'MinMax', 'Phase Out Date'
-        ];
-
-        this.displayedColumns = sliceColumns.slice(0, 3).concat(this.projects).concat(sliceColumns.slice(3));
-        console.log(this.displayedColumns);
+        this.displayedColumns = [
+          'Part',
+          'Description',
+          'Unit',
+          'Overall Need',
+          ...this.projects,
+          'MonNeed',
+          'Usage',
+          'Consumption',
+          'MinMax',
+          'Phase Out Date'];
         this.dataSource = new MatTableDataSource(this.processedRPN);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;

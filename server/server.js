@@ -201,7 +201,7 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
             const wagonSize = location ? location.WagonSize : 60;
             const rows = wagonSize / 10;
 
-            for (let i = 1; i <= part.LocationWagons; i++) {
+            for (let i = 1; i <= part['Location Wagons']; i++) {
                 for (let j = 1; j <= rows; j++) {
                     for (let k = 1; k <= wagonSize / rows; k++) {
                         const wagon = 'W' + i;
