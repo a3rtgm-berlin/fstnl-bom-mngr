@@ -25,18 +25,19 @@ export class CompareOrdersComponent implements OnInit, OnChanges {
 
   constructor(private restService: RestService, private activatedRoute: ActivatedRoute) {
 
-    this.activatedRoute.params.subscribe(param => {
-      if (param.id1 && param.id2) {
-        this.restService.compareLists(param.id1, param.id2);
+    // this.activatedRoute.params.subscribe(param => {
+    //   if (param.id1 && param.id2) {
+    //     this.restService.compareLists(param.id1, param.id2);
 
-        this.restService.movingFile.subscribe(res => {
-          this.movingFile(res);
-        });
-      }
-    });
+    //     this.restService.movingFile.subscribe(res => {
+    //       this.movingFile(res);
+    //     });
+    //   }
+    // });
   }
 
   ngOnInit() {
+    console.log(this.movingFile);
   }
 
   ngOnChanges(changes: SimpleChanges) {

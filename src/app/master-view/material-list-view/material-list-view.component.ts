@@ -18,11 +18,11 @@ export class MaterialListViewComponent implements OnInit, OnChanges {
 
   @ViewChild('tabsPanel', {static: false}) tabsPanel: ElementRef;
 
-  @Input() set master(master: Bom) {
+  @Input() set master(master: MasterBom) {
     this.master$ = master;
   }
 
-  get master(): Bom {
+  get master(): MasterBom {
     return this.master$;
   }
 

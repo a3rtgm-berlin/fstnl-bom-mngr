@@ -32,7 +32,7 @@
                 </ng-template>
                 <ng-template *ngIf="2 | role" [ngSwitchCase]="'Moving File'">
                     <app-compare-orders 
-                        [movingFile]="master$.movingFile ? master.movingFile : null">
+                        [movingFile]="master.movingFile ? master.movingFile : null">
                     </app-compare-orders>
                 </ng-template>
                 <ng-template *ngIf="2 | role" [ngSwitchCase]="'RPN'">

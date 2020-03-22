@@ -89,7 +89,7 @@ function consumption (req, res) {
                 const parts = JSON.parse(JSON.stringify(rpn.parts));
 
                 parts.forEach((part, i) => {
-                    const match = consumption.find(_part => _part.id === part.id);
+                    const match = consumption.find(_part => _part.Part === part.Part);
 
                     if (match) {
                         part.usage = parseFloat(match.usage);

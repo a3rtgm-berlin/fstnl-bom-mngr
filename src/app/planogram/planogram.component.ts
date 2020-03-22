@@ -76,7 +76,7 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   downloadPlanogram(): void {
-    this.exportService.xlsxFromJson(this.planogram.POG, `Planogram-${this.id}`, ['id']);
+    this.exportService.xlsxFromJson(this.planogram.planogram, `Planogram-${this.id}`, ['id']);
   }
 
   addSort(column, event) {

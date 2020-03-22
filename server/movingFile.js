@@ -16,22 +16,22 @@ module.exports = class MovingFile {
         this.lastBom = {
             id: sortedLists[0].id,
             json: JSON.parse(JSON.stringify(sortedLists[0].json))
-            // json: this.concatModulesAtStation(sortedLists[0].json)
+            // json: this.concatModulesAtLocation(sortedLists[0].json)
         };
         this.currentBom = {
             id: sortedLists[1].id,
             json: JSON.parse(JSON.stringify(sortedLists[1].json))
-            // json: this.concatModulesAtStation(sortedLists[1].json)
+            // json: this.concatModulesAtLocation(sortedLists[1].json)
         };
 
         this.setMeta();
     }
 
-    concatModulesAtStation(bom) {
+    concatModulesAtLocation(bom) {
         return bom.map(item => {
             bom.forEach((compItem, i) => {
                 if (!item.delete) {
-                    if (item.Station === compItem.Station && item.Material === compItem.Material && item.KatID !== compItem.KatID) {
+                    if (item.Location === compItem.Location && item.Part === compItem.Part) {
                         item[this.quantity] += compItem[this.quantity];
                         compItem.delete = true;
                     }
@@ -107,20 +107,20 @@ module.exports = class MovingFile {
         });
 
         $added.forEach((e, currentItem, s) => {
-            const $ancestor = Array.from($removed).find(oldItem => oldItem.Material === currentItem.Material);
+            const $ancestor = Array.from($removed).find(oldItem => oldItem.Part === currentItem.Part);
 
             if ($ancestor) {
                 $added.delete(currentItem);
                 $removed.delete($ancestor);
 
                 $ancestor.Status = "movedTo";
-                $ancestor.moved = currentItem.Station;
+                $ancestor.Moved = currentItem.Location;
                 this.currentBom.json.push($ancestor);
 
                 currentItem.Status = "movedFrom";
-                currentItem.moved = $ancestor.Station;
+                currentItem.Moved = $ancestor.Location;
 
-                movingMeta.moved += 1;
+                movingMeta.Moved += 1;
             } else {
                 currentItem.Status = 'added';
                 movingMeta.added += 1;
@@ -136,8 +136,8 @@ module.exports = class MovingFile {
         this.currentBom.json.forEach(item => {
             if (item.Status === "removed") {
                 if (!this.currentBom.json.find(currentItem => 
-                    currentItem.Material === item.Material && 
-                    currentItem.Station !== item.Station && 
+                    currentItem.Part === item.Part && 
+                    currentItem.Location !== item.Location && 
                     currentItem.Status !== "removed")) {
                         item.Status = "obsolete";
                         movingMeta.removed -= 1;

@@ -6,7 +6,7 @@
         </app-comparison-meta-view>
     </div>
     <div *ngIf="movingFile !== null" class="moving-file-container">
-        <app-comparison-list-view [bom]="movingFile.currentList.json"></app-comparison-list-view>
+        <app-comparison-list-view [bom]="movingFile.currentBom.json"></app-comparison-list-view>
     </div>
 </ng-container>
 <ng-template #elseTemplate>

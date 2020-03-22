@@ -68,7 +68,6 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
   ngOnChanges(changes: SimpleChanges) {
     this.bom$ = changes.bom.currentValue;
     this.processedBom = this.bom$;
-    console.log(this.bom);
   }
 
   filterBom(val) {
@@ -171,8 +170,7 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
   downloadBom(type) {
     this.exportService.xlsxFromJson(
       type === 'filtered' ? this.processedBom : this.bom,
-      type === 'filtered' ? this.id + '(filtered)' : this.id,
-      ['Kategorie', 'KatID']
+      type === 'filtered' ? this.id + '(filtered)' : this.id
     );
   }
 

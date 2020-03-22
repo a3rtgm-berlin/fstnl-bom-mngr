@@ -61,6 +61,7 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
         this.rpn = res;
         this.storageVal(26);
 
+        console.log(this.rpn);
         this.displayedColumns = [
           'Part',
           'Description',

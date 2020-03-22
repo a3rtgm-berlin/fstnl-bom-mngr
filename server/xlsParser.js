@@ -83,7 +83,7 @@ function consumptionParser(input) {
         // // Create new Worksheet from range
         const dataAsJson = XLSX.utils.sheet_to_json(ws, {range: newRange, raw: false})
             .map(part => ({
-                part: part['Cust Part #'],
+                Part: part['Cust Part #'],
                 usage: part['Usage']
             }));
     
