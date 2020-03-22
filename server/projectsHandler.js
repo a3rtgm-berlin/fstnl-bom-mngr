@@ -1,5 +1,5 @@
 const IncomingForm = require('../node_modules/formidable').IncomingForm;
-const Project = require("./models/project").ProjectModel;
+const Project = require("./models/project");
 
 const newProject = function(req, res, next) {
     let form = new IncomingForm();

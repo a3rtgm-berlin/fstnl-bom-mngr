@@ -1,7 +1,7 @@
-const MaterialList = require("./models/list").MaterialListModel;
-const Project = require("./models/project").ProjectModel;
-const ExcludeList = require("./models/excludeList");
-const ArbMatrix = require("./models/arbMatrix");
+const Bom = require("./models/bom");
+const Project = require("./models/project");
+const ExcludeList = require("./models/exclude");
+const ArbMatrix = require("./models/matrix");
 
 function updateSingleBom(bom, res) {
     Project.findOne({tag: bom.project}, (err, project) => {
@@ -11,7 +11,7 @@ function updateSingleBom(bom, res) {
         }
 
         bom.json.forEach((part) => {
-            part.Menge = part.MengeProZug * project.trainsCount;
+            part['Quantity Total'] = part['Quantity Per Train'] * project.trainsCount;
         });
         bom.save();
         res.json();
@@ -27,7 +27,7 @@ async function updatePartAmount(json, tag) {
             }
     
             json.forEach((part) => {
-                part.Menge = part.MengeProZug * project.trainsCount;
+                part['Quantity Total'] = part['Quantity Per Train'] * project.trainsCount;
             });
     
             res(json);
@@ -43,14 +43,14 @@ function updateExcludesAndMatrix(boms) {
             
             boms.forEach(async bom => {
                 bom.json = bom.json
-                    .filter(part => !exclude.exclude.includes(part.Material))
+                    .filter(part => !exclude.exclude.map(row => row.Part).includes(part.Part))
                     .map(part => {
-                        part.Station = this.mapMatrix(part.ArbPlatz, matrix.json);
-                        part.id = part.Station + part.Material;
+                        part.Location = this.mapMatrix(part.ArbPlatz, matrix.json);
+                        part['Location Index'] = part.Location + part.Part;
                         return part;
                     });
                 bom.json = await updatePartAmount(mergeDuplicates(bom.json), bom.project);
-                MaterialList.findOneAndUpdate({id: bom.id}, {json: bom.json, updated: new Date()}, (err) => {
+                Bom.findOneAndUpdate({id: bom.id}, {json: bom.json, updated: new Date()}, (err) => {
                     if (err) {
                         res.sendStatus(500);
                         console.err(err);
@@ -68,11 +68,12 @@ function updateExcludesAndMatrix(boms) {
     });
 }
 
-function mapMatrix(station, arbMatrix) {
-    if (!station) return "No Location";
-    if (!arbMatrix) return station;
+function mapMatrix(arbPlatz, arbMatrix) {
+    if (!arbPlatz) return "No Location";
+    if (!arbMatrix) return arbPlatz;
 
-    const map = arbMatrix.find((map) => map.ArbPlatz === station) ? arbMatrix.find((map) => map.ArbPlatz === station).Area : '!' + station;
+    const match = arbMatrix.find((map) => map.ArbPlatz === arbPlatz);
+    const map = match ? match.Location : '!' + arbPlatz;
 
     if (map === "Not Valid" || map === "(Leer)") return "No Location";
     return map;
@@ -84,10 +85,10 @@ function convertLocaleStringToNumber (x) {
 
 function mergeDuplicates(json) {
     return json.reduce((cleanJson, part) => {
-        match = cleanJson.find(_part => _part.id === part.id);
+        match = cleanJson.find(_part => _part['Location Index'] === part['Location Index']);
         if (match) {
-            match.Menge += part.Menge;
-            match.MengeProZug += part.MengeProZug;
+            match['Quantity Total'] += part['Quantity Total'];
+            match['Quantity Per Train'] += part['Quantity Per Train'];
             return cleanJson;
         } else {
             return [...cleanJson, part];

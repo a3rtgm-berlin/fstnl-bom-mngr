@@ -2,11 +2,10 @@ import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, View
 import { ThrowStmt, AstMemoryEfficientTransformer } from '@angular/compiler';
 import { RestService } from '../services/rest/rest.service';
 import { ConsumptionUploadComponent } from './consumption-upload/consumption-upload.component';
-import { MaterialList } from '../materialListModel';
 import { Project } from '../projectModel';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import $ from 'jquery';
 import { ExportService } from '../services/export/export.service';
 
@@ -24,22 +23,21 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
   processedRPN: any;
   thisCount: any;
   thisFilter: any;
-  displayedColumns:any[];
-  _rpn = {
+  displayedColumns: any[];
+  $rpn = {
     parts: [],
     hasConsumption: false
   };
-  
 
   public get rpn(): any {
-    return this._rpn;
+    return this.$rpn;
   }
   public set rpn(value: any) {
     value.parts.forEach(part => {
       part.phaseOutDate = part.phaseOutDate.length > 0 ?
         new Date(part.phaseOutDate).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'}) : '';
     });
-    this._rpn = value;
+    this.$rpn = value;
     this.processedRPN = value.parts;
   }
 
@@ -50,8 +48,8 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
   @Input() projects: any[] | null;
   @Input() id: string | null;
   @Output() created: EventEmitter<boolean> = new EventEmitter();
- 
-  
+
+
   dataSource = new MatTableDataSource();
   constructor( public restService: RestService, public exportService: ExportService) {
   }
@@ -63,14 +61,18 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
         this.rpn = res;
         this.storageVal(26);
 
-        const sliceColumns = [
-          'Id', 'Description', 'Unit', 'Overall Need', 'MonNeed', 'Usage', 'Consumption', 'MinMax', 'Phase Out Date'
-        ]
-
-
-        this.displayedColumns = sliceColumns.slice(0, 3).concat(this.projects).concat(sliceColumns.slice(3));
-
-        console.log(this.displayedColumns);
+        console.log(this.rpn);
+        this.displayedColumns = [
+          'Part',
+          'Description',
+          'Unit',
+          'Overall Need',
+          ...this.projects,
+          'MonNeed',
+          'Usage',
+          'Consumption',
+          'MinMax',
+          'Phase Out Date'];
         this.dataSource = new MatTableDataSource(this.processedRPN);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -86,19 +88,18 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(filterValue: string) {
-    
+
     this.dataSource = new MatTableDataSource(this.processedRPN);
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (filterValue !== '' && this.dataSource.filteredData.length >= 2) {
-      $("#filter2").addClass("active");
+      $('#filter2').addClass('active');
       this.thisFilter = this.dataSource.filteredData.length;
       this.dataSource = new MatTableDataSource(this.dataSource.filteredData);
       this.dataSource.paginator = this.paginator;
     } else {
-      
       this.thisFilter = this.dataSource.filteredData.length;
-      $("#filter2").removeClass("active");
+      $('#filter2').removeClass('active');
     }
   }
 
@@ -133,8 +134,8 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
     });
   }
 
-  viewVal(string) {
-    console.log(string);
+  viewVal(val: string) {
+    console.log(val);
   }
 
   scrollTop() {

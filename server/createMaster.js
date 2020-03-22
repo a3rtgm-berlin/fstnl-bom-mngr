@@ -1,27 +1,27 @@
-const MaterialList = require("./models/list").MaterialListModel;
+const Bom = require("./models/bom");
 const MasterBom = require('./models/masterBom');
-const Comparison = require('./compareLists');
-const ArbMatrix = require('./models/arbMatrix');
+const MovingFile = require('./movingFile');
+const ArbMatrix = require('./models/matrix');
 const Planogram = require('./models/planogram');
 
 
 const createMasterBom = function (req, res) {
     const id = req.params.id;
 
-    MaterialList.find({id: { $regex: id, $options: 'i' }}, async (err, lists) => {
+    Bom.find({id: { $regex: id, $options: 'i' }}, async (err, boms) => {
         if (err) {
             res.sendStatus(500);
             return console.error(err);
         }
 
         const newMaster = await combineLists(
-            lists.map((list) => list.json.map((mat) => {
-                mat.lists = [list.id];
+            boms.map((bom) => bom.json.map((mat) => {
+                mat.Boms = [bom.id];
                 return mat;
             })),
             id,
-            lists[0].date,
-            lists.map(list => list.project));
+            boms[0].date,
+            boms.map(list => list.project));
         const dbModel = new MasterBom(newMaster);
 
         MasterBom.findOne({id: {$lt: id}}).sort({id: -1}).exec(async (err, lastMaster) => {
@@ -31,16 +31,16 @@ const createMasterBom = function (req, res) {
             }
 
             if (lastMaster) {
-                // if (lastMaster.planogram) {
-                //     const mapping = await Planogram.find({id: lastMaster.id}).exec();
-                //     lastMaster.json = mapping || lastMaster.json;
-                // }
+                if (lastMaster.planogram) {
+                    const mapping = await Planogram.find({id: lastMaster.id}).exec();
+                    lastMaster.json = mapping || lastMaster.json;
+                }
                 if (lastMaster.id < id) {
                     let compare = new Promise((res, rej) => {
-                        res(new Comparison([dbModel, lastMaster]));
+                        res(new MovingFile([dbModel, lastMaster]));
                     });
-                    const comparison = await compare;
-                    dbModel.comparison = comparison;
+                    const movingFile = await compare;
+                    dbModel.movingFile = movingFile;
                 }
             }
 
@@ -56,14 +56,14 @@ const createMasterBom = function (req, res) {
     });
 };
 
-async function combineLists(lists, id, date, projectTags) {
-    var masterList = new Set([].concat(...lists));
+async function combineLists(boms, id, date, projectTags) {
+    var masterList = new Set([].concat(...boms));
 
     masterList.forEach((mat1, e1, i) => {
         masterList.forEach((mat2, e2, j) => {
-            if (mat1.Station === mat2.Station && mat1.Material === mat2.Material && mat1.lists[0] !== mat2.lists[0]) {
-                mat1.Menge += mat2.Menge;
-                mat1.lists.push(mat2.lists[0]);
+            if (mat1.Location === mat2.Location && mat1.Part === mat2.Part && mat1.Boms[0] !== mat2.Boms[0]) {
+                mat1['Quantity Total'] += mat2['Quantity Total'];
+                mat1.Boms.push(mat2.Boms[0]);
                 masterList.delete(mat2);
             }
         });
@@ -75,7 +75,7 @@ async function combineLists(lists, id, date, projectTags) {
         id: id,
         projects: projectTags,
         json: Array.from(masterList),
-        comparison: {},
+        movingFile: {},
         date: date,
         uploadDate: new Date(),
         rpn: false,
@@ -84,53 +84,45 @@ async function combineLists(lists, id, date, projectTags) {
 }
 
 async function calculateCarts(list) {
-    var stations, arbMatrix;
+    var locations, arbMatrix;
 
-    let promiseMatrix = new Promise((res, rej) => {
-        ArbMatrix.findOne({}, (err, data) => {
-            if (err) return console.error(err);
-    
-            res(data);
-        });
-    });
+    arbMatrix = await ArbMatrix.findOne({}).exec();
+    locations = Array.from(list).reduce((res, item) => {
+        const location = res.find(el => el.Location === item.Location);
 
-    arbMatrix = await promiseMatrix;
-    stations = Array.from(list).reduce((res, item) => {
-        const station = res.find(el => el.Station === item.Station);
-
-        if (station) {
-            station.parts += 1;
+        if (location) {
+            location.parts += 1;
             return res;
         } else {
-            const newStation = {
-                Station: item.Station,
+            const newLocation = {
+                Location: item.Location,
                 parts: 1,
-                carts: 1,
+                wagons: 1,
                 bins: 2
             }
-            return [...res, newStation];
+            return [...res, newLocation];
         }
     }, [])
-    stations.forEach(station => {
-        const stationFromMatrix = arbMatrix.json.find(stat => stat.Area === station.station);
-        const cartSize = stationFromMatrix ? stationFromMatrix.CartSize : 60;
+    locations.forEach(location => {
+        const locationFromMatrix = arbMatrix.json.find(stat => stat.Location === location.Location);
+        const wagonSize = locationFromMatrix ? locationFromMatrix.WagonSize : 60;
 
-        station.carts = Math.ceil(station.parts / cartSize);
-        station.bins = station.parts * 2;
+        location.wagons = Math.ceil(location.parts / wagonSize);
+        location.bins = location.parts * 2;
     });
 
     list.forEach((mat1, e1, i) => {
-        mat1.stationParts = null;
-        mat1.stationCarts = null;
-        mat1.stationBins = null;
+        mat1['Location Parts'] = null;
+        mat1['Location Wagons'] = null;
+        mat1['Location Bins'] = null;
 
-        if (mat1.station !== "No Location") {
-            const station = stations.find(station => station.Station === mat1.Station);
+        if (mat1.location !== "No Location") {
+            const location = locations.find(location => location.Location === mat1.Location);
 
-            if (station) {
-                mat1.stationParts = station.parts;
-                mat1.stationCarts = station.carts;
-                mat1.stationBins = station.bins;
+            if (location) {
+                mat1['Location Parts'] = location.parts;
+                mat1['Location Wagons'] = location.wagons;
+                mat1['Location Bins'] = location.bins;
             }
         }
     });

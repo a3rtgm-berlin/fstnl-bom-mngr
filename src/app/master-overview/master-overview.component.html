@@ -8,7 +8,7 @@
     </thead>
     <tr (click)="navigate($event)" [id]="master.id" *ngFor="let master of allMaster">
         <td>{{master.id}}</td>
-        <td>{{master.moving}}</td>
+        <td>{{master.movingFile}}</td>
         <td>{{master.date}}</td>
         <td>{{master.projects.join(', ')}}</td>
         <td *ngIf="1 | role">

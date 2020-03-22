@@ -1,4 +1,4 @@
-const mongoose = require("../../node_modules/mongoose");
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
@@ -10,7 +10,7 @@ const projectSchema = new Schema({
     description: String,
     trainsCount: Number,
     deadline: Date,
-    bomLists: [String],
+    boms: [String],
     multiBom: {
         type: Number,
         default: 0
@@ -27,9 +27,7 @@ const projectSchema = new Schema({
     created: Date
 
 }, {
-    collection: 'project-data'
+    collection: 'project'
 });
 
-const ProjectModel = mongoose.model('Project', projectSchema);
-
-module.exports = { ProjectModel, projectSchema };
+module.exports = mongoose.model('Project', projectSchema);

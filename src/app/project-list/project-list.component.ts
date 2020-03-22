@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MaterialList } from '../materialListModel';
+import { Bom } from '../bomModel';
 import { RestService } from '../services/rest/rest.service';
 
 @Component({
@@ -10,13 +10,12 @@ import { RestService } from '../services/rest/rest.service';
 })
 export class ProjectListComponent implements OnInit {
 
-  public materialLists: MaterialList[];
-  public selectedMaterialLists: Set<MaterialList> = new Set<MaterialList>();
+  public boms: Bom[];
+  public selectedBoms: Set<Bom> = new Set<Bom>();
 
   constructor(private restService: RestService, private router: Router) {
     this.restService.allMaster.subscribe(res => {
-      this.materialLists = res;
-      console.log(res);
+      this.boms = res;
     });
   }
 
@@ -24,16 +23,16 @@ export class ProjectListComponent implements OnInit {
     // this.restService.getAllMaster();
   }
 
-  setSelectedMaterialLists(event$) {
+  setSelectedBoms(event$) {
     if (event$.status) {
-      this.selectedMaterialLists.add(event$.materialList);
+      this.selectedBoms.add(event$.bom);
     } else {
-      this.selectedMaterialLists.delete(event$.materialList);
+      this.selectedBoms.delete(event$.bom);
     }
   }
 
   triggerCompareLists() {
-    const arr = Array.from(this.selectedMaterialLists);
+    const arr = Array.from(this.selectedBoms);
 
     this.router.navigate([`./app/lists/compare/${arr[0].id}/${arr[1].id}`]);
   }

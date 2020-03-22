@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
-import { MaterialList } from '../../materialListModel';
+import { Bom } from '../../bomModel';
 
 @Component({
   selector: 'app-material-lists-collection-view',
@@ -10,16 +10,16 @@ export class MaterialListsCollectionViewComponent implements OnInit, OnChanges {
 
   isSelected: boolean;
 
-  public materialList$: MaterialList;
+  public bom$: Bom;
 
-  @Output() public selectedMaterialList: EventEmitter<{materialList: MaterialList, status: boolean}> = new EventEmitter();
+  @Output() public selectedBom: EventEmitter<{bom: Bom, status: boolean}> = new EventEmitter();
 
-  @Input() set materialList(materialList: MaterialList) {
-    this.materialList$ = materialList;
+  @Input() set bom(bom: Bom) {
+    this.bom$ = bom;
   }
 
-  get materialLists(): MaterialList {
-    return this.materialList$;
+  get boms(): Bom {
+    return this.bom$;
   }
 
   constructor() { }
@@ -28,13 +28,13 @@ export class MaterialListsCollectionViewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.materialList = changes.materialList.currentValue;
+    this.bom = changes.bom.currentValue;
   }
 
   selectList() {
     this.isSelected = !this.isSelected;
-    this.selectedMaterialList.emit({
-      materialList: this.materialList$,
+    this.selectedBom.emit({
+      bom: this.bom$,
       status: this.isSelected
     });
   }

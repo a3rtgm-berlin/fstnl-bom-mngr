@@ -16,7 +16,8 @@
 
 <!-- NEW TABLE -->
 
-<div id="user_functions" stickyThing marginTop="0">
+<div #spacer></div>
+<div id="user_functions" [spacer]="spacer" stickyThing marginTop="0">
     <div class="filter">
         <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
         <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
@@ -28,17 +29,17 @@
 </div>
 
 <table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
-    <ng-container matColumnDef="Station" #boundaryStation>
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Station </th>
-        <td [ngStyle]="{'background': colors[element.Station]}" mat-cell *matCellDef="let element" > {{element.Station}} </td>
+    <ng-container matColumnDef="Location" #boundaryLocation>
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+        <td [ngStyle]="{'background': colors[element.Location]}" mat-cell *matCellDef="let element" > {{element.Location}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="Location Wagon">
+    <ng-container matColumnDef="Wagon">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Wagon </th>
         <td  class="wagon" mat-cell *matCellDef="let element" >
-            <ng-container *ngIf="element.Location; else noPos">
+            <ng-container *ngIf="element['Bin Location']; else noPos">
                 <ul>
-                    <li *ngFor="let pos of element.Location">{{pos[0]}}</li>
+                    <li *ngFor="let pos of element['Bin Location']">{{pos[0]}}</li>
                 </ul>
             </ng-container>
             <ng-template #noPos>
@@ -47,12 +48,12 @@
         </td>
     </ng-container>
 
-    <ng-container matColumnDef="Location Bin">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Bin-Location </th>
+    <ng-container matColumnDef="Bin">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Bin </th>
         <td class="bin" mat-cell *matCellDef="let element" >
-            <ng-container *ngIf="element.Location; else noPos">
+            <ng-container *ngIf="element['Bin Location']; else noPos">
                 <ul>
-                    <li *ngFor="let pos of element.Location">{{pos[1]}}</li>
+                    <li *ngFor="let pos of element['Bin Location']">{{pos[1]}}</li>
                 </ul>
             </ng-container>
             <ng-template #noPos>
@@ -61,29 +62,29 @@
         </td>
     </ng-container>
 
-    <ng-container matColumnDef="Location Count">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location Count </th>
-        <td mat-cell *matCellDef="let element" > {{element['Location Count']}} </td>
+    <ng-container matColumnDef="Bin Count">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Bin Count </th>
+        <td mat-cell *matCellDef="let element" > {{element['Bin Count']}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="Material">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part# </th>
-        <td mat-cell *matCellDef="let element" > {{element.Part || element.Material}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Objektkurztext">
+    <ng-container matColumnDef="Part">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part </th>
-        <td mat-cell *matCellDef="let element" > {{element.Objektkurztext}} </td>
+        <td mat-cell *matCellDef="let element" > {{element.Part}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="ME">
+    <ng-container matColumnDef="Description">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part </th>
+        <td mat-cell *matCellDef="let element" > {{element.Description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Unit">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> ME </th>
-        <td mat-cell *matCellDef="let element"> {{element.ME}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.Unit}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="Menge">
+    <ng-container matColumnDef="Quantity Total">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
-        <td mat-cell *matCellDef="let element"> {{element.Menge | localeNumber}} </td>
+        <td mat-cell *matCellDef="let element"> {{element['Quantity Total'] | localeNumber}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

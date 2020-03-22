@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ViewChild, Directive, AfterViewInit } from '@
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ModalService } from '../services/modal/modal.service';
 import { RestService } from '../services/rest/rest.service';
-import { Project } from '../projectModel';
 import { Month } from '../dateModel';
 import { Router } from '@angular/router';
 
@@ -27,7 +26,6 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
   public crossId: string;
   public state = '';
   public count: any;
-  public penisse: string;
   public crossIdCheck: string;
   public crossStateCheck: string;
 
@@ -87,8 +85,8 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
     if (this.allProjects) {
       this.allProjects.forEach((project) => {
-        if (project.bomLists.length > 0) {
-          const thisId = project.bomLists[0];
+        if (project.boms.length > 0) {
+          const thisId = project.boms[0];
           const thisId$ = thisId.substring(thisId.indexOf('-') + 1);
 
           if (thisId$.includes('-M')) {
@@ -128,8 +126,8 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
     if (this.allProjects && this.masterId) {
       this.allProjects.forEach((project) => {
-        if (project.bomLists.length > 0) {
-          const thisId = project.bomLists[0];
+        if (project.boms.length > 0) {
+          const thisId = project.boms[0];
           const thisId$ = thisId.substring(thisId.indexOf('-') + 1);
 
           if (thisId$.includes('-M')) {
@@ -141,22 +139,22 @@ export class ManageProjectsComponent implements OnInit, AfterViewInit {
 
           const masterDate = new Date(this.crossId);
           const projectDate =  new Date(this.crossStateCheck);
-          console.log(this.masterId);
-          if (projectDate < masterDate) {
-            project.state = " deprecated";
-          } else if (projectDate > masterDate) {
-            project.state += " ahead";
 
-            this.allProjects.forEach((project) => {
-              project.state += " sub";
+          if (projectDate < masterDate) {
+            project.state = ' deprecated';
+          } else if (projectDate > masterDate) {
+            project.state += ' ahead';
+
+            this.allProjects.forEach(($project) => {
+              $project.state += ' sub';
             });
 
           } else {
-            project.state += " sync";
+            project.state += ' sync';
           }
 
         } else {
-          project.state += " empty";
+          project.state += ' empty';
         }
 
       });
