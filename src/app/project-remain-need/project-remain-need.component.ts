@@ -78,7 +78,9 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
         this.thisFilter = this.dataSource.data.length;
       }
     });
+
     this.created.emit(true);
+    
   }
 
   ngAfterViewInit() {

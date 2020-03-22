@@ -52,6 +52,7 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
           } : {...part, Menge: 'Not On MasterBOM'};
         });
       }
+      
       this.dataSource = new MatTableDataSource(this.processedBom);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
