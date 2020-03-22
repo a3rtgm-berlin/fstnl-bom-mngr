@@ -30,10 +30,12 @@ const createMasterBom = function (req, res) {
                 return console.error(err);
             }
 
+            console.log(lastMaster.planogram);
             if (lastMaster) {
                 if (lastMaster.planogram) {
                     const mapping = await Planogram.find({id: lastMaster.id}).exec();
                     lastMaster.json = mapping || lastMaster.json;
+                    console.log(mapping[0]);
                 }
                 if (lastMaster.id < id) {
                     let compare = new Promise((res, rej) => {

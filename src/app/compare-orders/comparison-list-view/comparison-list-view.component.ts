@@ -46,8 +46,6 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
       this.dataSource.paginator = this.paginator;
       this.thisCount = this.dataSource.data.length;
       this.thisFilter = this.dataSource.data.length;
-
-      console.log(this.bom);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -55,44 +53,7 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     this.processedBom = this.bom$;
     this.cols = Object.keys(this.bom$[0]);
 
-    // this.mapFilters();
-
   }
-
-  // mapFilters() {
-  //   this.cols = this.cols.map((col) => ({
-  //      value: col,
-  //      name: this.mapColName(col),
-  //   }));
-
-  // }
-
-  // mapColName(col) {
-  //   if (col === "Unit") {
-  //     col = "Unit"
-  //     return col;
-  //   }
-  //   if (col === "Description"){
-  //     col = "Description"
-  //     return col;
-  //   }
-  //   if (col === "Part") {
-  //     col = "Part"
-  //     return col;
-  //   }
-  //   if (col === "Quantity Total") {
-  //     col = "Quantity Total"
-  //     return col;
-  //   }
-  //   if (col === "Location") {
-  //     return col;
-  //   }
-  //   if (col === "Status") {
-  //     return col;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   filterBom(val) {
     if (val !== '' && this.bom$) {

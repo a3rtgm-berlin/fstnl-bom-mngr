@@ -4,7 +4,7 @@
         <button class="csv dl" [ngClass]="{'disabled': !planogram}" (click)="downloadPlanogram()"><p>Download Planogram XLSX</p></button>
     </div>
     <div class="ftbuttons" id="sider" *ngIf="2 | role">
-        <div class="input-group">
+        <div class="input-group" [ngClass]="{'disabled': !planogram}">
             <app-planogram-upload [id]="id"></app-planogram-upload>
         </div>
     </div>
@@ -16,82 +16,93 @@
 
 <!-- NEW TABLE -->
 
-<div #spacer></div>
-<div id="user_functions" [spacer]="spacer" stickyThing marginTop="0">
-    <div class="filter">
-        <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
-        <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
-        <div class="loopbutton"></div>
-        <div class="marker"><span>{{thisFilter}} | {{thisCount}}</span></div>
+<ng-container *ngIf="planogram; else noPlanogram">
+    <div #spacer></div>
+    <div id="user_functions" [spacer]="spacer" stickyThing marginTop="0">
+        <div class="filter">
+            <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
+            <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
+            <div class="loopbutton"></div>
+            <div class="marker"><span>{{thisFilter}} | {{thisCount}}</span></div>
+        </div>
+        <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 50, 100, dataSource.data.length]" showFirstLastButtons></mat-paginator>
+        <div id="totopbutton"><div class="inner" (click)="scrollTop()"></div></div>
     </div>
-    <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 50, 100, dataSource.data.length]" showFirstLastButtons></mat-paginator>
-    <div id="totopbutton"><div class="inner" (click)="scrollTop()"></div></div>
-</div>
+    <table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
+        <ng-container matColumnDef="Location" #boundaryLocation>
+            <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+            <td [ngStyle]="{'background': colors[element.Location]}" mat-cell *matCellDef="let element" > {{element.Location}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Wagon">
+            <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Wagon </th>
+            <td  class="wagon" mat-cell *matCellDef="let element" >
+                <ng-container *ngIf="element['Bin Location']; else noPos">
+                    <ul>
+                        <li *ngFor="let pos of element['Bin Location']">{{pos[0]}}</li>
+                    </ul>
+                </ng-container>
+                <ng-template #noPos>
+                    -
+                </ng-template>
+            </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Bin">
+            <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Bin </th>
+            <td class="bin" mat-cell *matCellDef="let element" >
+                <ng-container *ngIf="element['Bin Location']; else noPos">
+                    <ul>
+                        <li *ngFor="let pos of element['Bin Location']">{{pos[1]}}</li>
+                    </ul>
+                </ng-container>
+                <ng-template #noPos>
+                    -
+                </ng-template>
+            </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Bin Count">
+            <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Bin Count </th>
+            <td mat-cell *matCellDef="let element" > {{element['Bin Count']}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Part">
+            <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part </th>
+            <td mat-cell *matCellDef="let element" > {{element.Part}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Description">
+            <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+            <td mat-cell *matCellDef="let element" > {{element.Description}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Unit">
+            <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> ME </th>
+            <td mat-cell *matCellDef="let element"> {{element.Unit}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Quantity Total">
+            <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
+            <td mat-cell *matCellDef="let element"> {{element['Quantity Total'] | localeNumber}} </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'not-on-bom': row.isNotOnBOM, 'not-on-pog': row.isNotOnPOG}"></tr>
+    
+       
+    </table>    
+</ng-container>
+<ng-template #noPlanogram>
+    <div class="d-flex flex-column single-list">
+        <div class="input-group mb-3">
+            <small class="form-text text-muted">
+                You have not created a Planogram for the current month.
+            </small>
+        </div>
+    </div>
+</ng-template>
 
-<table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
-    <ng-container matColumnDef="Location" #boundaryLocation>
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
-        <td [ngStyle]="{'background': colors[element.Location]}" mat-cell *matCellDef="let element" > {{element.Location}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Wagon">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Wagon </th>
-        <td  class="wagon" mat-cell *matCellDef="let element" >
-            <ng-container *ngIf="element['Bin Location']; else noPos">
-                <ul>
-                    <li *ngFor="let pos of element['Bin Location']">{{pos[0]}}</li>
-                </ul>
-            </ng-container>
-            <ng-template #noPos>
-                -
-            </ng-template>
-        </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Bin">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Bin </th>
-        <td class="bin" mat-cell *matCellDef="let element" >
-            <ng-container *ngIf="element['Bin Location']; else noPos">
-                <ul>
-                    <li *ngFor="let pos of element['Bin Location']">{{pos[1]}}</li>
-                </ul>
-            </ng-container>
-            <ng-template #noPos>
-                -
-            </ng-template>
-        </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Bin Count">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Bin Count </th>
-        <td mat-cell *matCellDef="let element" > {{element['Bin Count']}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Part">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part </th>
-        <td mat-cell *matCellDef="let element" > {{element.Part}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Description">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part </th>
-        <td mat-cell *matCellDef="let element" > {{element.Description}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Unit">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> ME </th>
-        <td mat-cell *matCellDef="let element"> {{element.Unit}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Quantity Total">
-        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
-        <td mat-cell *matCellDef="let element"> {{element['Quantity Total'] | localeNumber}} </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'not-on-bom': row.isNotOnBOM, 'not-on-pog': row.isNotOnPOG}"></tr>
-
-   
-</table>
 
 <!--OLD TABLE<table mat-table class="table table-sm" id="BOM">
     <thead class="thead-dark">

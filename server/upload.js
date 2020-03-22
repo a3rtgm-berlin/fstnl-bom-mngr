@@ -213,7 +213,7 @@ function planogram (req, res) {
                     MasterBom.findOneAndUpdate({id: id}, {planogram: true});
         
                     res.json();
-                    console.log(`Planogram ${id} created`);
+                    console.log(`Planogram ${id} uploaded`);
                 }
             });
         });
