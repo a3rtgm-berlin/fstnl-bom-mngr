@@ -65,39 +65,43 @@
     <ng-container matColumnDef="MonNeed">
         
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Monthly Need </th>
+        <td mat-cell *matCellDef="let element" >
         <ng-container  *ngIf="rpn.hasConsumption; else noCon">
-            <td mat-cell *matCellDef="let element" > {{element.monthlyCount | localeNumber}} </td>
+             {{element.monthlyCount | localeNumber}}
         </ng-container>
         <ng-template #noCon>
-            -
+            - 
         </ng-template>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="Usage">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Usage </th>
-        
-        <ng-container  *ngIf="rpn.hasConsumption; else noCon">
-            <td mat-cell *matCellDef="let element" > {{element.usage | localeNumber}} </td>
-        </ng-container>
-        
-        <ng-template #noCon>
-            -
-        </ng-template>
+        <td mat-cell *matCellDef="let element" >
+            <ng-container  *ngIf="rpn.hasConsumption; else noCon">
+                {{element.usage | localeNumber}}
+            </ng-container>
+            
+            <ng-template #noCon>
+                -
+            </ng-template>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="Consumption">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Over-/Under Consumption </th>
         
-        <ng-container  *ngIf="rpn.hasConsumption; else noCon">
-            <td mat-cell *matCellDef="let element" class="{{element.diff === 'No Refill' ? 'grey' : element.diff > 0 ? 'orange' : 'blue'}}" 
-                title="{{element.diff === 'No Refill' ? 'not delivered' : element.diff > 0 ? 'over consumption' : 'under consumption'}}">
-                    {{element.diff | localeNumber}}
-            </td>
-        </ng-container>
         
-        <ng-template #noCon>
-            -
-        </ng-template>
+        <td mat-cell *matCellDef="let element" class="{{element.diff === 'No Refill' ? 'grey' : element.diff > 0 ? 'orange' : 'blue'}}" 
+            title="{{element.diff === 'No Refill' ? 'not delivered' : element.diff > 0 ? 'over consumption' : 'under consumption'}}">
+            <ng-container  *ngIf="rpn.hasConsumption; else noCon">
+                    {{element.diff | localeNumber}}
+            </ng-container>
+            
+            <ng-template #noCon>
+                - 
+            </ng-template>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="MinMax">
@@ -107,7 +111,7 @@
                 {{element.min | localeNumber}} | {{element.max | localeNumber}}
             </ng-container>
             <ng-template #noVal>
-                -
+                 - 
             </ng-template>
         </td>
     </ng-container>
@@ -115,7 +119,7 @@
     <ng-container matColumnDef="Phase Out Date">
         <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Phase Out Date </th>
         <td mat-cell *matCellDef="let element"> {{element.phaseOutDate | localeNumber}} </td>
-    </ng-container>
+    </ng-container>-->
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
