@@ -1,11 +1,10 @@
 'use strict';
 
 const express = require('express');
-const config = require('./config');
 const cors = require('cors');
 const bodyParser = require("body-parser");
 // const mongoose = require("mongoose");
-const mongoose = require("../node_modules/mongoose");
+const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
@@ -23,17 +22,17 @@ const auth = require('./authorization');
 const verifcation = require('./models/verification');
 
 // Classes
-const Comparison = require('./compareLists');
+const MovingFile = require('./movingFile');
 const MultiBom = require('./multiBom');
 
 // DB Models
-const MaterialList = require("./models/list").MaterialListModel;
-const Project = require("./models/project").ProjectModel;
+const Bom = require("./models/bom");
+const Project = require("./models/project");
 const MasterBom = require('./models/masterBom');
-const User = require("./models/userModel").UserModel;
-const ExcludeList = require("./models/excludeList");
-const ArbMatrix = require("./models/arbMatrix");
-const RPN = require("./models/rpn").RPNModel;
+const User = require("./models/user");
+const ExcludeList = require("./models/exclude");
+const ArbMatrix = require("./models/matrix");
+const RPN = require("./models/rpn");
 const Planogram = require("./models/planogram");
 
 // Constants
@@ -75,8 +74,9 @@ app.use((req, res, next) => {
 });
 
 // Connect DB
-//  mongoose.connect('mongodb://test:test@91.250.112.78:27017/testDB', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
-mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/testDB', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+// mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+// mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/fstnl-bom-mngr', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
 // mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
 
 // Set server options
@@ -86,7 +86,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set routes
 app.get('/', (req, res) => {
-    res.send(200, "connected");
+    User.find((e, data) => {
+        console.log(data);
+    });
+    res.status(200).send("connected");
 });
 
 /**
@@ -192,34 +195,34 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
     const master = await MasterBom.findOne({id: id}).exec();
     const lastPlanogram = await Planogram.findOne({id: {$lt: id}}).sort({id: -1}).exec();
     
-    const pog = master.json.reduce((res, part) => {
-        if (!res.find(item => item.Station === part.Station)) {
-            const station = matrix.json.find(station => station.Area === part.Station);
-            const cartSize = station ? station.CartSize : 60;
-            const rows = cartSize / 10;
+    const planogram = master.json.reduce((res, part) => {
+        if (!res.find(item => item['Location'] === part['Location'])) {
+            const location = matrix.json.find(row => row['Location'] === part['Location']);
+            const wagonSize = location ? location.WagonSize : 60;
+            const rows = wagonSize / 10;
 
-            for (let i = 1; i <= part.stationCarts; i++) {
+            for (let i = 1; i <= part['Location Wagons']; i++) {
                 for (let j = 1; j <= rows; j++) {
-                    for (let k = 1; k <= cartSize / rows; k++) {
+                    for (let k = 1; k <= wagonSize / rows; k++) {
                         const wagon = 'W' + i;
                         const bin = j + '-' + k;
                         let oldPart;
                        
                         if (lastPlanogram) {
-                            oldPart = lastPlanogram.POG.find(bin => 
+                            oldPart = lastPlanogram.planogram.find(bin => 
                                 bin.Wagon === wagon,
                                 bin.Bin === bin,
-                                bin.Station === part.Station
+                                bin.Location === part.Location
                             );
                         }
 
                         res.push({
                             Wagon: 'W' + i,
                             Bin: j + '-' + k,
-                            Station: part.Station,
+                            Location: part.Location,
                             Part: oldPart ? oldPart.Part : '',
                             ROQ: oldPart ? oldPart.ROQ : '',
-                            isNotOnBom: ''
+                            isNotOnBOM: ''
                         })
                     }
                 }
@@ -230,18 +233,18 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
     }, []);
 
     const mapping = master.json.map(part => {
-        const oldPos = lastPlanogram ? lastPlanogram.mapping.find(p => p.id === part.id) : null;
+        const oldPos = lastPlanogram ? lastPlanogram.mapping.find(p => p['Location Index'] === part['Location Index']) : null;
         return {
-            Material: part.Material,
-            Station: part.Station,
-            id: part.id,
-            position: oldPos ? oldPos.position || [] : [],
+            Part: part.Part,
+            Location: part.Location,
+            'Location Index': part['Location Index'],
+            'Bin Location': oldPos ? oldPos['Bin Location'] || [] : [],
         }
     });
     
     Planogram.findOneAndUpdate({id: id}, {
         mapping: mapping,
-        POG: pog,
+        planogram: planogram,
         updated: new Date(),
     }, {
         upsert: true,
@@ -285,7 +288,7 @@ app.get('/api/master/rebuild/:id', (req, res) => auth.guard(req, res, (role) => 
             res.sendStatus(404);
             return console.error(err);
         }
-        MaterialList.find({id: { $regex: q, $options: 'i' }}, (err, boms) => {
+        Bom.find({id: { $regex: q, $options: 'i' }}, (err, boms) => {
             utils.updateExcludesAndMatrix(boms).then(success => {
                 if (success) {
                     createMaster(req, res);
@@ -334,7 +337,7 @@ app.get('/api/master/id', (req, res) => {
 /**
  * @description returns all created Master BOMs
  * @todo ... for a selected project?
- * @returns {[MaterialList]}
+ * @returns {Bom[]}
  */
 app.get('/api/master/all', (req, res) => auth.guard(req, res, () => {
     MasterBom.find((err, data) => {
@@ -344,7 +347,7 @@ app.get('/api/master/all', (req, res) => auth.guard(req, res, () => {
         }
         res.send(data.map(master => ({
             id: master.id,
-            moving: master.comparison ? master.comparison.meta.last : '-',
+            movingFile: master.movingFile ? master.movingFile.meta.last : '-',
             date: master.date,
             projects: master.projects
         })));
@@ -354,7 +357,7 @@ app.get('/api/master/all', (req, res) => auth.guard(req, res, () => {
 /**
  * @description returns one selected list by date
  * @todo ... and project
- * @returns {MaterialList}
+ * @returns {Bom}
  */
 app.get('/api/master/get/:id', (req, res) => auth.guard(req, res, () => {
     const q = req.params.id;
@@ -368,7 +371,7 @@ app.get('/api/master/get/:id', (req, res) => auth.guard(req, res, () => {
 /**
  * @description deletes a master by id
  * @todo ... and project
- * @returns {MaterialList}
+ * @returns {Bom}
  */
 app.delete('/api/master/delete/:id', (req, res) => auth.guard(req, res, (role) => {
     if (role > 1) return res.sendStatus(401);
@@ -387,10 +390,10 @@ app.delete('/api/master/delete/:id', (req, res) => auth.guard(req, res, (role) =
 /**
  * @description returns all uploaded BOM Lists
  * @todo ... for a selected project?
- * @returns {[MaterialList]}
+ * @returns {[Bom]}
  */
 app.get('/api/lists', (req, res) => auth.guard(req, res, () => {
-    MaterialList.find((err, data) => {
+    Bom.find((err, data) => {
         if (err) return console.error(err);
         res.send(data);
     });
@@ -399,12 +402,12 @@ app.get('/api/lists', (req, res) => auth.guard(req, res, () => {
 /**
  * @description returns one selected list by date
  * @todo ... and project
- * @returns {MaterialList}
+ * @returns {Bom}
  */
 app.get('/api/lists/:id', (req, res) => auth.guard(req, res, () => {
     const q = req.params.id;
 
-    MaterialList.findOne({id: q}, (err, data) => {
+    Bom.findOne({id: q}, (err, data) => {
         if (err) return console.error(err);
         res.send(data);
     });
@@ -421,12 +424,12 @@ app.delete('/api/lists/:id', (req, res) => auth.guard(req, res, (role) => {
     const q = req.params.id;
 
     if (q === 'delete-all') {
-        MaterialList.deleteMany({}, (err) => {
+        Bom.deleteMany({}, (err) => {
             if (err) return console.error(err);
             res.sendStatus(204);
         })
     } else {
-        MaterialList.findOneAndDelete({id: q}, (err) => {
+        Bom.findOneAndDelete({id: q}, (err) => {
             if (err) return console.error(err);
             console.log(q + ' deleted.');
     
@@ -434,7 +437,7 @@ app.delete('/api/lists/:id', (req, res) => auth.guard(req, res, (role) => {
                 if (err) return console.error(err);
                 
                 if (data) {
-                    data.bomLists = data.bomLists.filter(id => id !== q);
+                    data.boms = data.boms.filter(id => id !== q);
                     data.save();
                 }
             });
@@ -450,7 +453,7 @@ app.delete('/api/lists/:id', (req, res) => auth.guard(req, res, (role) => {
 app.get('/api/project/meta/:tag', (req, res) => auth.guard(req, res, () => {
     const q = req.params.tag;
 
-    MaterialList.find({project: q}, (err, boms) => {
+    Bom.find({project: q}, (err, boms) => {
         if (err) {
             res.sendStatus(500);
             return console.error(err);
@@ -474,7 +477,7 @@ app.get('/api/project/meta/:tag', (req, res) => auth.guard(req, res, () => {
 app.get('/api/lists/meta/:id', (req, res) => auth.guard(req, res, () => {
     const q = req.params.id;
 
-    MaterialList.findOne({id: q}, (err, bom) => {
+    Bom.findOne({id: q}, (err, bom) => {
         if (err) {
             res.sendStatus(500);
             return console.error(err);
@@ -497,7 +500,7 @@ app.get('/api/lists/meta/:id', (req, res) => auth.guard(req, res, () => {
 app.get('/api/lists/update/:id', (req, res) => auth.guard(req, res, (role) => {
     const q = req.params.id;
 
-    MaterialList.findOne({id: q}, (err, bom) => {
+    Bom.findOne({id: q}, (err, bom) => {
         if (err) {
             res.sendStatus(404);
             return console.error(err);
@@ -515,13 +518,13 @@ app.put('/api/lists/:id', (req, res, next) => {
     const q = req.params.id,
         body = req.body;
 
-    MaterialList.findOneAndUpdate({id: q}, req.body, (err) => {
+    Bom.findOneAndUpdate({id: q}, req.body, (err) => {
         res.send(200);
     });
 });
 
 app.post('/api/lists/multibom', (req, res) => {
-    MaterialList.find({id: {$in: req.body.lists}}, (err, data) => {
+    Bom.find({id: {$in: req.body.lists}}, (err, data) => {
         if (err) {
             res.send(503);
             return console.error(err);
@@ -529,24 +532,24 @@ app.post('/api/lists/multibom', (req, res) => {
 
         if (data) {
             const multiBom = new MultiBom(data);
-            const dbModel = new MaterialList(multiBom.list);
+            const dbModel = new Bom(multiBom.bom);
             dbModel.save((err) => {
                 if (err) {
                     console.error(err);
                     res.sendStatus(500);
                 }
         
-                Project.findOne({tag: multiBom.list.project}, (err, project) => {
+                Project.findOne({tag: multiBom.bom.project}, (err, project) => {
                     if (err) throw err;
                     if (project) {
-                        project.bomLists = project.bomLists.filter(id => !req.body.lists.includes(id));
-                        project.bomLists.push(multiBom.list.id);
+                        project.boms = project.boms.filter(id => !req.body.lists.includes(id));
+                        project.boms.push(multiBom.bom.id);
                         project.save();
                     }
                 });
             });
 
-            res.sendStatus(201);
+            res.status(201).send('updated');
         }
     });
 });
@@ -625,7 +628,7 @@ app.post('/api/users/authenticate', passport.authenticate('local', {
  * @description manually adds a list (not necessary?)
  */
 app.post('/api/lists', (req, res, next) => {
-    const dbModel = new MaterialList(data);
+    const dbModel = new Bom(data);
     
     res.send(201, dbModel);
 });
@@ -634,16 +637,16 @@ app.post('/api/lists', (req, res, next) => {
  * @description compares two lists from DB and returns the result
  * @param {string} id1
  * @param {string} id2
- * @returns {comparison}
+ * @returns {MovingFile}
  */
 app.get('/api/master/compare/:id1/:id2', (req, res, next) => {
     const q = req.params;
-    let comparison;
+    let movingFile;
 
     MasterBom.find({id: {$in: [q.id1, q.id2]}}, (err, data) => {
         if (err) return console.error(err);
-        comparison = new Comparison(data);
-        res.send(comparison);
+        movingFile = new MovingFile(data);
+        res.send(movingFile);
     });
 });
 
@@ -690,10 +693,6 @@ app.get('/api/projects/:tag', (req, res, next) => {
     });
 });
 
-app.get('/api/projects/:tag', (req, res) => auth.guard(req, res, () => {
-
-}));
-
 /**
  * @description deletes project by name including all its BOM files
  * @returns {void}
@@ -710,8 +709,8 @@ app.delete('/api/projects/:tag', (req, res, next) => {
         Project.findOne({tag: q}, (err, data) => {
             if (err) return console.error(err);
             if (data) {
-                data.bomLists.forEach((list) => {
-                    MaterialList.findOneAndDelete({id: list}, (err) => {
+                data.boms.forEach((list) => {
+                    Bom.findOneAndDelete({id: list}, (err) => {
                         if (err) return console.error(err);
                     });
                 });

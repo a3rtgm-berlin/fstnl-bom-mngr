@@ -1,4 +1,4 @@
-const mongoose = require("../../node_modules/mongoose");
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const arbMatrixSchema = new Schema({
@@ -13,7 +13,7 @@ const arbMatrixSchema = new Schema({
         default: new Date()
     }
 }, {
-    collection: 'matrix-data'
+    collection: 'matrix'
 });
 
 module.exports = mongoose.model('ArbMatrix', arbMatrixSchema);

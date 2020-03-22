@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RestService } from '../../services/rest/rest.service';
-import { User } from 'src/app/userModel';
+import { User } from '../../userModel';
 
 @Component({
   selector: 'app-createuser',
@@ -9,12 +9,12 @@ import { User } from 'src/app/userModel';
 })
 export class CreateuserComponent implements OnInit {
   userData: User = {
-    mail: "",
-    username: "",
-    password: "",
-    role: "",
+    mail: '',
+    username: '',
+    password: '',
+    role: '',
   };
-  
+
   constructor(public restService: RestService) { }
 
   ngOnInit() {

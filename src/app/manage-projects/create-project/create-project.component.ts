@@ -30,7 +30,7 @@ export class CreateProjectComponent implements OnInit {
       description,
       trainsCount,
       deadline,
-      bomLists: [],
+      boms: [],
       active: true,
       createdBy: 'dev',
       state: 'empty',

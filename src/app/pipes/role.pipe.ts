@@ -10,9 +10,9 @@ export class RolePipe implements PipeTransform {
 
   transform(val: number, single?): any {
     if (single) {
-      return parseInt(this.authService.user.role, 10) === val ? true : false;
+      return parseInt(this.authService.user.role, 10) === val;
     }
-    return parseInt(this.authService.user.role, 10) <= val ? true : false;
+    return parseInt(this.authService.user.role, 10) <= val;
   }
 
 }

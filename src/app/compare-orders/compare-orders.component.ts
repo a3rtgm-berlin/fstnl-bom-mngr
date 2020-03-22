@@ -11,32 +11,33 @@ import { LoaderService } from '../services/loader/loader.service';
 })
 export class CompareOrdersComponent implements OnInit, OnChanges {
 
-  @Input() set comparison(comparison: any) {
-    this.comparison$ = comparison;
+  @Input() set movingFile(movingFile: any) {
+    this.movingFile$ = movingFile;
   }
 
-  get comparison(): any {
-    return this.comparison$;
+  get movingFile(): any {
+    return this.movingFile$;
   }
 
-  public comparison$: any;
+  public movingFile$: any;
 
   private ids: string[2];
 
   constructor(private restService: RestService, private activatedRoute: ActivatedRoute) {
 
-    this.activatedRoute.params.subscribe(param => {
-      if (param.id1 && param.id2) {
-        this.restService.compareLists(param.id1, param.id2);
+    // this.activatedRoute.params.subscribe(param => {
+    //   if (param.id1 && param.id2) {
+    //     this.restService.compareLists(param.id1, param.id2);
 
-        this.restService.comparison.subscribe(res => {
-          this.comparison(res);
-        });
-      }
-    });
+    //     this.restService.movingFile.subscribe(res => {
+    //       this.movingFile(res);
+    //     });
+    //   }
+    // });
   }
 
   ngOnInit() {
+    console.log(this.movingFile);
   }
 
   ngOnChanges(changes: SimpleChanges) {

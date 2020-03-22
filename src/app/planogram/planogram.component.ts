@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit, Input, SimpleChanges, OnChanges, Output, EventEmitter, ViewChild } from '@angular/core';
 import { RestService } from '../services/rest/rest.service';
-import { ColorCodeService } from '../services/color-code/color-code.service';
 import { ExportService } from '../services/export/export.service';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -16,11 +15,11 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() id: string | undefined;
   @Input() public set bom(value: any) {
-    this._bom = value;
+    this.$bom = value;
     this.processedBom = value;
   }
   public get bom(): any {
-    return this._bom;
+    return this.$bom;
   }
   @Input() colors: any;
   @Output() created: EventEmitter<any> = new EventEmitter();
@@ -30,13 +29,22 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   planogram: any;
-  _bom: any;
+  $bom: any;
   processedBom: any;
   newSource: any;
   thisCount: any;
   thisFilter: any;
 
-  displayedColumns: string[] = ['Station', 'Location Wagon', 'Location Bin', 'Location Count', 'Material', 'Objektkurztext', 'ME', 'Menge'];
+  displayedColumns: string[] = [
+    'Location',
+    'Wagon',
+    'Bin',
+    'Bin Count',
+    'Part',
+    'Description',
+    'Unit',
+    'Quantity Total'
+  ];
   dataSource = new MatTableDataSource();
   constructor(public restService: RestService, public exportService: ExportService) {}
 
@@ -48,8 +56,8 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
         this.bom = this.planogram.mapping.map(part => {
           return !part.isNotOnBOM ? {
             ...part,
-            ...this.bom.find(item => part.id === item.id)
-          } : {...part, Menge: 'Not On MasterBOM'};
+            ...this.bom.find(item => part['Location Index'] === item['Location Index'])
+          } : {...part, ['Quantity Total']: 'Not On MasterBOM'};
         });
       }
       
@@ -58,7 +66,6 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
       this.dataSource.paginator = this.paginator;
       this.thisCount = this.dataSource.data.length;
       this.thisFilter = this.dataSource.data.length;
-      //console.log(this.processedBom.filter(x => x.isNotOnPOG));
     });
   }
 
@@ -70,27 +77,27 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   downloadPlanogram(): void {
-    this.exportService.xlsxFromJson(this.planogram.POG, `Planogram-${this.id}`, ['id']);
+    this.exportService.xlsxFromJson(this.planogram.planogram, `Planogram-${this.id}`, ['id']);
   }
 
-  addSort(column, event){
-    alert("Filter function will be added soon");
+  addSort(column, event) {
+    alert('Filter function will be added soon');
   }
 
   applyFilter(filterValue: string) {
-    
+
     this.dataSource = new MatTableDataSource(this.processedBom);
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (filterValue !== '' && this.dataSource.filteredData.length >= 2) {
-      $("#filter2").addClass("active");
+      $('#filter2').addClass('active');
       this.thisFilter = this.dataSource.filteredData.length;
       this.dataSource = new MatTableDataSource(this.dataSource.filteredData);
       this.dataSource.paginator = this.paginator;
     } else {
-      
+
       this.thisFilter = this.dataSource.filteredData.length;
-      $("#filter2").removeClass("active");
+      $('#filter2').removeClass('active');
     }
   }
 

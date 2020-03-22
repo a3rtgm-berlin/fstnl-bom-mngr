@@ -2,9 +2,9 @@ import { Component, OnInit, Input, OnChanges, EventEmitter, ViewChild, AfterView
 import $ from 'jquery';
 import { ColorCodeService } from '../services/color-code/color-code.service';
 import { ExportService } from '../services/export/export.service';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-masterlistview',
@@ -38,15 +38,22 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
     return this.bom$;
   }
 
-  
 
-  displayedColumns: string[] = ['Station', 'Material', 'Part', 'Unit', 'Projects', 'Menge', 'Station Carts', 'Station Bins'];
+
+  displayedColumns: string[] = [
+    'Location',
+    'Part',
+    'Description',
+    'Unit',
+    'Projects',
+    'Quantity Total',
+    'Location Wagons',
+    'Location Bins'
+  ];
   dataSource = new MatTableDataSource();
   constructor(public colorCodeService: ColorCodeService, public exportService: ExportService) { }
 
   ngOnInit() {
-    console.log(this.processedBom.lists);
-    
     this.dataSource = new MatTableDataSource(this.processedBom);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -61,55 +68,11 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
   ngOnChanges(changes: SimpleChanges) {
     this.bom$ = changes.bom.currentValue;
     this.processedBom = this.bom$;
-    this.cols = Object.keys(this.bom$[0]);
-    // this.colorCodeStations();
-    this.mapFilters();
   }
-
-  mapFilters() {
-    this.cols = this.cols.map((col) => ({
-       value: col,
-       //name: this.mapColName(col)
-       name: this.mapColName(col),
-    }));
-
-  }
-
-  mapColName(col) {
-    if (col === "ME") {
-      col = "Unit"
-      return col;
-    }
-    if (col === "Objektkurztext"){
-      col = "Part"
-      return col;
-    }
-    if (col === "id") {
-      col = "Part#"
-      return col;
-    }
-    if (col === "Menge") {
-      col = "Quantity"
-      return col;
-    }
-    if (col === "Station") {
-      return col;
-    }
-    if (col === "Status") {
-      return col;
-    } else {
-      return false;
-    }
-  }
-
-  // colorCodeStations() {
-  //   this.colors = this.colorCodeService.createColorMapping(this.bom$, 'Station');
-  // }
 
   filterBom(val) {
     if (val !== '' && this.bom$) {
       this.processedBom = this.bom$.filter((row) => {
-        // return row[this.filterCol.nativeElement.value].toString().includes(val);
         return row[this.filterCol.nativeElement.value].toString().includes(val);
       });
     } else {
@@ -170,26 +133,31 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
     const args = arguments;
 
     return (a, b) => {
-      const result = a[args[0]] < b[args[0]] ? -1 : a[args[0]] > b[args[0]] ? 1 : 0 || a[args[1]] < b[args[1]] ? -1 : a[args[1]] > b[args[1]] ? 1 : 0 || a[args[2]] < b[args[2]] ? -1 : a[args[2]] > b[args[2]] ? 1 : 0;
+      const result = a[args[0]] < b[args[0]] ? -1 :
+        a[args[0]] > b[args[0]] ? 1 : 0 ||
+        a[args[1]] < b[args[1]] ? -1 :
+        a[args[1]] > b[args[1]] ? 1 : 0 ||
+        a[args[2]] < b[args[2]] ? -1 :
+        a[args[2]] > b[args[2]] ? 1 : 0;
 
       return result;
-    }
+    };
   }
 
   applyFilter(filterValue: string) {
-    
+
     this.dataSource = new MatTableDataSource(this.processedBom);
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (filterValue !== '' && this.dataSource.filteredData.length >= 2) {
-      $("#filter2").addClass("active");
+      $('#filter2').addClass('active');
       this.thisFilter = this.dataSource.filteredData.length;
       this.dataSource = new MatTableDataSource(this.dataSource.filteredData);
       this.dataSource.paginator = this.paginator;
     } else {
-      
+
       this.thisFilter = this.dataSource.filteredData.length;
-      $("#filter2").removeClass("active");
+      $('#filter2').removeClass('active');
     }
   }
 
@@ -202,8 +170,7 @@ export class MasterlistviewComponent implements OnInit, OnChanges, AfterViewInit
   downloadBom(type) {
     this.exportService.xlsxFromJson(
       type === 'filtered' ? this.processedBom : this.bom,
-      type === 'filtered' ? this.id + '(filtered)' : this.id,
-      ['Kategorie', 'KatID']
+      type === 'filtered' ? this.id + '(filtered)' : this.id
     );
   }
 

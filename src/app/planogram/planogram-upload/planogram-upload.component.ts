@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UploadService } from 'src/app/services/upload/upload.service';
+import { UploadService } from '../../services/upload/upload.service';
 
 @Component({
   selector: 'app-planogram-upload',

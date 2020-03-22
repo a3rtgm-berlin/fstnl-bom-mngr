@@ -4,7 +4,6 @@ import { ExportService } from '../../services/export/export.service';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
-import { ColorCodeService } from 'src/app/services/color-code/color-code.service';
 
 @Component({
   selector: 'app-comparison-list-view',
@@ -16,7 +15,6 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
   public bom$: any;
   public processedBom: any;
   public sorted: any;
-  //public cols: string[] = [];
   public cols: any;
   public activeCols: any;
   thisCount: any;
@@ -27,7 +25,7 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @Output() selection: EventEmitter<any> = new EventEmitter();
-  
+
   @Input() id: string;
   @Input() set bom(bom) {
     this.bom$ = bom;
@@ -38,7 +36,7 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     return this.bom$;
   }
 
-  displayedColumns: string[] = ['Status' ,'Station', 'Material', 'Part', 'Unit', 'Quantity', 'Change'];
+  displayedColumns: string[] = ['Status', 'Location', 'Part', 'Description', 'Unit', 'Quantity Total', 'Change'];
   dataSource = new MatTableDataSource();
   constructor(public exportService: ExportService) {}
 
@@ -54,45 +52,7 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     this.bom$ = changes.bom.currentValue;
     this.processedBom = this.bom$;
     this.cols = Object.keys(this.bom$[0]);
-   
-    this.mapFilters();
 
-  }
-
-  mapFilters() {
-    this.cols = this.cols.map((col) => ({
-       value: col,
-       //name: this.mapColName(col)
-       name: this.mapColName(col),
-    }));
-
-  }
-
-  mapColName(col) {
-    if (col === "ME") {
-      col = "Unit"
-      return col;
-    }
-    if (col === "Objektkurztext"){
-      col = "Part"
-      return col;
-    }
-    if (col === "id") {
-      col = "Part#"
-      return col;
-    }
-    if (col === "Menge") {
-      col = "Quantity"
-      return col;
-    }
-    if (col === "Station") {
-      return col;
-    }
-    if (col === "Status") {
-      return col;
-    } else {
-      return false;
-    }
   }
 
   filterBom(val) {
@@ -155,12 +115,16 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
   }
 
   dynamicSort(...props) {
-    var args = arguments;
-  
-     return function (a,b) {
-      var result = a[args[0]] < b[args[0]] ? -1 : a[args[0]] > b[args[0]] ? 1 : 0 || a[args[1]] < b[args[1]] ? -1 : a[args[1]] > b[args[1]] ? 1 : 0 || a[args[2]] < b[args[2]] ? -1 : a[args[2]] > b[args[2]] ? 1 : 0;
-      return result;
-    }
+    const args = arguments;
+
+    return function (a, b) {
+      return a[args[0]] < b[args[0]] ? -1 :
+        a[args[0]] > b[args[0]] ? 1 : 0 ||
+        a[args[1]] < b[args[1]] ? -1 :
+        a[args[1]] > b[args[1]] ? 1 : 0 ||
+        a[args[2]] < b[args[2]] ? -1 :
+        a[args[2]] > b[args[2]] ? 1 : 0;
+    };
   }
 
   applyFilter(filterValue: string) {

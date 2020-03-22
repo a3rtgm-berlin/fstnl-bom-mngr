@@ -1,10 +1,10 @@
-const mongoose = require("../../node_modules/mongoose");
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const excludeListSchema = new Schema({
-    exclude: [String]
+    exclude: [Object]
 }, {
-    collection: 'exclude-data'
+    collection: 'exclude'
 });
 
 module.exports = mongoose.model('ExcludeList', excludeListSchema);

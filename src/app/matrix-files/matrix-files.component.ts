@@ -42,9 +42,7 @@ export class MatrixFilesComponent implements OnInit {
 
     this.restService.excludeList.subscribe(res => {
       if (res) {
-        this.excludeList = res.exclude.map(part => {
-          return {exclude: part};
-        });
+        this.excludeList = res.exclude;
       }
     });
     this.restService.arbMatrix.subscribe(res => {

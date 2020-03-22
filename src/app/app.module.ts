@@ -9,7 +9,7 @@ import { XlsLoaderComponent } from './xls-loader/xls-loader.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { CompareOrdersComponent } from './compare-orders/compare-orders.component';
 import { MasterViewComponent } from './master-view/master-view.component';
-import { QueryFormComponent } from './query-form/query-form.component';
+// import { QueryFormComponent } from './query-form/query-form.component';
 import { MaterialListViewComponent } from './master-view/material-list-view/material-list-view.component';
 import { MaterialListsCollectionViewComponent } from './project-list/material-lists-collection-view/material-lists-collection-view.component';
 import { ComparisonRowViewComponent } from './compare-orders/comparison-row-view/comparison-row-view.component';
@@ -19,7 +19,7 @@ import { ManageProjectsComponent } from './manage-projects/manage-projects.compo
 import { CreateProjectComponent } from './manage-projects/create-project/create-project.component';
 import { MatTableModule } from '@angular/material';
 import { MatSortModule } from '@angular/material';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { ModalService } from './services/modal/modal.service';
 import { DomService } from './services/dom/dom.service';
 import { MatrixFilesComponent } from './matrix-files/matrix-files.component';
@@ -57,7 +57,6 @@ import {AngularStickyThingsModule} from '@w11k/angular-sticky-things';
     MaterialListViewComponent,
     CompareOrdersComponent,
     MasterViewComponent,
-    QueryFormComponent,
     MaterialListsCollectionViewComponent,
     ComparisonRowViewComponent,
     ComparisonMetaViewComponent,

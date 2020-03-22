@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { ProjectSubSettingsComponent } from '../project-sub-settings/project-sub-settings.component';
 import { UpdateProjectComponent } from '../update-project/update-project.component';
-import { XlsLoaderComponent } from '../../xls-loader/xls-loader.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { RestService } from '../../services/rest/rest.service';
 import $ from 'jquery';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { BomMetaViewComponent } from 'src/app/bom-meta-view/bom-meta-view.component';
+import { AlertService } from '../../services/alert/alert.service';
+import { BomMetaViewComponent } from '../../bom-meta-view/bom-meta-view.component';
 
 @Component({
   selector: 'app-project-list-view',
@@ -20,7 +19,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   @ViewChild ('selectBom', {static: false}) selectBom: any;
 
   public project$: any;
-  bomList$: any;
+  boms$: any;
   totalDiff: any;
   modalController = true;
   multiBom: any;
@@ -40,7 +39,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   ngOnInit() {
     this.tglSwitch = 'overview';
-    this.bomList$ = this.project$.bomLists;
+    this.boms$ = this.project$.boms;
     this.setWeeks(this.project$.deadline);
 
     for (let i = 0; i < this.project$.multiBom; i++) {
@@ -56,20 +55,20 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
 
   ngOnChanges(changes: SimpleChanges) {
     this.project$ = changes.project.currentValue;
-    this.bomList$ = this.project$.bomLists;
+    this.boms$ = this.project$.boms;
     this.autoSelectMultiBom();
   }
 
   setSwitch(targ, evt) {
     this.tglSwitch = targ;
-    $(evt.target).addClass("active");
-    $(evt.target).siblings().removeClass("active");
+    $(evt.target).addClass('active');
+    $(evt.target).siblings().removeClass('active');
   }
 
   setWeeks(date) {
-    let date1 = new Date(date);
-    let date2 = new Date();
-    let diffInWeeks =(date2.getTime() - date1.getTime()) / 1000;
+    const date1 = new Date(date);
+    const date2 = new Date();
+    let diffInWeeks = (date2.getTime() - date1.getTime()) / 1000;
     diffInWeeks /= (60 * 60 * 24 * 7);
     this.totalDiff = Math.abs(Math.round(diffInWeeks));
   }
@@ -96,7 +95,7 @@ export class ProjectListViewComponent implements OnInit, OnChanges, AfterViewIni
   autoSelectMultiBom() {
     this.mltBmToMerge = [];
     ['A', ...this.mltBmArray].forEach(i => {
-      this.mltBmToMerge.push(this.bomList$.find(id => id.includes(i)));
+      this.mltBmToMerge.push(this.boms$.find(id => id.includes(i)));
     });
   }
 

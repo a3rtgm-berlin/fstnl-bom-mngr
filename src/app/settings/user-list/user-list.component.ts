@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { RestService } from '../../services/rest/rest.service';
 import { ModalService } from '../../services/modal/modal.service';
 import { DeleteUserComponent } from '../delete-user/delete-user.component';
-import { User } from 'src/app/userModel';
 
 @Component({
   selector: 'app-user-list',

@@ -1,33 +1,25 @@
 <div class="d-flex flex-column single-list">
     <ng-container *ngIf="2 | role">
+    <div class="meta-view">
         <label><strong>{{master$.id}}</strong> {{master$ ? "[ Masterlist loaded ]" : "[ Masterlist not found! ]"}}</label>
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary label">Master-List-ID</button>
-            <button type="button" class="btn btn-outline-secondary btn-block">{{master$ ? master.id : "-"}}</button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary label">Projects</button>
-            <button type="button" class="btn btn-outline-secondary btn-block">{{master$ ? master.projects.join(', ') : "-"}}</button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary label">Date</button>
-            <button type="button" class="btn btn-outline-secondary btn-block">{{master$ ? master.date : "-"}}</button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary label">Processed</button>
-            <button type="button" class="btn btn-outline-secondary btn-block">{{master$ ? master.uploadDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "-"}}</button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary label">RPN</button>
-            <button type="button" class="btn btn-outline-secondary btn-block">{{master$ ? master$.rpn : "-"}}</button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary label">Planogram</button>
-            <button type="button" class="btn btn-outline-secondary btn-block">{{master$ ? master$.planogram : "-"}}</button>
-        </div>
+        <table class="table table-sm">
+            <thead>
+                <th scope="col">Master-List-ID</th>
+                <th scope="col">Projects</th>
+                <th scope="col">Date</th>
+                <th scope="col">Processed</th>
+            </thead>
+            <tr>
+                <td>{{master$ ? master.id : "-"}}</td>
+                <td>{{master$ ? master.projects.join(', ') : "-"}}</td>
+                <td>{{master$ ? master.date : "-"}}</td>
+                <td>{{master$ ? master.uploadDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "-"}}</td>
+            </tr>
+        </table>
         <div class="btn-group tabspanel" #tabsPanel>
             <button *ngFor="let currentTab of tabs" class="btn {{currentTab === tab ? 'btn-primary' : 'btn-outline-primary'}}" (click)="selectTab($event, currentTab)">View {{currentTab}}</button>
         </div>
+    </div>
     </ng-container>
         <div class="btn-group xl">
             <div [ngSwitch]="tab">
@@ -40,7 +32,7 @@
                 </ng-template>
                 <ng-template *ngIf="2 | role" [ngSwitchCase]="'Moving File'">
                     <app-compare-orders 
-                        [comparison]="master$.comparison ? master.comparison : null">
+                        [movingFile]="master.movingFile ? master.movingFile : null">
                     </app-compare-orders>
                 </ng-template>
                 <ng-template *ngIf="2 | role" [ngSwitchCase]="'RPN'">

@@ -61,7 +61,7 @@ function excludeListParser(input) {
         // create JSON from sheet
         const dataAsJson = XLSX.utils.sheet_to_json(ws);
     
-        return dataAsJson.map(d => Object.values(d)[0].toString());
+        return dataAsJson;
 }
 
 function consumptionParser(input) {
@@ -83,7 +83,7 @@ function consumptionParser(input) {
         // // Create new Worksheet from range
         const dataAsJson = XLSX.utils.sheet_to_json(ws, {range: newRange, raw: false})
             .map(part => ({
-                id: part['Cust Part #'],
+                Part: part['Cust Part #'],
                 usage: part['Usage']
             }));
     
@@ -106,24 +106,24 @@ function planogramParser(input, id) {
                 if (!part.delete) {
                     if (part.Part && part.Part !== 'Empty') {
                         const map = {
-                            Location: [[part.Wagon, part.Bin]],
-                            id: part.Station + part.Part,
-                            'Location Count': 1,
-                            Station: part.Station,
+                            'Bin Location': [[part.Wagon, part.Bin]],
+                            'Location Index': part.Location + part.Part,
+                            'Bin Count': 1,
+                            Location: part.Location,
                             Part: part.Part,
                             isNotOnPOG: false
                         };
-                        const match = master ? master.json.find(item => item.id === map.id) : undefined;
-
+                        const match = master ? master.json.find(item => item['Location Index'] === map['Location Index']) : undefined;
+                        console.log(map, match, master.json.length);
                         map.isNotOnBOM = match ? false : true;
                         part.isNotOnBOM = match ? '' : 'x';
     
                         dataAsJson.forEach(_part => {
                             if (_part.Wagon !== part.Wagon && _part.Bin !== part.Bin) {
-                                if (_part.Station === part.Station && _part.Part === part.Part) {
+                                if (_part.Location === part.Location && _part.Part === part.Part) {
                                     _part.delete = true;
-                                    map.Location.push([_part.Wagon, _part.Bin]);
-                                    map['Location Count'] += 1;
+                                    map['Bin Location'].push([_part.Wagon, _part.Bin]);
+                                    map['Bin Count'] += 1;
                                 }
                             }
                         });
@@ -135,12 +135,12 @@ function planogramParser(input, id) {
 
             if (master) {
                 master.json.forEach(part => {
-                    if (!mapping.find(item => item.id === part.id)) {
+                    if (!mapping.find(item => item['Location Index'] === part['Location Index'])) {
                         mapping.push({
-                            Location: [],
-                            'Location Count': 'Not on POG',
-                            id: part.id,
-                            Station: part.Station,
+                            'Bin Location': [],
+                            'Bin Count': 'Not on Planogram',
+                            'Location Index': part['Location Index'],
+                            Location: part.Location,
                             Part: part.Part,
                             isNotOnPOG: true
                         });
@@ -150,10 +150,10 @@ function planogramParser(input, id) {
     
             res({
                 mapping: mapping,
-                POG: dataAsJson.map(item => ({
+                planogram: dataAsJson.map(item => ({
                     Wagon: item.Wagon,
                     Bin: item.Bin,
-                    Station: item.Station,
+                    Location: item.Location,
                     Part: item.Part,
                     ROQ: item.ROQ,
                     isNotOnBOM: item.isNotOnBOM

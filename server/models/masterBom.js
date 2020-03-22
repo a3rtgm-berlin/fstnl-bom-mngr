@@ -1,4 +1,4 @@
-const mongoose = require('../../node_modules/mongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const masterBomSchema = new Schema({
@@ -8,14 +8,14 @@ const masterBomSchema = new Schema({
         required: true,
         default: {}
     },
-    comparison: Object,
+    movingFile: Object,
     date: String,
     uploadDate: Date,
     projects: [String],
     rpn: Boolean,
     planogram: Boolean
 }, {
-    collection: 'master-bom'
+    collection: 'master'
 });
 
 

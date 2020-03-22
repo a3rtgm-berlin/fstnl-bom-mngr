@@ -1,12 +1,12 @@
-<ng-container *ngIf="materialLists; else elseTemplate">
+<ng-container *ngIf="boms; else elseTemplate">
         <div class="d-flex flex-column single-list">
             <label>List of all uploaded files</label>
             <small class="form-text text-muted"></small>
             <ul>
-                <li class="list-group list-group-flush" *ngFor="let materialList of materialLists">
+                <li class="list-group list-group-flush" *ngFor="let bom of boms">
                     <app-material-lists-collection-view 
-                        [materialList]="materialList" 
-                        (selectedMaterialList)="setSelectedMaterialLists($event)">
+                        [bom]="bom" 
+                        (selectedBoms)="setSelectedBoms($event)">
                     </app-material-lists-collection-view>
                 </li>
             </ul>
@@ -18,7 +18,7 @@
 <ng-template #elseTemplate>
     <div class="d-flex flex-column single-list">
         <div class="input-group mb-3">
-            <small class="form-text text-muted" *ngIf="!materialLists">There are no Lists stored in the database. Please upload a BOM-File first.</small>
+            <small class="form-text text-muted" *ngIf="!boms">There are no Lists stored in the database. Please upload a BOM-File first.</small>
         </div>
     </div>
 </ng-template>

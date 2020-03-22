@@ -1,4 +1,4 @@
-export interface MaterialList {
+export interface Bom {
     id: string;
     name: string;
     json: object;
@@ -6,5 +6,4 @@ export interface MaterialList {
     date: string;
     uploadDate: Date;
     projects: any;
-    comparison: any; 
   }
