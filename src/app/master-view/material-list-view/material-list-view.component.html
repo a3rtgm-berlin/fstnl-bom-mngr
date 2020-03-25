@@ -22,7 +22,7 @@
     </div>
     </ng-container>
         <div class="btn-group xl">
-            <div [ngSwitch]="tab">
+            <div [ngSwitch]="tab" class="tableholder">
                 <ng-template *ngIf="2 | role" [ngSwitchCase]="'MasterBOM'">
                     <app-masterlistview 
                         [bom]="master$.json ? master$.json : null"

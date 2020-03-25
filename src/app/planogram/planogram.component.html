@@ -16,7 +16,7 @@
 
 <!-- NEW TABLE -->
 
-<ng-container *ngIf="planogram; else noPlanogram">
+<ng-container>
     <div #spacer></div>
     <div id="user_functions" [spacer]="spacer" stickyThing marginTop="0">
         <div class="filter">
@@ -28,6 +28,8 @@
         <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 50, 100, dataSource.data.length]" showFirstLastButtons></mat-paginator>
         <div id="totopbutton"><div class="inner" (click)="scrollTop()"></div></div>
     </div>
+    
+<ng-container *ngIf="planogram; else noPlanogram">
     <table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
         <ng-container matColumnDef="Location" #boundaryLocation>
             <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
@@ -92,16 +94,18 @@
     
        
     </table>    
-</ng-container>
-<ng-template #noPlanogram>
-    <div class="d-flex flex-column single-list">
-        <div class="input-group mb-3">
-            <small class="form-text text-muted">
-                You have not created a Planogram for the current month.
-            </small>
+    </ng-container>
+    <ng-template #noPlanogram>
+        <div class="d-flex flex-column single-list">
+            <div class="input-group mb-3">
+                <small class="form-text text-muted">
+                    You have not created a Planogram for the current month.
+                </small>
+            </div>
         </div>
-    </div>
-</ng-template>
+    </ng-template>
+</ng-container>
+
 
 
 <!--OLD TABLE<table mat-table class="table table-sm" id="BOM">

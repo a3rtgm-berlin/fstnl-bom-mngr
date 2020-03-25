@@ -61,13 +61,19 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
         });
       }
       
-      this.dataSource = new MatTableDataSource(this.processedBom);
+      this.dataSource = new MatTableDataSource(this.bom);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.thisCount = this.dataSource.data.length;
       this.thisFilter = this.dataSource.data.length;
     });
   }
+
+  setDataSourceAttributes() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
