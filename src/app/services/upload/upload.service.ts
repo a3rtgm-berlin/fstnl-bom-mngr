@@ -30,7 +30,7 @@ export class UploadService {
         formData.append('suffix', suffix);
       }
 
-      const req = new HttpRequest('POST', `${url}/${service}`, formData, {
+      const req = new HttpRequest('POST', `${url}${service}`, formData, {
         reportProgress: true
       });
 
