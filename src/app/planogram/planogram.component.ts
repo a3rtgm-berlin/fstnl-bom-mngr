@@ -49,9 +49,10 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
   constructor(public restService: RestService, public exportService: ExportService) {}
 
   ngOnInit() {
-    this.restService.getPlanogram(this.id);
+    this.restService.getPlanogram();
     this.restService.planogram.subscribe(val => {
       this.planogram = val;
+      console.log(val);
       if (this.planogram) {
         this.bom = this.planogram.mapping.map(part => {
           return !part.isNotOnBOM ? {
@@ -60,7 +61,7 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
           } : {...part, ['Quantity Total']: 'Not On MasterBOM'};
         });
       }
-      
+
       this.dataSource = new MatTableDataSource(this.bom);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;

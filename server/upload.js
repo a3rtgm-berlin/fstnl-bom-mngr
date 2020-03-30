@@ -4,6 +4,7 @@ const fs = require('../node_modules/file-system');
 const path = require('../node_modules/path');
 const parser = require('./xlsParser');
 const csvHandler = require('./csvHandler');
+const MovingFile = require('./movingFile');
 // DB Models
 const Bom = require("./models/bom");
 const ArbMatrix = require('./models/matrix');
@@ -196,26 +197,88 @@ function planogram (req, res) {
         reader.addEventListener('load', async (evt) => {
             const view = new Uint8Array(reader.result);
             const planogram = await parser.planogramParser(reader.result, id);
-
-            Planogram.findOneAndUpdate({id: id}, {
+            const lastPlanogram = await Planogram.findOne({state: 'current'}).exec();
+            const dbModel = new Planogram({
+                state: 'current',
                 mapping: planogram.mapping,
                 planogram: planogram.planogram,
                 updated: new Date(),
-            }, {
-                upsert: true,
-                new: true,
-            }, (err, data) => {
+            });
+
+            dbModel.save((err) => {
                 if (err) {
                     res.sendStatus(500);
                     console.error(err);
                 }
-                else {
-                    MasterBom.findOneAndUpdate({id: id}, {planogram: true});
-        
-                    res.json();
-                    console.log(`Planogram ${id} uploaded`);
-                }
-            });
+
+                res.json();
+                console.log('planogram saved');
+
+                Planogram.findOneAndDelete({state: 'last'});
+                lastPlanogram.state = 'last';
+                lastPlanogram.save();
+                console.log('old planogram updated');
+
+                MasterBom.findOne({id: id}, async (err, master) => {
+                    if (err) {
+                        res.sendStatus(500);
+                        return console.error(err);
+                    }
+                    console.log('creating moving file');
+                    const compare = new Promise((res, rej) => {
+                        res(new MovingFile(master, {
+                            json: planogram.mapping.filter(p => !p.isNotOnPOG),
+                            id: `Planogram ${new Date()}`
+                        }));
+                    });
+                    const movingFile = await compare;
+ 
+                    master.movingFile = movingFile;
+                    master.save((err) => {
+                        if (err) {
+                            res.sendStatus(500);
+                            return console.error(err);
+                        }
+                        console.log(`Planogram ${id} uploaded, movingFile created`);
+                    });
+                });
+            })
+
+            // Planogram.findOneAndUpdate({state: id}, {
+            //     mapping: planogram.mapping,
+            //     planogram: planogram.planogram,
+            //     updated: new Date(),
+            // }, {
+            //     upsert: true,
+            //     new: true,
+            // }, (err, data) => {
+            //     if (err) {
+            //         res.sendStatus(500);
+            //         console.error(err);
+            //     }
+            //     else {
+            //         MasterBom.findOne({id: id}, (err, master) => {
+            //             if (err) {
+            //                 res.sendStatus(500);
+            //                 console.error(err);
+            //             }
+            //             new MovingFile(master, planogram.mapping)
+            //                 .then(movingFile => {
+            //                     // console.log(movingFile.)
+            //                     master.movingFile = movingFile;
+            //                     master.save((err) => {
+            //                         if (err) {
+            //                             res.sendStatus(500);
+            //                             return console.error(err);
+            //                         }
+            //                         res.json();
+            //                         console.log(`Planogram ${id} uploaded, movingFile created`);
+            //                     });
+            //                 })
+            //         });
+            //         // MasterBom.findOneAndUpdate({id: id}, {planogram: true});
+            //     }
+            // });
         });
     });
 
@@ -254,7 +317,6 @@ async function updateListId (list) {
         Bom.find({id: { $regex: `.*${list.id}.*`}}, (err, data) => {
             if (err) return console.error(err);
 
-            console.log(list.id);
             if (data && data.length > 0) {
                 list.id = list.id + '-' + data.length;
             }

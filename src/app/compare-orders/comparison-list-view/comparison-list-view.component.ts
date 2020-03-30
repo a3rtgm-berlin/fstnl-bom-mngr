@@ -36,16 +36,17 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
     return this.bom$;
   }
 
-  displayedColumns: string[] = ['Status', 'Location', 'Part', 'Description', 'Unit', 'Quantity Total', 'Change'];
+  displayedColumns: string[] = ['Status', 'Location', 'Part', 'Description', 'Unit', 'Quantity Total'];
   dataSource = new MatTableDataSource();
   constructor(public exportService: ExportService) {}
 
   ngOnInit() {
-      this.dataSource = new MatTableDataSource(this.processedBom);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.thisCount = this.dataSource.data.length;
-      this.thisFilter = this.dataSource.data.length;
+    console.log(this.processedBom);
+    this.dataSource = new MatTableDataSource(this.processedBom);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.thisCount = this.dataSource.data.length;
+    this.thisFilter = this.dataSource.data.length;
   }
 
   ngOnChanges(changes: SimpleChanges) {

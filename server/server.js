@@ -171,29 +171,31 @@ app.get('/api/rpn/:id', (req, res) => auth.guard(req, res, (role) => {
     });
 }));
 
-app.get('/api/planogram/:id/:type', (req, res) => auth.guard(req, res, () => {
-    const id = req.params.id;
+app.get('/api/planogram/:type', (req, res) => auth.guard(req, res, () => {
     const type = req.params.type;
 
-    Planogram.findOne({id: id}, (err, data) => {
-        if (err) {
-            res.status(500).send(err);
-            return console.error(err);
-        }
+    try {
+        Planogram.find().sort({updated: -1}).limit(1)
+            .then((data) => {
+                if (type !== 'all' && data) {
+                    return res.json(data[0][type]);
+                }
+        
+                return res.json(data[0]);
+            });
+    }
+    catch (err) {
+        res.status(500).send(err);
+        return console.error(err);
+    }
 
-        if (type !== 'all' && data) {
-            return res.json(data[type]);
-        }
-
-        return res.json(data);
-    });
 }));
 
 app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, async () => {
     const id = req.params.id;
     const matrix = await ArbMatrix.findOne({}).exec();
     const master = await MasterBom.findOne({id: id}).exec();
-    const lastPlanogram = await Planogram.findOne({id: {$lt: id}}).sort({id: -1}).exec();
+    const lastPlanogram = await Planogram.find().sort({updated: -1}).limit(1).exec()[0];
     
     const planogram = master.json.reduce((res, part) => {
         if (!res.find(item => item['Location'] === part['Location'])) {
@@ -209,10 +211,10 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
                         let oldPart;
                        
                         if (lastPlanogram) {
-                            oldPart = lastPlanogram.planogram.find(bin => 
-                                bin.Wagon === wagon,
-                                bin.Bin === bin,
-                                bin.Location === part.Location
+                            oldPart = lastPlanogram.planogram.find(oldBin => 
+                                oldBin.Wagon === wagon &&
+                                oldBin.Bin === bin &&
+                                oldBin.Location === part.Location
                             );
                         }
 
@@ -242,7 +244,8 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
         }
     });
     
-    Planogram.findOneAndUpdate({id: id}, {
+    Planogram.findOneAndUpdate({}, {
+        state: 'current',
         mapping: mapping,
         planogram: planogram,
         updated: new Date(),
@@ -257,6 +260,12 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
         else {
             master.planogram = true;
             master.save();
+            Planogram.findOneAndDelete({state: 'last'});
+
+            if (lastPlanogram) {
+                lastPlanogram.state = 'last';
+                lastPlanogram.save();
+            }
 
             res.status(201).json(data);
             console.log(`Planogram ${id} created`);
@@ -633,22 +642,22 @@ app.post('/api/lists', (req, res, next) => {
     res.send(201, dbModel);
 });
 
-/**
- * @description compares two lists from DB and returns the result
- * @param {string} id1
- * @param {string} id2
- * @returns {MovingFile}
- */
-app.get('/api/master/compare/:id1/:id2', (req, res, next) => {
-    const q = req.params;
-    let movingFile;
+// /**
+//  * @description compares two lists from DB and returns the result
+//  * @param {string} id1
+//  * @param {string} id2
+//  * @returns {MovingFile}
+//  */
+// app.get('/api/master/compare/:id1/:id2', (req, res, next) => {
+//     const q = req.params;
+//     let movingFile;
 
-    MasterBom.find({id: {$in: [q.id1, q.id2]}}, (err, data) => {
-        if (err) return console.error(err);
-        movingFile = new MovingFile(data);
-        res.send(movingFile);
-    });
-});
+//     MasterBom.find({id: {$in: [q.id1, q.id2]}}, (err, data) => {
+//         if (err) return console.error(err);
+//         movingFile = new MovingFile(data);
+//         res.send(movingFile);
+//     });
+// });
 
 /**
  * @description adds a project by form data

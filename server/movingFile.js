@@ -1,46 +1,49 @@
 module.exports = class MovingFile {
-    constructor(boms) {
+    constructor(Target, Source) {
         this.quantity = 'Quantity Total';
         this.comparators = [
             'Location',
             'Part',
         ];
 
-        const sortedLists = boms.sort((a, b) => {
-            var dateA = a.date.split('.');
-            var dateB = b.date.split('.');
-            var diff = new Date(dateA[2], dateA[1] - 1, dateA[0]) - new Date(dateB[2], dateB[1] - 1, dateB[0]);
-            return diff !== 0 ? diff : a.uploadDate - b.uploadDate;
-        });
+        // const sortedLists = boms.sort((a, b) => {
+        //     var dateA = a.date.split('.');
+        //     var dateB = b.date.split('.');
+        //     var diff = new Date(dateA[2], dateA[1] - 1, dateA[0]) - new Date(dateB[2], dateB[1] - 1, dateB[0]);
+        //     return diff !== 0 ? diff : a.uploadDate - b.uploadDate;
+        // });
+
+        console.log('creating POG', Source.id, Target.id);
+
+        console.log(Source.json.length, Target.json.length);
+        console.log(Source.json[12], Target.json[12]);
         
         this.lastBom = {
-            id: sortedLists[0].id,
-            json: JSON.parse(JSON.stringify(sortedLists[0].json))
-            // json: this.concatModulesAtLocation(sortedLists[0].json)
+            id: Source.id,
+            json: JSON.parse(JSON.stringify(Source.json))
         };
         this.currentBom = {
-            id: sortedLists[1].id,
-            json: JSON.parse(JSON.stringify(sortedLists[1].json))
-            // json: this.concatModulesAtLocation(sortedLists[1].json)
+            id: Target.id,
+            json: JSON.parse(JSON.stringify(Target.json))
         };
 
         this.setMeta();
     }
 
-    concatModulesAtLocation(bom) {
-        return bom.map(item => {
-            bom.forEach((compItem, i) => {
-                if (!item.delete) {
-                    if (item.Location === compItem.Location && item.Part === compItem.Part) {
-                        item[this.quantity] += compItem[this.quantity];
-                        compItem.delete = true;
-                    }
-                }
-            });
+    // concatModulesAtLocation(bom) {
+    //     return bom.map(item => {
+    //         bom.forEach((compItem, i) => {
+    //             if (!item.delete) {
+    //                 if (item['Location Index'] === compItem['Location Index']) {
+    //                     item[this.quantity] += compItem[this.quantity];
+    //                     compItem.delete = true;
+    //                 }
+    //             }
+    //         });
 
-            return item;
-        }).filter(item => !item.delete);
-    }
+    //         return item;
+    //     }).filter(item => !item.delete);
+    // }
 
     compareLists() {
         const $added = new Set();
@@ -55,56 +58,87 @@ module.exports = class MovingFile {
         };
 
         this.currentBom.json.forEach((currentItem) => {
-            let $ancestors = this.lastBom.json;
+            // let $ancestors = this.lastBom.json;
+            const ancestor = this.lastBom.json.find(oldItem => oldItem['Location Index'] === currentItem['Location Index']);
 
-            this.comparators.some((prop, i) => {
-                $ancestors = $ancestors.filter((oldItem) => {
-                    return oldItem[prop] === currentItem[prop];
-                });
+            if (ancestor) {
+                const diff = currentItem[this.quantity] - ancestor[this.quantity];
+                currentItem.Change = diff;
 
-                if ($ancestors.length > 0) {
-                    if (i >= this.comparators.length - 1) {
-                        const diff = currentItem[this.quantity] - $ancestors[0][this.quantity];
-
-                        currentItem.Change = diff;
-
-                        if (diff !== 0) {
-                            movingMeta.modified += 1;
-                            currentItem.Status = 'modified';
-                        }
-                        else {
-                            movingMeta.remain += 1;
-                            currentItem.Status = 'remain';
-                        }
-                    }
-                    return false;
-                } else {
-                    $added.add(currentItem);
-                    return true;
+                if (diff !== 0) {
+                    movingMeta.modified += 1;
+                    currentItem.Status = 'remain';
                 }
-            });
+                else {
+                    movingMeta.remain += 1;
+                    currentItem.Status = 'remain';
+                }
+            }
+            else {
+                $added.add(currentItem);
+            }
+
+            // this.comparators.some((prop, i) => {
+            //     $ancestors = $ancestors.filter((oldItem) => {
+            //         return oldItem[prop] === currentItem[prop];
+            //     });
+
+            //     if ($ancestors.length > 0) {
+            //         if (i >= this.comparators.length - 1) {
+            //             const diff = currentItem[this.quantity] - $ancestors[0][this.quantity];
+
+            //             currentItem.Change = diff;
+
+            //             if (diff !== 0) {
+            //                 movingMeta.modified += 1;
+            //                 currentItem.Status = 'remain';
+            //             }
+            //             else {
+            //                 movingMeta.remain += 1;
+            //                 currentItem.Status = 'remain';
+            //             }
+            //         }
+            //         return false;
+            //     } else {
+            //         $added.add(currentItem);
+            //         return true;
+            //     }
+            // });
         });
 
-        this.lastBom.json.forEach((oldItem) => {
-            const $successors = this.currentBom.json.filter((currentItem) => {
-                let remains = true;
+        this.lastBom.json.forEach(oldItem => {
+            const successor = this.currentBom.json.find(currentItem => oldItem['Location Index'] === currentItem['Location Index']);
 
-                this.comparators.some((prop) => {
-                    if (currentItem[prop] !== oldItem[prop]) {
-                        remains = false;
-                        return true;
-                    }
-                });
-
-                return remains;
-            });
-
-            if ($successors.length === 0) {
+            if (!successor) {
                 $removed.add(oldItem);
-            } else {
-                oldItem.Change = $successors[0][this.quantity] - oldItem[this.quantity];
+            }
+            else {
+                oldItem.Change = successor[this.quantity] - oldItem[this.quantity];
             }
         });
+
+        console.log('half time', this.currentBom.json.length, $added.size, $removed.size);
+
+        // this.lastBom.json.forEach((oldItem) => {
+        //     const $successors = this.currentBom.json.filter((currentItem) => {
+        //         let remains = true;
+
+        //         this.comparators.some((prop) => {
+        //             if (currentItem[prop] !== oldItem[prop]) {
+        //                 remains = false;
+        //                 return true;
+        //             }
+        //         });
+
+        //         return remains;
+        //     });
+
+        //     if ($successors.length === 0) {
+        //         $removed.add(oldItem);
+        //     } else {
+        //         oldItem.Change = $successors[0][this.quantity] - oldItem[this.quantity];
+        //     }
+        // });
 
         $added.forEach((e, currentItem, s) => {
             const $ancestor = Array.from($removed).find(oldItem => oldItem.Part === currentItem.Part);
@@ -127,6 +161,8 @@ module.exports = class MovingFile {
             }
         });
 
+        console.log($added.size, $removed.size);
+
         $removed.forEach((e, oldItem, s) => {
             oldItem.Status = "removed";
             movingMeta.removed += 1;
@@ -145,6 +181,8 @@ module.exports = class MovingFile {
                     }
             }
         });
+
+        console.log(this.currentBom.json.length);
 
         return movingMeta;
     }

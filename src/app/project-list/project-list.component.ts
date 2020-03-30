@@ -20,7 +20,6 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.restService.getAllMaster();
   }
 
   setSelectedBoms(event$) {
@@ -31,9 +30,9 @@ export class ProjectListComponent implements OnInit {
     }
   }
 
-  triggerCompareLists() {
-    const arr = Array.from(this.selectedBoms);
+  // triggerCompareLists() {
+  //   const arr = Array.from(this.selectedBoms);
 
-    this.router.navigate([`./app/lists/compare/${arr[0].id}/${arr[1].id}`]);
-  }
+  //   this.router.navigate([`./app/lists/compare/${arr[0].id}/${arr[1].id}`]);
+  // }
 }

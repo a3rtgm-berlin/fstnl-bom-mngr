@@ -6,10 +6,9 @@ import { Project } from '../../projectModel';
 import { User } from '../../userModel';
 import { MasterBom } from '../../masterBom';
 import { LoaderService } from '../loader/loader.service';
+import { environment } from './../../../environments/environment';
 
-// const url = 'http://localhost:8000/api/';
-// const url = 'http://91.250.112.78:49160/api/';
-const url = 'https://btbom.creative-collective.de/api/';
+const url = environment.api;
 
 @Injectable({
   providedIn: 'root'
@@ -175,14 +174,14 @@ export class RestService {
     });
   }
 
-  public async compareLists(id1: string, id2: string) {
-    this.loader.showLoader(true);
-    const observable = this.http.get(`${url}master/compare/${id1}/${id2}`);
-    const movingFile = await observable.toPromise();
+  // public async compareLists(id1: string, id2: string) {
+  //   this.loader.showLoader(true);
+  //   const observable = this.http.get(`${url}master/compare/${id1}/${id2}`);
+  //   const movingFile = await observable.toPromise();
 
-    this.setMovingFile(movingFile);
-    this.loader.hideLoader();
-  }
+  //   this.setMovingFile(movingFile);
+  //   this.loader.hideLoader();
+  // }
 
   public createProject(projectData: Project) {
     const formData: FormData = new FormData();
@@ -377,9 +376,9 @@ export class RestService {
     });
   }
 
-  public async getPlanogram(id: string, type = 'all') {
+  public async getPlanogram(type = 'all') {
     this.loader.showLoader();
-    const observable = this.http.get<any>(url + 'planogram/' + id + '/' + type);
+    const observable = this.http.get<any>(url + 'planogram/' + type);
 
     observable.subscribe(res => {
       const planogram = res;

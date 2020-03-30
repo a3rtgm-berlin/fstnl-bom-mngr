@@ -11,7 +11,7 @@
     </tr>
     <tr>
         <th scope="row">Previous</th>
-        <td colspan="4">MASTER-{{metaData$.last}}</td>
+        <td colspan="4">{{metaData$.last.includes('Planogram') ? metaData$.last : 'Master-' + metaData$.last}}</td>
     </tr>
     <!--<tr class="vert" scope="row">
         <div class="wrp">
