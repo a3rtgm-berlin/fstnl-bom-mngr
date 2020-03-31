@@ -74,10 +74,19 @@ app.use((req, res, next) => {
 });
 
 // Connect DB
-mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/testDB', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
-// mongoose.connect('mongodb://a3rtgm:a#AT.987652a@91.250.112.78:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
-// mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/fstnl-bom-mngr', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
-// mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+function connectDB() {
+    try {
+        // mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/testDB', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+        mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/fstnl-bom-mngr-2', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
+        // mongoose.connect('mongodb://localhost:27017/fstnl-bom-mngr', { useNewUrlParser: true, 'useFindAndModify': false, 'useUnifiedTopology': true });
+    }
+    catch (e) {
+        console.error(e);
+        console.log('Attempt to log into DB failed. Trying again');
+        connectDB();
+    }
+}
+connectDB();
 
 // Set server options
 app.use(cors(corsOptions));
@@ -196,7 +205,7 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
     const matrix = await ArbMatrix.findOne({}).exec();
     const master = await MasterBom.findOne({id: id}).exec();
     const lastPlanogram = await Planogram.find().sort({updated: -1}).limit(1).exec()[0];
-    
+    console.log('stuff retrieved');
     const planogram = master.json.reduce((res, part) => {
         if (!res.find(item => item['Location'] === part['Location'])) {
             const location = matrix.json.find(row => row['Location'] === part['Location']);
@@ -234,6 +243,7 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
         return res;
     }, []);
 
+    console.log('creating mapping');
     const mapping = master.json.map(part => {
         const oldPos = lastPlanogram ? lastPlanogram.mapping.find(p => p['Location Index'] === part['Location Index']) : null;
         return {
@@ -244,6 +254,7 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
         }
     });
     
+    console.log('saving');
     Planogram.findOneAndUpdate({}, {
         state: 'current',
         mapping: mapping,
