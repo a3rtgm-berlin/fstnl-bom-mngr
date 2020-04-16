@@ -152,8 +152,9 @@ export class ComparisonListViewComponent implements OnInit, OnChanges {
 
 
   downloadBom(type) {
+    console.log(this.processedBom);
     this.exportService.xlsxFromJson(
-      type === 'filtered' ? this.processedBom : this.bom,
+      type === 'filtered' ? this.processedBom : this.bom$,
       type === 'filtered' ? 'BOM-' + this.id + '(filtered)' : 'BOM-' + this.id
     );
   }

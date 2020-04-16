@@ -37,7 +37,7 @@ export class CompareOrdersComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log(this.movingFile);
+    console.log("this is what im looking for", this.movingFile);
   }
 
   ngOnChanges(changes: SimpleChanges) {
