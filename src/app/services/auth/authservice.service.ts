@@ -3,10 +3,9 @@ import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } fro
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from './../../../environments/environment';
 
-//const url = 'http://localhost:8000/api/';
-//const url = 'http://91.250.112.78:49160/api/';
-const url = 'https://btbom.creative-collective.de/api/';
+const url = environment.api;
 
 @Injectable({
   providedIn: 'root'

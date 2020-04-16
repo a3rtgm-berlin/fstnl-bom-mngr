@@ -30,16 +30,15 @@ const createMasterBom = function (req, res) {
                 return console.error(err);
             }
 
-            console.log(lastMaster.planogram);
             if (lastMaster) {
-                if (lastMaster.planogram) {
-                    const mapping = await Planogram.find({id: lastMaster.id}).exec();
-                    lastMaster.json = mapping || lastMaster.json;
-                    console.log(mapping[0]);
-                }
+                const planogram = await Planogram.find().sort({updated: -1}).limit(1).exec()[0];
+
                 if (lastMaster.id < id) {
                     let compare = new Promise((res, rej) => {
-                        res(new MovingFile([dbModel, lastMaster]));
+                        res(new MovingFile(dbModel, planogram ? {
+                            json: planogram.mapping.filter(p => !p.isNotOnPOG),
+                            id: `Planogram ${planogram.updated}`
+                        } : lastMaster));
                     });
                     const movingFile = await compare;
                     dbModel.movingFile = movingFile;

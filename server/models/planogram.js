@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const planogramSchema = new Schema({
-    id: String,
+    state: String,
     planogram: [Object],
     mapping: [Object],
     updated: Date,

@@ -4,10 +4,9 @@ import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 import { RestService } from '../rest/rest.service';
 import { LoaderService } from '../loader/loader.service';
+import { environment } from './../../../environments/environment';
 
-//const url = 'http://localhost:8000/api/upload';
-//const url = 'http://91.250.112.78:49160/api/';
-const url = 'https://btbom.creative-collective.de/api/upload/';
+const url = environment.api + 'upload/';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +47,8 @@ export class UploadService {
           if (service.includes('consumption')) {
             this.restService.getRPN(service.split('/')[1]);
           } else if (service.includes('planogram')) {
-            this.restService.getPlanogram(service.split('/')[1]);
+            this.restService.getPlanogram();
+            this.restService.getMasterById(service.split('/')[1]);
           } else {
             this.restService.getAllProjects();
           }

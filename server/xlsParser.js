@@ -114,7 +114,6 @@ function planogramParser(input, id) {
                             isNotOnPOG: false
                         };
                         const match = master ? master.json.find(item => item['Location Index'] === map['Location Index']) : undefined;
-                        console.log(map, match, master.json.length);
                         map.isNotOnBOM = match ? false : true;
                         part.isNotOnBOM = match ? '' : 'x';
     
@@ -142,7 +141,8 @@ function planogramParser(input, id) {
                             'Location Index': part['Location Index'],
                             Location: part.Location,
                             Part: part.Part,
-                            isNotOnPOG: true
+                            isNotOnPOG: true,
+                            isNotOnBOM: false
                         });
                     }
                 });
