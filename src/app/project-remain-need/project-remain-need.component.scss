@@ -27,10 +27,10 @@
                 height:65px;
                 font-size:70%;
                 color:whitesmoke;
-                background-color:$darkbrandblue;
+                background-color:#111;
                 border:none;
                 outline:none;
-                mix-blend-mode: color;
+                //mix-blend-mode: color;
 
                 p {
                     position:absolute;
@@ -51,7 +51,7 @@
                     background-repeat:no-repeat;
                     filter:invert(1);
                     opacity:0.25;
-                    z-index:-1;
+                    z-index:1;
                 }
             }
         }
@@ -64,10 +64,10 @@
         height:65px;
         font-size:70%;
         color:whitesmoke;
-        background-color:$darkbrandblue;
+        background-color:#111;
         border:none;
         outline:none;
-        mix-blend-mode: color;
+        //mix-blend-mode: color;
 
         p {
             position:absolute;
@@ -88,7 +88,7 @@
             background-repeat:no-repeat;
             filter:invert(1);
             opacity:0.25;
-            z-index:-1;
+            z-index:1;
         }
     }
 
