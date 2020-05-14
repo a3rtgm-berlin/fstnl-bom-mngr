@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, SimpleChanges, OnChanges, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { RestService } from '../services/rest/rest.service';
 import { ExportService } from '../services/export/export.service';
 import {MatSort} from '@angular/material/sort';
@@ -11,7 +11,7 @@ import $ from 'jquery';
   templateUrl: './planogram.component.html',
   styleUrls: ['./planogram.component.scss']
 })
-export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
+export class PlanogramComponent implements OnInit, AfterViewInit {
 
   @Input() id: string | undefined;
   @Input() public set bom(value: any) {
@@ -46,7 +46,7 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
     'Quantity Total'
   ];
   dataSource = new MatTableDataSource();
-  constructor(public restService: RestService, public exportService: ExportService) {}
+  constructor(public restService: RestService, public exportService: ExportService, public changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.restService.getPlanogram();
@@ -67,6 +67,8 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
       this.dataSource.paginator = this.paginator;
       this.thisCount = this.dataSource.data.length;
       this.thisFilter = this.dataSource.data.length;
+
+      this.changeDetectorRef.detectChanges();
     });
   }
 
@@ -78,9 +80,6 @@ export class PlanogramComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
   }
 
   downloadPlanogram(): void {

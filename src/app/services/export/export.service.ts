@@ -12,6 +12,8 @@ export class ExportService {
   xlsxFromJson(json: any, filename: string, exclude?: any[]) {
     let exportJson = JSON.parse(JSON.stringify(json));
 
+    console.log(json);
+
     if (!Array.isArray(exportJson)) {
       exportJson = Object.entries(exportJson)
         .map(pair => {
@@ -34,7 +36,9 @@ export class ExportService {
     for (const key in exportJson[0]) {
       if (Array.isArray(exportJson[0][key])) {
         exportJson.map(item => {
-          item[key] = item[key].join(', ');
+          if (item[key]) {
+            item[key] = item[key].join(', ');
+          }
 
           return item;
         });

@@ -1,7 +1,7 @@
-const IncomingForm = require('../node_modules/formidable').IncomingForm;
-const FileReader = require('../node_modules/filereader');
-const fs = require('../node_modules/file-system');
-const path = require('../node_modules/path');
+const IncomingForm = require('formidable').IncomingForm;
+const FileReader = require('filereader');
+const fs = require('file-system');
+const path = require('path');
 const parser = require('./xlsParser');
 const csvHandler = require('./csvHandler');
 const MovingFile = require('./movingFile');
@@ -204,7 +204,7 @@ function planogram (req, res) {
                 planogram: planogram.planogram,
                 updated: new Date(),
             });
-
+            
             dbModel.save((err) => {
                 if (err) {
                     res.sendStatus(500);
@@ -214,10 +214,17 @@ function planogram (req, res) {
                 res.json();
                 console.log('planogram saved');
 
-                Planogram.findOneAndDelete({state: 'last'});
-                lastPlanogram.state = 'last';
-                lastPlanogram.save();
-                console.log('old planogram updated');
+                Planogram.findOneAndDelete({state: 'last'}, (err, data) => {
+                    console.log('oldest planogram deleted');
+                    if (lastPlanogram) {
+                        lastPlanogram.state = 'last';
+                        lastPlanogram.save((err, data) => {
+                            console.log('old planogram updated');
+                        });
+                    }
+                });
+
+                console.log(id, dbModel.updated);
 
                 MasterBom.findOne({id: id}, async (err, master) => {
                     if (err) {
