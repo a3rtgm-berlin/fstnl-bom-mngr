@@ -31,8 +31,9 @@ const createMasterBom = function (req, res) {
             }
 
             if (lastMaster) {
-                const planogram = await Planogram.find().sort({updated: -1}).limit(1).exec()[0];
+                const planogram = await Planogram.findOne({state: 'current'}).exec();
 
+                // console.log(planogram.updated);
                 if (lastMaster.id < id) {
                     let compare = new Promise((res, rej) => {
                         res(new MovingFile(dbModel, planogram ? {

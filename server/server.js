@@ -204,7 +204,7 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
     const id = req.params.id;
     const matrix = await ArbMatrix.findOne({}).exec();
     const master = await MasterBom.findOne({id: id}).exec();
-    const lastPlanogram = await Planogram.find().sort({updated: -1}).limit(1).exec()[0];
+    const lastPlanogram = await Planogram.findOne({state: 'current'}).exec();
     console.log('stuff retrieved');
     const planogram = master.json.reduce((res, part) => {
         if (!res.find(item => item['Location'] === part['Location'])) {
@@ -271,12 +271,15 @@ app.get('/api/planogram/create/master/:id', (req, res) => auth.guard(req, res, a
         else {
             master.planogram = true;
             master.save();
-            Planogram.findOneAndDelete({state: 'last'});
-
-            if (lastPlanogram) {
-                lastPlanogram.state = 'last';
-                lastPlanogram.save();
-            }
+            Planogram.findOneAndDelete({state: 'last'}, (err, data) => {
+                console.log('oldest planogram deleted');
+                if (lastPlanogram) {
+                    lastPlanogram.state = 'last';
+                    lastPlanogram.save((err, data) => {
+                        console.log('old planogram updated');
+                    });
+                }
+            });
 
             res.status(201).json(data);
             console.log(`Planogram ${id} created`);
