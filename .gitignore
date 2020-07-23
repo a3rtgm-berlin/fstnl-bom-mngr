@@ -5,6 +5,7 @@ dev.sh
 
 # API (moved to another repo)
 /server
+/server/keys
 
 # compiled output
 /dist
