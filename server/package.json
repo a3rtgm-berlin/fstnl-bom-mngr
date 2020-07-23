@@ -4,7 +4,8 @@
   "description": "backend for ng-fstnl-bom-mngr",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "env NODE_ENV=production nodemon server.js",
+    "dev": "env NODE_ENV=development nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "nodemon --inspect server.js"
   },

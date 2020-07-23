@@ -36,10 +36,8 @@ const RPN = require("./models/rpn");
 const Planogram = require("./models/planogram");
 
 // Constants
-// const PORT = 8080;
-// const HOST = '0.0.0.0';
-const HOST = 'localhost';
-const PORT = 8000;
+const HOST = process.env.NODE_ENV === 'development' ? 'localhost' : '0.0.0.0';
+const PORT = process.env.NODE_ENV === 'development' ? 8000 : 8080;
 
 // App
 const app = express();
@@ -75,10 +73,14 @@ app.use((req, res, next) => {
 
 // Connect DB
 function connectDB() {
+    if (!process.env.DB_DATA) {;
+        return console.error('DB credentials are not defined! Please start the app using "env DB_DATA=<user:pwd>".');
+    }
     try {
-        // mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/fstnl-bom-mngr-2', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
-        mongoose.connect('mongodb://a3rtgm:a#AT.987652a@api.creative-collective.de:27017/fstnl-bom-mngr-test', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true })
+        mongoose.connect('mongodb://' + process.env.DB_DATA + '@api.creative-collective.de:27017/fstnl-bom-mngr-2', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true })
             .then(() => console.log('successfully connected to DB'));
+        // mongoose.connect('mongodb://' + process.env.DB_DATA + '@api.creative-collective.de:27017/fstnl-bom-mngr-test', { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true })
+        //     .then(() => console.log('successfully connected to DB'));
     }
     catch (e) {
         console.error(e);
