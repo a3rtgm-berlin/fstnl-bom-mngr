@@ -3,6 +3,9 @@
 # local run scripts
 dev.sh
 
+# API (moved to another repo)
+/server
+
 # compiled output
 /dist
 /tmp
