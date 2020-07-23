@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  api: 'https://btbom.creative-collective.de/api/'
-  // api: 'http://localhost:8000/api/'
+  // api: 'https://btbom.creative-collective.de/api/'
+  api: 'http://localhost:8000/api/'
 };
 
 /*

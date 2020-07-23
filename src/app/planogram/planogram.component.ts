@@ -68,7 +68,8 @@ export class PlanogramComponent implements OnInit, AfterViewInit {
       this.thisCount = this.dataSource.data.length;
       this.thisFilter = this.dataSource.data.length;
 
-      this.changeDetectorRef.detectChanges();
+      // Was genau macht das???
+      // this.changeDetectorRef.detectChanges();
     });
   }
 

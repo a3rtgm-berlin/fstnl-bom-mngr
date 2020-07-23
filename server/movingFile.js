@@ -30,21 +30,6 @@ module.exports = class MovingFile {
         this.setMeta();
     }
 
-    // concatModulesAtLocation(bom) {
-    //     return bom.map(item => {
-    //         bom.forEach((compItem, i) => {
-    //             if (!item.delete) {
-    //                 if (item['Location Index'] === compItem['Location Index']) {
-    //                     item[this.quantity] += compItem[this.quantity];
-    //                     compItem.delete = true;
-    //                 }
-    //             }
-    //         });
-
-    //         return item;
-    //     }).filter(item => !item.delete);
-    // }
-
     compareLists() {
         const $added = new Set();
         const $removed = new Set();
@@ -77,33 +62,6 @@ module.exports = class MovingFile {
             else {
                 $added.add(currentItem);
             }
-
-            // this.comparators.some((prop, i) => {
-            //     $ancestors = $ancestors.filter((oldItem) => {
-            //         return oldItem[prop] === currentItem[prop];
-            //     });
-
-            //     if ($ancestors.length > 0) {
-            //         if (i >= this.comparators.length - 1) {
-            //             const diff = currentItem[this.quantity] - $ancestors[0][this.quantity];
-
-            //             currentItem.Change = diff;
-
-            //             if (diff !== 0) {
-            //                 movingMeta.modified += 1;
-            //                 currentItem.Status = 'remain';
-            //             }
-            //             else {
-            //                 movingMeta.remain += 1;
-            //                 currentItem.Status = 'remain';
-            //             }
-            //         }
-            //         return false;
-            //     } else {
-            //         $added.add(currentItem);
-            //         return true;
-            //     }
-            // });
         });
 
         this.lastBom.json.forEach(oldItem => {
@@ -118,27 +76,6 @@ module.exports = class MovingFile {
         });
 
         console.log('half time', this.currentBom.json.length, $added.size, $removed.size);
-
-        // this.lastBom.json.forEach((oldItem) => {
-        //     const $successors = this.currentBom.json.filter((currentItem) => {
-        //         let remains = true;
-
-        //         this.comparators.some((prop) => {
-        //             if (currentItem[prop] !== oldItem[prop]) {
-        //                 remains = false;
-        //                 return true;
-        //             }
-        //         });
-
-        //         return remains;
-        //     });
-
-        //     if ($successors.length === 0) {
-        //         $removed.add(oldItem);
-        //     } else {
-        //         oldItem.Change = $successors[0][this.quantity] - oldItem[this.quantity];
-        //     }
-        // });
 
         $added.forEach((e, currentItem, s) => {
             const $ancestor = Array.from($removed).find(oldItem => oldItem.Part === currentItem.Part);
@@ -172,9 +109,10 @@ module.exports = class MovingFile {
         this.currentBom.json.forEach(item => {
             if (item.Status === "removed") {
                 if (!this.currentBom.json.find(currentItem => 
-                    currentItem.Part === item.Part && 
+                    currentItem.Part == item.Part && 
                     currentItem.Location !== item.Location && 
                     currentItem.Status !== "removed")) {
+                        // console.log(item.Part, item.Part == "500333601", typeof item.Part);
                         item.Status = "obsolete";
                         movingMeta.removed -= 1;
                         movingMeta.obsolete += 1;
