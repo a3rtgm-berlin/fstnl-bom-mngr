@@ -48,6 +48,7 @@ import { DeleteUserComponent } from './settings/delete-user/delete-user.componen
 import { RolePipe } from './pipes/role.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AngularStickyThingsModule} from '@w11k/angular-sticky-things';
+import { PercentPipe } from './pipes/percent.pipe';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import {AngularStickyThingsModule} from '@w11k/angular-sticky-things';
     PlanogramUploadComponent,
     DeleteUserComponent,
     RolePipe,
+    PercentPipe,
   ],
   entryComponents: [
     CreateProjectComponent,

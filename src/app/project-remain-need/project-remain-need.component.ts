@@ -67,6 +67,7 @@ export class ProjectRemainNeedComponent implements OnInit, AfterViewInit {
           'Description',
           'Unit',
           'Overall Need',
+          'Difference (last month)',
           ...this.projects,
           'MonNeed',
           'Usage',
