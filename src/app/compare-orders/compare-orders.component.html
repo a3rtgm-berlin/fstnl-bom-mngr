@@ -1,0 +1,21 @@
+<div class="d-flex flex-row moving-file">
+<ng-container *ngIf="movingFile; else elseTemplate">
+    <div class="meta-info">
+        <app-comparison-meta-view
+            [metaData]="movingFile.meta">
+        </app-comparison-meta-view>
+    </div>
+    <div *ngIf="movingFile !== null" class="moving-file-container">
+        <app-comparison-list-view [bom]="movingFile.currentBom.json"></app-comparison-list-view>
+    </div>
+</ng-container>
+<ng-template #elseTemplate>
+    <div class="d-flex flex-column single-list">
+        <div class="input-group mb-3">
+            <small class="form-text text-muted">
+                There is no Moving File for the current Month available.
+            </small>
+        </div>
+    </div>
+</ng-template>
+</div>

@@ -1,0 +1,244 @@
+#modal-container {
+    position:  fixed;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+    width: 40vw;
+    min-width:300px;
+    max-width:500px;
+    background:transparent;
+    text-align: center;
+    z-index: 999999;
+    //pointer-events: none;
+
+    .modalparts {
+
+        .dialog {
+
+            .modal-content {
+                background:transparent;
+                border:none;
+
+                .modal-header {
+                    background:transparent;
+
+                    h5 {
+                        text-align:left;
+                        width:100%;
+                        color:#222;
+                        font-size:120%;
+                        font-weight:700;
+                    }
+
+                    button {
+                        position:absolute;
+                        right:5px;
+                        top:5px;
+                        border:2px solid #222;
+                        width:30px;
+                        height:30px;
+                        background-size:15px;
+                        background-position:center;
+                        background-repeat: no-repeat;
+                        filter:grayscale(0);
+
+                        &:hover {
+                            background-color:#222;
+                        }
+
+                        span {
+                            display:none;
+                        }
+                    }
+                }
+
+                .modal-body {
+                    form {
+                        .input-group {
+                            width:100%;
+                            margin:3px auto;
+
+                            .input-group-prepend, .input-group-append {
+                                border:none;
+                                flex:1 0 100%;
+                                margin-bottom:3px;
+
+                                span {
+                                    text-align:left;
+                                    color:#444;
+                                    font-size:70%;
+                                    font-weight:500;
+                                }
+                            }
+
+                            input {
+                                background:transparent;
+                                border-bottom:1px solid #222;
+                                box-shadow:none;
+                                color:#222;
+                                font-weight:700;
+
+                                &::placeholder {
+                                    color:#888;
+                                    font-weight:300;
+                                }
+                            }
+
+                            .custom-file {
+                                input {
+                                    &:hover {
+                                        cursor:pointer;
+                                        transform:scale(1.02);
+                                    }
+                                }
+
+                                label {
+                                    border-radius:0px;
+                                    border:1px solid #222;
+
+                                    &:after {
+                                        border-radius:0px;
+                                        background:#222;
+                                        color:whitesmoke;
+                                        font-size:80%;
+                                        font-weight:500;
+                                        height:100%;
+                                        line-height:1.75;
+                                    }
+                                }
+                            }
+
+                            textarea {
+                                border-bottom:1px solid #222;
+                                box-shadow:none;
+                            }
+                        }
+                    }
+
+                }
+
+                .modal-footer {
+                    border:none;
+                    justify-content:center;
+
+                    .btn-primary {
+                        order:1;
+                        background:transparent;
+                        border:2px solid $brandblue;
+                        color:$brandblue;
+                        padding-left:40px;
+                        padding-right:40px;
+                        margin:0px 8px;
+
+                        &:hover {
+                            background:$brandblue;
+                            color:whitesmoke;
+                        }
+                    }
+
+                    .btn-outline-primary {
+                        order:1;
+                        background:transparent;
+                        border:2px solid $brandblue;
+                        color:$brandblue;
+                        padding-left:40px;
+                        padding-right:40px;
+                        border-radius:0px;
+
+                        &:hover {
+                            background:$brandblue;
+                            color:whitesmoke;
+                            @include outershadow;
+                        }
+                    }
+
+                    .btn-secondary {
+                        order:2;
+                        background:transparent;
+                        border:2px solid $red;
+                        color:$red;
+                        padding-left:40px;
+                        padding-right:40px;
+                        margin:0px 10px;
+                        margin:0px 8px;
+
+                        &:hover {
+                            background:$red;
+                            color:whitesmoke;
+                        }
+                    }
+
+                    .btn-outline-secondary {
+                        order:2;
+                        background:transparent;
+                        border:2px solid $darkbrandblue;
+                        color:$darkbrandblue;
+                        padding-left:40px;
+                        padding-right:40px;
+                        border-radius:0px;
+                        margin:0px 8px;
+
+                        &:hover {
+                            background:$darkbrandblue;
+                            color:whitesmoke;
+                            @include outershadow;
+                        }
+                    }
+                }
+            }
+
+            .modal-footer {
+                border:none;
+                justify-content:center;
+
+                .btn-primary {
+                    order:1;
+                    background:transparent;
+                    border:2px solid $brandblue;
+                    color:$brandblue;
+                    padding-left:40px;
+                    padding-right:40px;
+                    margin:0px 8px;
+                    border-radius:0px;
+
+                    &:hover {
+                        background:$brandblue;
+                        color:whitesmoke;
+                    }
+                }
+
+                .btn-secondary {
+                    order:2;
+                    background:transparent;
+                    border:2px solid $red;
+                    color:$red;
+                    padding-left:40px;
+                    padding-right:40px;
+                    margin:0px 8px;
+                    border-radius:0px;
+
+                    &:hover {
+                        background:$red;
+                        color:whitesmoke;
+                    }
+                }
+
+                .btn-delete {
+                    order:3;
+                    background:transparent;
+                    border:2px solid $darkred;
+                    color:$darkred;
+                    padding-left:40px;
+                    padding-right:40px;
+                    margin:0px 8px;
+                    border-radius:0px;
+
+                    &:hover {
+                        background:$darkred;
+                        color:whitesmoke;
+                    }
+                }
+            }
+        }
+    }
+}

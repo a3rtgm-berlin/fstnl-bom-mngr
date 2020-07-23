@@ -1,11 +1,13 @@
 <form class="upload" (ngSubmit)="onSubmit(upload.value)">
     <div class="input-group">
         <div class="custom-file">
-            <input #upload type="file" class="custom-file-input" id="inputGroupFile04" (change)="onChange($event)" accept="text/csv, text/xls, text/xlsx">
-            <label class="custom-file-label" for="inputGroupFile04">{{file ? file.name : 'Choose File' }}</label>
+            <input #upload type="file" class="custom-file-input" id="inputGroupFile04" (change)="onChange($event)">
+            <!--accept="text/csv, text/xls, text/xlsx"-->
+            <label class="custom-file-label" for="inputGroupFile04">{{files ? files.length > 0? files[0].name : 'Upload BOM File' : 'Upload BOM File' }}</label>
         </div>
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" (click)="onSubmit()">Submit</button>
+       <!-- <input type="text" class="form-control" #projectname (change)="projectTag(projectname.value.toUpperCase())" /> -->
+        <div [class]="upload.value !== '' ? 'active input-group-append' : 'notActive input-group-append'">
+            <button class="btn btn-outline-secondary" type="button" (click)="onSubmit(upload.value)">Upload</button>
         </div>
     </div>
 </form>

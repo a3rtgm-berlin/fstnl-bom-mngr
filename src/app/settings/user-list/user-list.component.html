@@ -1,0 +1,13 @@
+<div id="userlist">
+    <h3>Existing Users</h3>
+    <ul class="allusers">
+        <li class="user" *ngFor="let user of allusers">
+            <ng-container *ngIf="user.role != 0">
+                <p>{{user.username}}</p>
+                <p>{{user.mail}}</p>
+                <p>{{user.role}}</p>
+                <button *ngIf="1 | role" class="deleteuser" (click)="deleteUser(user.username)">Delete User</button>
+            </ng-container>
+        </li>
+    </ul>
+</div>

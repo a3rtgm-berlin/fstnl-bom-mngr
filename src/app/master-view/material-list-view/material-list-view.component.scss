@@ -1,0 +1,158 @@
+@import "../../../variables";
+
+:host {
+    display:block;
+    position:relative;
+    width:100%;
+    max-width:1192px;
+    margin:5px auto;
+
+    .single-list {
+        @include flex-standard;
+        align-items:flex-start;
+        width:100%;
+
+        .meta-view {
+            width:100%;
+
+            thead {
+                th {
+                    font-size: 90%;
+                    font-weight: 700;
+                    color: #003b69;
+                }
+            }
+
+            tr {
+                td {
+                    border-radius: 0px;
+                    color: #888;
+                    font-weight: 400;
+                }
+            }
+        }
+
+        label {
+            display:none;
+            background:white;
+            padding:10px 20px;
+            margin:5px 0px 5px 0px;
+            font-size:60%;
+            color:#aaa;
+            @include outershadow;
+
+            strong {
+                color:$brandorange;
+                font-size:150%;
+                margin-right:5px;
+            }
+        }
+
+        .btn-group {
+            border-radius:0px;
+            border:none;
+            margin:5px auto 5px 0px;
+            border-bottom:1px solid #222;
+
+            &.xl {
+                width:100%;
+                border:none;
+
+                .tableholder {
+                    width:100%;
+                }
+            }
+
+            &.tabspanel {
+                border:none;
+
+                .btn {
+                    margin: 5px 3px;
+                }
+
+                .btn-primary {
+                    background:#222;
+                    border:1px solid #222;
+                    color:$brightblue;
+                    @include outershadow;
+                }
+
+                .btn-outline-primary {
+                    border:1px solid #222;
+                    color:#222;
+                }
+
+            }
+
+            .btn-primary {
+                width:120px;
+                padding:10px;
+                text-align:left;
+                /*background:$bluepaper;*/
+                background:transparent;
+                border:none;
+                border-radius:0px;
+                font-size:90%;
+                font-weight:700;
+                color:$darkbrandblue;
+            }
+
+            .btn-outline-secondary {
+                width:auto;
+                /*background:white;*/
+                text-align:left;
+                font-size:90%;
+                border:none !important;
+                border-radius:0px;
+                color:#888;
+                font-weight:400;
+
+                &:hover {
+                    color:$brandblue;
+                    background:whitesmoke;
+                }
+            }
+
+        }
+
+        .btn-group.tabspanel {
+            width:100%;
+            margin:10px auto;
+            justify-content:flex-start;
+
+            .btn-primary {
+                flex:0 0 140px;
+                min-width:0px;
+                font-size:78%;
+                background:#222;
+                height:30px;
+                padding:0px 10px;
+                line-height:30px;
+                text-align:center;
+            }
+
+            .btn-outline-primary {
+                min-width:0px;
+                flex:0 0 140px;
+                font-size:78%;
+                border-radius:0px;
+                border:none;
+                height:30px;
+                padding:0px 10px;
+                line-height:30px;
+                outline:1px solid #222;
+                color:#222;
+                transition:0.2s;
+                text-align:center;
+
+                &:hover {
+                    transform:scale(1.01);
+                    background:white;
+                    @include outershadow;
+                    cursor:pointer;
+                    transition:0.2s;
+                }
+            }
+        }
+    }
+}

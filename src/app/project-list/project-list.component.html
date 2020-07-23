@@ -1,1 +1,22 @@
-<p>project-list</p>>
+<ng-container *ngIf="boms; else elseTemplate">
+        <div class="d-flex flex-column single-list">
+            <label>List of all uploaded files</label>
+            <small class="form-text text-muted"></small>
+            <ul>
+                <li class="list-group list-group-flush" *ngFor="let bom of boms">
+                    <app-material-lists-collection-view 
+                        [bom]="bom" 
+                        (selectedBoms)="setSelectedBoms($event)">
+                    </app-material-lists-collection-view>
+                </li>
+            </ul>
+        </div>
+</ng-container>
+<ng-template #elseTemplate>
+    <div class="d-flex flex-column single-list">
+        <div class="input-group mb-3">
+            <small class="form-text text-muted" *ngIf="!boms">There are no Lists stored in the database. Please upload a BOM-File first.</small>
+        </div>
+    </div>
+</ng-template>
+

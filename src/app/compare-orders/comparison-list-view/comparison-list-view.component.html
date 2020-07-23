@@ -1,0 +1,126 @@
+
+    <!--<div id="sider">
+        <div class="input-group">
+            <label>Select column</label><label>Enter filter</label><label>matches total</label>
+            <input type="text" class="form-control cnt" disabled value="{{processedBom ? processedBom.length : '-'}}">
+            
+            <input class="form-control wrt" type="text" placeholder="filter BOM table" #filter (change)="filterBom(filter.value)">
+            
+            <select id="filter" class="form-control cat" #filterCol>
+                <ng-container *ngFor="let col of cols">
+                    <option *ngIf="col.name" value="{{col.value}}">{{col.name}}</option>
+                </ng-container>
+            </select>
+        </div>
+    </div>-->
+    <div id="sider" class="borderless">
+        <div class="button-grp">
+            <button class="csv" (click)="downloadBom('unfiltered')"><p>Download Full XLSX</p></button>
+            <!-- <button class="pdf" (click)="downloadFullPDF()"><p>Download Full PDF</p></button> -->
+            <button class="csv" (click)="downloadBom('filtered')"><p>Download filtered XLSX</p></button>
+            <!-- <button class="pdf" (click)="downloadprocPDF()"><p>Download filtered PDF</p></button> -->
+        </div>
+    </div>
+
+    <!-- NEW TABLE -->
+
+<div id="user_functions" stickyThing marginTop="0">
+    <div class="filter">
+        <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
+        <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
+        <div class="loopbutton"></div>
+        <div class="marker"><span>{{thisFilter}} | {{thisCount}}</span></div>
+    </div>
+    <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 50, 100, dataSource.data.length]" showFirstLastButtons></mat-paginator>
+    <div id="totopbutton"><div class="inner" (click)="scrollTop()"></div></div>
+</div>
+
+<table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
+    <ng-container matColumnDef="Status" #boundaryStation>
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let element" >
+            <span [ngSwitch]="element.Status">
+            <span *ngSwitchCase="'movedFrom'" class="movedFrom">
+                Moved <strong style="font-weight: 400">from: {{element.Moved}}</strong>
+            </span>
+            <span *ngSwitchCase="'movedTo'" class="movedTo">
+                Moved <strong style="font-weight: 400">to: {{element.Moved}}</strong>
+            </span>
+            <span *ngSwitchDefault 
+            [ngClass]="{'remain' : element.Status === 'remain', 'remove' : element.Status === 'remove', 'added' : element.Status === 'added', 'obsolete' : element.Status === 'obsolete'}" >
+                {{element.Status}}
+            </span>
+            </span> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Location">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+        <td mat-cell *matCellDef="let element" > {{element.Location}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Part">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part </th>
+        <td mat-cell *matCellDef="let element" >{{element.Part}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Description">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+        <td mat-cell *matCellDef="let element" > {{element.Description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Unit">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Unit </th>
+        <td mat-cell *matCellDef="let element" > {{element.Unit}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Quantity Total">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Quantity Total</th>
+        <td mat-cell *matCellDef="let element" > {{element['Quantity Total']}} </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="Change">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Change </th>
+        <td mat-cell *matCellDef="let element"> {{element.Change}} </td>
+    </ng-container> -->
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+   
+</table>
+
+    <!--OLD TABLE <table class="table table-sm" id="BOM">
+        <thead class="thead-dark">
+            <th (click)="addSort('Status', $event)" scope="col">Status</th>
+            <th (click)="addSort('Location', $event)" scope="col">Location</th>
+            <th (click)="addSort('Part', $event)" scope="col">Part</th>
+            <th (click)="addSort('Description', $event)" scope="col">Description</th>
+            <th (click)="addSort('Unit', $event)" scope="col">Unit</th>
+            <th (click)="addSort('Quantity Total', $event)" scope="col">Quantity</th>
+            <th (click)="addSort('Change', $event)" scope="col">Change</th>
+        </thead>
+        <ng-container *ngFor="let item of processedBom">
+            <tr class="{{item.Status}}">
+                <th>
+                    <span [ngSwitch]="item.Status">
+                    <span *ngSwitchCase="'movedFrom'">
+                        Moved <strong style="font-weight: 400">from: {{item.moved}}</strong>
+                    </span>
+                    <span *ngSwitchCase="'movedTo'">
+                        Moved <strong style="font-weight: 400">to: {{item.moved}}</strong>
+                    </span>
+                    <span *ngSwitchDefault>
+                        {{item.Status}}
+                    </span>
+                    </span>
+                </th>
+                <td>{{item.Location}}</td>
+                <td>{{item.Part}}</td>
+                <td>{{item.Description}}</td>
+                <td>{{item.Unit}}</td>
+                <td>{{item['Quantity Total']}}</td>
+                <td>{{item.Change}}</td>
+            </tr>
+        </ng-container>           
+    </table>-->

@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# local run scripts
+dev.sh
+
 # compiled output
 /dist
 /tmp
@@ -9,6 +12,7 @@
 
 # dependencies
 /node_modules
+/server/node_modules
 
 # uploaded user data
 /server/user-upload

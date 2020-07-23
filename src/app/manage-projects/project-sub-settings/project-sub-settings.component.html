@@ -1,0 +1,19 @@
+<div class="submenu">
+    <div class="sb_hdr">
+        <div class="ttl"><div class="tg">{{project$.tag}}</div><h2>{{project$.name}}</h2></div>
+        <div class="edit" (click)="updateProject()"><img src="../../../assets/img/edit.png"></div>
+        <div (click)="close()" class="close"></div>
+    </div>
+
+    <div class="sb_bdy">
+        <ul>
+            <li (click)="toggleMultiBom()">Multi BOM Project</li>
+            <li class="passive" (click)="updateProject()">Exclude Project from current BOM</li>
+            <li (click)="giveMeInfo()">Project Information</li>
+        </ul>
+    </div>
+    <div class="del btn">
+        <button (click)="deleteProject()">Delete Project</button>
+    </div>
+</div>
+

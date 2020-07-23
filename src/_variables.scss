@@ -1,0 +1,106 @@
+@import "~@angular/cdk/overlay-prebuilt.css";
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~@angular/material/theming';
+
+$brandblue: #0c5a9e;
+$darkbrandblue: #003b69;
+$dbbinverse: #ffc496;
+$brightblue:#83d0f5;
+$brandorange: #ff6600;
+$brightbrandorange: #FF944D;
+$bboinverse: #006bb2;
+$lightgrey: #fbfbfb;
+$red:#ed677a;
+$darkred:#BA5060;
+$brightgreen:#caf583;
+$green:#a1d75a;
+$honey:#f5d583;
+$brightyellow:#FAC643;
+$paper:linear-gradient(-45deg, white, #fbfbfb);
+$bluepaper: linear-gradient(45deg, $brandblue, $darkbrandblue);
+$brightbluepaper: linear-gradient(45deg, $brightblue, $brandblue);
+$redpaper: linear-gradient(45deg, $red, $darkred);
+$darkpaper:linear-gradient(45deg, #666, #222);
+$yellowpaper:linear-gradient(45deg, $honey, $brightyellow);
+$greenpaper:linear-gradient(45deg, $brightgreen, $green);
+
+@mixin flex-standard {
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+@mixin absolute-center {
+    position:absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform:translate(-50%,-50%);
+    transform:translate(-50%,-50%);
+}
+
+@mixin absolute-full {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
+@mixin fullpseudo {
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
+@mixin background-cover {
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+@mixin outershadow {
+    -webkit-box-shadow: 0px 5px 25px -15px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 5px 25px -15px rgba(0,0,0,0.75);
+    box-shadow: 0px 5px 25px -15px rgba(0,0,0,0.75);
+}
+
+@mixin innershadow {
+    -webkit-box-shadow: inset 0px 0px 25px -15px rgba(0,0,0,0.5);
+    -moz-box-shadow: inset 0px 0px 25px -15px rgba(0,0,0,0.5);
+    box-shadow: inset 0px 0px 25px -15px rgba(0,0,0,0.5);
+}
+
+@mixin removeshadow {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+body {
+    background:$lightgrey !important;
+}
+
+form {
+    flex: 0 1 25%;
+
+    .input-group {
+        button {
+            flex: 1;
+        }
+        label {
+            display:block;
+        }
+    }
+}
+
+.flex-row {
+    justify-content: center;
+}
+
+@import "./scss/modals";
+@import "./scss/tables";
+@import "./scss/projects";

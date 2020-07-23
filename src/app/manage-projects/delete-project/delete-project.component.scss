@@ -1,0 +1,44 @@
+@import "../../../variables";
+
+:host {
+    @include outershadow;
+    .dialog {
+        
+        .modal-content {
+
+            .modal-header {
+                width:90%;
+                margin:10px auto;
+                border:none;
+                border-bottom:1px solid #222 !important;
+
+                h5 {
+                    text-align:center !important;
+                    font-weight:500 !important;
+
+                    span {
+                        color:$red;
+                        border:2px solid #222;
+                        padding:3px 8px;
+                    }
+                }
+                p {}
+                button {
+                    display:none;
+                }
+            }
+            .modal-footer {
+                border-top:1px solid $darkbrandblue;
+                button {
+                    color:whitesmoke;
+                    border-radius:0px;
+                    border:1px solid whitesmoke;
+                    background:rgba(0,0,0,0.1);
+                }
+                .btn-delete {
+                    background:$red;
+                }
+            }
+        }
+    }
+}

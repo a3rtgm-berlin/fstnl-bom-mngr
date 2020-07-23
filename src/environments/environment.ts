@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // api: 'https://btbom.creative-collective.de/api/'
+  api: 'http://localhost:8000/api/'
 };
 
 /*

@@ -1,0 +1,121 @@
+@import "../../../variables";
+
+:host {
+    .modal-content {
+        border-radius:0px;
+        background:white;
+
+        .modal-header {
+            border-radius:0px;
+            border:none;
+            width:calc(100% - 6px);
+            height:40px;
+            margin:3px;
+            padding:0;
+            background:$brandblue;
+
+            h5 {
+                color:white;
+                font-size:120%;
+                padding-left:10px;
+                line-height:40px;
+            }
+
+            button {
+                position:relative;
+                padding:0;
+                width:20px;
+                height:20px;
+                margin:10px 10px 10px auto;
+                opacity:1 !important;
+                background:url("../../../assets/img/close2.png");
+                transition:0.2s;
+            }
+
+            button:hover {
+                span {
+                    filter:grayscale(0);
+                    transition:0.2s;
+                }
+            }
+        }
+        .modal-body {
+            form {
+                .input-group {
+                    @include flex-standard;
+                    .input-group-prepend, .input-group-append {
+                        order:1;
+                        flex:0 0 30%;
+                        border:none;
+                        border-right:2px solid whitesmoke;
+                        span {
+                            display:block;
+                            width:100%;
+                            height:auto;
+                            border:none;
+                            border-radius:0px;
+                            font-size:80%;
+                            color:#aaa;
+                            background:transparent;
+                        }
+                    }
+
+                    input {
+                        border-radius:0px;
+                        border:none;
+                        color:grey;
+                        background:rgba(0,0,0,0.025);
+                        margin-left:10px;
+                        flex-grow:1;
+                        order:2;
+                        @include outershadow;
+
+                        &.short {
+                            flex-basis: 60px;
+                            flex-grow: 0;
+                            text-transform: uppercase;
+                        }
+                    }
+
+                    textarea {
+                        border-radius:0px;
+                        flex-grow:1;
+                        color:grey;
+                        background:rgba(0,0,0,0.025);
+                        border:none;
+                        font-size:80%;
+                        margin-left:10px;
+                        order:2;
+                        resize:none;
+                        @include outershadow;
+                    }
+                }
+            }
+        }
+        .modal-footer {
+            .btn-primary {
+                background:$brandblue;
+                border-radius:0px;
+                border:1px solid $brandblue;
+                transition:0.3s;
+            }
+
+            .btn-primary:hover {
+                border:1px solid whitesmoke;
+                transition:0.3s;
+            }
+
+            .btn-secondary {
+                border-radius:0px;
+                background:lightgrey;
+                border:1px solid whitesmoke;
+                transition:0.3s;
+            }
+
+            .btn-secondary:hover {
+                background:$red;
+                transition:0.3s;
+            }
+        }
+    }
+}

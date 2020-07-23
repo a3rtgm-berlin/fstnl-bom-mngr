@@ -1,0 +1,23 @@
+@import "../../variables";
+
+:host {
+    width:100%;
+    margin:20px auto;
+    
+    .moving-file {
+        display:flex !important;
+        flex-direction:row !important;
+        flex-wrap:wrap;
+
+        .meta-info {
+            flex:0 0 40%;
+            overflow-x:hidden;
+            margin: 2px auto 2px 0px;
+        }
+
+        .moving-file-container {
+            flex:0 0 100%;
+            overflow-x:hidden;
+        }
+    }
+}

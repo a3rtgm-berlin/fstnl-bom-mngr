@@ -1,0 +1,190 @@
+@import "../../variables";
+
+:host {
+    display:block;
+    position:relative;
+    width:100%;
+    max-width:1192px;
+    margin:5px auto;
+    thead {
+        padding:0px;
+        margin:0px;
+        height:40px;
+        line-height:40px;
+        border-bottom:2px solid #222;
+        background:$darkpaper;
+
+        th {
+            position:relative;
+            text-align:center;
+            padding:0px 10px;
+            background:transparent;
+            font-weight:400;
+            color:whitesmoke;
+            font-size:90%;
+            z-index:1;
+
+            &.filter:before {
+                content:'';
+                @include absolute-center;
+                width:80%;
+                height:80%;
+                border:1px solid whitesmoke;
+                background:$brandorange;
+                opacity:0.6;
+                z-index:-1;
+            }
+
+            &.filter2:before {
+                content:'';
+                @include absolute-center;
+                width:80%;
+                height:80%;
+                border:1px solid whitesmoke;
+                background:$brandorange;
+                opacity:0.35;
+                z-index:-1;
+            }
+
+            &.filter3:before {
+                content:'';
+                @include absolute-center;
+                width:80%;
+                height:80%;
+                border:1px solid whitesmoke;
+                background:$brandorange;
+                opacity:0.1;
+                z-index:-1; 
+            }
+
+            &.filter:after {
+                content: "1";
+                position: absolute;
+                top: 10%;
+                left: calc(100% - 8px);
+                width: 8px;
+                height: 8px;
+                line-height: 8px;
+                margin: 0 !important;
+                padding: 0 !important;
+                font-size: 50%;
+                background: whitesmoke;
+                color: #222;
+            }
+
+            &.filter2:after {
+                content: "2";
+                position: absolute;
+                top: 10%;
+                left: calc(100% - 8px);
+                width: 8px;
+                height: 8px;
+                line-height: 8px;
+                margin: 0 !important;
+                padding: 0 !important;
+                font-size: 50%;
+                background: whitesmoke;
+                color: #222;
+            }
+
+            &.filter3:after {
+                content: "3";
+                position: absolute;
+                top: 10%;
+                left: calc(100% - 8px);
+                width: 8px;
+                height: 8px;
+                line-height: 8px;
+                margin: 0 !important;
+                padding: 0 !important;
+                font-size: 50%;
+                background: whitesmoke;
+                color: #222;
+            }
+        }
+
+    }
+
+    tr {
+        padding:5px 10px;
+        border-bottom:2px solid #eee;
+        background:#f8f8f8;
+        text-align:center;
+        th {
+            position:relative;
+            span {
+                color:whitesmoke;
+                font-size:90%;
+                font-weight:400;
+            }
+        }
+        td {
+            font-size:80%;
+            font-weight:300;
+            color:#444;
+
+            .btnbox {
+                display:flex;
+                flex-direction:row;
+                justify-content:center;
+                flex-grow:0;
+                height:30px;
+                margin-left:3px;
+                border:none;
+
+                
+                button {
+                    position:relative;
+                    display:block;
+                    margin-left:3px;
+                    height:30px;
+                    width:30px;
+                    border:none;
+                    opacity:0.75;
+                    @include outershadow;
+
+                    &:hover {
+                        transform:scale(1.03);
+                        opacity:0.9;
+                        transition:0.2s;
+                    }
+
+                    &.refresh {
+                        background:$brandblue;
+
+                        &:after {
+                            @include fullpseudo;
+                            background:url("../../assets/img/reload2.png");
+                            background-size:15px;
+                            background-position:center;
+                            background-repeat:no-repeat;
+                            filter:invert(1);
+                            opacity:0.6;
+                        }
+                    }
+
+                    &.delete {
+                        background:$darkred;
+                        
+                        &:after {
+                            @include fullpseudo;
+                            background:url("../../assets/img/trash.png");
+                            background-size:15px;
+                            background-position:center;
+                            background-repeat:no-repeat;
+                            filter:invert(1);
+                            opacity:0.9;
+                        }
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            transform:scale(1.01);
+            background:white;
+            cursor:pointer;
+            transition:0.1s;
+        }
+    }
+}

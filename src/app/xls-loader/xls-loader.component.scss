@@ -1,7 +1,109 @@
-form {
-    flex: 0 1 25%;
+@import "../../variables";
 
-    label {
-        display:block;
+:host {
+    display:block;
+    margin:10px auto;
+    width:90%;
+    height:auto;
+    
+    
+    &:hover {
+        cursor:pointer;
+    }
+
+    form {
+        @include flex-standard;
+        width:100%;
+
+        .input-group {
+            flex:1 0 100%;
+
+            .custom-file {
+                height:30px;
+                border-radius:0px;
+
+                input {
+                    line-height:30px;
+                    height:30px;
+                    
+                    &:hover {
+                        cursor:pointer !important;
+                        @include innershadow;
+                        color:#222;
+                    }
+                }
+
+                label {
+                    text-align:center;
+                    border-radius:0px;
+                    font-size:80%;
+                    color:#aaa;
+                    font-weight:400;
+                    border:none;
+                    border-bottom: 1px solid #222;
+                    background:transparent;
+                    /*@include innershadow;*/
+
+                    &:after {
+                        display:none;
+                    }
+                }
+            }
+
+            &:hover {
+                cursor:pointer;
+            }
+        }
+
+        .input-group-append {
+            flex: 1 0 100%;
+            margin:5px auto;
+
+            button {
+                position:relative;
+                border-radius:0px;
+                /*border:1px solid lightgrey;*/
+                height:30px;
+                padding:0;
+                font-weight:500;
+                color:#333;
+                font-size:80%;
+                border:1px solid #333;
+                background:transparent;
+                @include outershadow;
+                
+                &:after {
+                    @include fullpseudo;
+                    /*background:$darkbrandblue;*/
+                    opacity:0.75;
+                    z-index:-1;
+                }
+
+                &:hover {
+                    cursor:default;
+                    transform:scale(0.958);
+                    opacity:0.5;
+                    transition:0.3s;
+                }
+            }
+
+            &.active {
+                button {
+                color:$brandblue;
+                border:1px solid $brandblue;
+                transition:0.3s;
+                @include outershadow;
+
+                &:hover { 
+                    cursor:pointer;
+                    color:whitesmoke;
+                    background:$brandblue;
+                    transition:0.3s;
+                    opacity:1;
+                    transform:scale(1.01);
+                }
+                }
+            }
+        }
     }
 }

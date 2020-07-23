@@ -1,0 +1,48 @@
+<div class="dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Upload New Work-Station Matrix</h5>
+            <button type="button" class="close" (click)="close()">
+                <span aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form class="upload" (ngSubmit)="onSubmit(upload.value)">
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input #upload type="file" class="custom-file-input" id="matrix" (change)="onChange($event, 'matrix')" accept="text/csv, text/xls, text/xlsx">
+                        <label class="custom-file-label" for="matrix">{{file.matrix ? file.matrix.name : 'Choose File' }}</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary dl" (click)="download('matrix')">Download</button>
+            <div class="submit">
+                <button class="btn btn-outline-secondary" type="button" (click)="onSubmit('matrix')">Submit</button>
+            </div>
+        </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Upload New Exclude Part List</h5>
+            </div>
+            <div class="modal-body">
+                <form class="upload" (ngSubmit)="onSubmit(upload.value)">
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input #uploadExclude type="file" class="custom-file-input" id="exclude-list" (change)="onChange($event, 'exclude')" accept="text/csv, text/xls, text/xlsx">
+                            <label class="custom-file-label" for="exclude-list">{{file.exclude ? file.exclude.name : 'Choose File' }}</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary dl" (click)="download('exclude')">Download</button>
+                <div class="submit">
+                    <button class="btn btn-outline-secondary" type="button" (click)="onSubmit('exclude')">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">Cancel</button>
+        </div>
+</div>

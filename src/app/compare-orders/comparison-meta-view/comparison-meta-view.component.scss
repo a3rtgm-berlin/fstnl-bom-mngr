@@ -1,0 +1,119 @@
+@import "../../../variables";
+
+:host {
+
+    table {
+        display:flex;
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+        background:#f8f8f8;
+        @include outershadow;
+
+        thead {
+            flex:1 0 100%;
+            background:linear-gradient(45deg, #222, #666);
+            th {
+                width:100%;
+                height:40px;
+                line-height:40px;
+                padding:0px 10px;
+                background:transparent;
+                border-top:none;
+                border-bottom:2px solid #222;
+            }
+        }
+
+        tr {
+            display:flex;
+            flex-direction:row;
+            flex-wrap:nowrap;
+            flex:1 0 100%;
+            th {
+                flex:0 0 33%;
+                font-size:80%;
+                height:40px;
+                line-height:40px;
+                padding:0px 10px;
+                margin:2px 0px 0px 2px;
+                border-top:none;
+                border-bottom:1px solid #eee;
+            }
+            td {
+                flex:1 0 66%;
+                font-size:75%;
+                height:40px;
+                line-height:40px;
+                padding:0px 10px;
+                margin:2px 0px 0px 2px;
+                border-top:none;
+                border-bottom:1px solid #eee;
+            }
+        }
+
+        tr.vert {
+            flex:1 0 100%;
+            padding:0;
+            margin:0;
+            
+            .wrp {
+                display:flex;
+                flex-direction:row;
+                flex-wrap:wrap;
+                width:100%;
+                height:auto;
+                background:$darkbrandblue;
+                @include innershadow;
+
+                .cat {
+                    display:flex;
+                    margin:4px;
+                    @include outershadow;
+                    transition:0.1s;
+
+                    .pre {
+                        order:1;
+                        width:25px;
+                        height:25px;
+                        margin-right:3px;
+                        line-height:25px;
+                        text-align:center;
+                        background:black;
+                        color:whitesmoke;
+                        font-size:80%;
+                        font-weight:500;
+                    }
+
+                    .post {
+                        height:25px;
+                        line-height:25px;
+                        order:2;
+                        font-size:80%;
+                        padding:0px 5px;
+                        color:#222;
+                        background:whitesmoke;
+
+                        &.green {
+                            background:$brightgreen;
+                        }
+                        &.red {
+                            background:$red;
+                        }
+                        &.yellow {
+                            background:$honey;
+                        }
+                        &.blue {
+                            background:$brightblue;
+                        }
+                    }
+                }
+
+                .cat:hover {
+                    cursor:pointer;
+                    transform:scale(1.01);
+                    transition:0.3s;
+                }
+            }
+        }
+    }
+}

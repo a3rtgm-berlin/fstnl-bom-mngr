@@ -1,0 +1,385 @@
+@import "../../variables";
+
+:host {
+    width:100%;
+
+    #projects-intro {
+        @include flex-standard;
+        width:100%;
+        max-width:1192px;
+        height:auto;
+        margin:25px auto;
+
+        .lft-wrppr {
+            flex:1 0 50%;
+            .header {
+                h2 {
+                    font-size:120%;
+                    color:#444;
+                    font-weight:500;
+
+                    strong {
+                        font-weight:700;
+                        color:$brandblue;
+                        margin-right:5px;
+                    }
+                }
+            }
+
+            .prjct_cnt {
+                h3 {
+                    font-size:100%;
+                    font-weight:300;
+                    line-height:25px;
+                    color:#888;
+
+                    strong {
+                        display:inline-block;
+                        height: 25px;
+                        width: 25px;
+                        line-height: 25px;
+                        text-align: center;
+                        margin-right: 5px;
+                        /* padding: 3px; */
+                        border: 1px solid #aaa;
+                    }
+                }
+            }
+        }
+
+        .rght-wrppr {
+            flex:1 0 50%;
+
+            .time_cnt {
+                text-align:right;
+                color:#222;
+                font-weight:600;
+            }
+        }
+    }
+
+    #master-tools {
+        position:relative;
+        display:flex;
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+        align-items:center;
+        width:100%;
+        max-width:1192px;
+        margin:5px auto;
+        background:#efefef;
+
+        .infoarea {
+            height:100%;
+            margin:5px;
+
+            .textwrap {
+                h3 {
+                    font-size:100%;
+                    margin:0;
+                    padding:5px;
+                    margin-right:10px;
+                    background:whitesmoke;
+                    padding-right:20px;
+
+                    strong {
+                        background:#222;
+                        padding:5px 20px;
+                        color:$brightblue;
+                        font-weight:500;
+                        font-size:80%;
+                        margin-right:10px;
+                    }
+                }
+            }
+        }
+
+        .btnarea {
+            height:100%;
+            margin:5px;
+
+            ul {
+                display:flex;
+                list-style:none;
+                margin:auto;
+
+                li {
+                    margin:auto 3px;
+                    button {
+                        /*background:#222;*/
+                        border:2px solid #222;;
+                        outline:none;
+                        padding:5px 10px;
+                        font-weight:400;
+                        color:#222;
+                        font-size:80%;
+
+                        &:hover {
+                            background:#222;
+                            @include outershadow;
+                            transform:scale(1.02);
+                            transition:0.2s;
+                        }
+
+                        &.create {
+                            &:hover {
+                                color:$brightgreen;
+                            }
+                        }
+
+                        &.view {
+                            &:hover {
+                                color:$brightblue;
+                            }
+                        }
+
+                        &.re {
+                            &:hover {
+                                color:$honey;
+                            }
+                        }
+
+                        &.del {
+                            &:hover {
+                                color:$red;
+                            }
+                        }
+
+                        &:disabled {
+                            opacity:0.3;
+
+                            &:hover {
+                                transform:scale(0.95);
+                                opacity:0.15;
+                                color:black;
+                                background:transparent;
+                                transition:0.2s;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #list-projects {
+        margin:50px auto;
+        max-width:1192px;
+
+        ul {
+            @include flex-standard;
+            list-style:none;
+            justify-content: flex-start;
+
+            li {
+                position:relative;
+                display:flex;
+                flex-basis:calc(33% - 6px);
+                min-width:300px;
+                min-height:180px;
+                margin:3px;
+                overflow:hidden;
+            }
+
+            li.actProject {
+                /*border:1px solid #ccc;*/
+                background:rgba(255,255,255,0.5);
+                @include outershadow;
+                overflow:visible;
+                z-index:5;
+
+                &:hover, &:focus {
+                    transform:scale(1.02);
+                    transition:0.25s;
+                    outline: 1px solid #222;
+                    z-index: 10;
+                }
+            }
+
+            li.nProject {
+                /*@include innershadow;*/
+                background:#efefef;
+                transition:0.2s;
+                z-index:3;
+
+                button {
+                    position:relative;
+                    background:transparent;
+                    border:none;
+                    border-radius:0px;
+                    display:block;
+                    width:100%;
+                    height:100%;
+
+                    img {
+                        @include absolute-center;
+                        width:50px;
+                        opacity:0.25;
+                        z-index:1;
+                    }
+                    
+                    a {
+                        position: absolute;
+                        width: 100%;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        z-index:2;
+                        margin:60px auto 10px auto;
+                        color:#aaa;
+                    }
+                }
+
+                button:after {
+                    content:'';
+                    @include absolute-center;
+                    width:1px;
+                    height:1px;
+                    border-radius:1%;
+                    border:1px solid #ccc;
+                }
+            }
+
+            li.nProject:hover {
+                transform:scale(0.96);
+                @include innershadow;
+                transition:0.3s;
+
+                button {
+                    img {
+                        opacity:0.15;
+                        transition:0.3s ease 0.4s;
+                    }
+
+                    a {
+                        transform:translate(-50%,-50%) scale(1.1);
+                        margin:55px auto 15px auto;
+                        transition:0.6s ease 0s;
+                    }
+                }
+
+                button:after {
+                    border-radius:50%;
+                    width:80px;
+                    height:80px;
+                    background:#dfdfdf;
+                    transition:border-radius 0.3s ease 0.3s, height 0.2s ease 0.4s, width 0.2s ease 0.4s;
+                }
+            }
+
+            li.bigRedButton {
+                flex:1 0 100%;
+                height:60px;
+                min-height:0;
+                margin:30px auto;
+                border:1px solid #ccc;
+                outline:none;
+                @include innershadow;
+                transition:0.2s;
+                z-index:3;
+
+                button {
+                    display:block;
+                    width:100%;
+                    height:100%;
+                    padding:0;
+                    border:none;
+                    
+                    &:not(.btn-success) {
+                        background:#ddd;
+                    }
+
+                    &.btn-success {
+                        a {
+                            opacity: 0.8;
+                            color:white;
+
+                            &:before {
+                                filter:invert(1);
+                                opacity: 0.8;
+                            }
+                        }
+                    }
+
+                    a {
+                        position:relative;
+                        width:100%;
+                        line-height:60px;
+                        text-align:center;
+                        padding:0;
+                        color:#444;
+                        opacity:0.15;
+                        font-size:110%;
+                        font-weight:700;
+                    }
+
+                    a:before {
+                        content:'';
+                        position:absolute;
+                        width:30px;
+                        height:30px;
+                        top:-2px;
+                        left:-50px;
+                        opacity:0.45;
+                        background:url("../../assets/img/fetch.png");
+                        @include background-cover;
+                    }
+                }
+                &.active {
+                    border: 1px solid lawngreen;
+                    button {
+                        background:$brightgreen;
+
+                        a {
+                            color:white;
+                            opacity:0.85;
+
+                            &:before {
+                                filter:invert(1);
+                                opacity:1;
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        transform:scale(1.005);
+                        transition:0.3s;
+                        @include outershadow;
+        
+                        button {
+                           /* background:$brandblue;
+                            border:2px solid $brandblue;*/
+                            a {
+                                color:white;
+                            }
+        
+                            a:before {
+                                filter:invert(1);
+                                opacity:0.95;
+                            }
+                        }
+                    }
+                }
+
+                &.done {
+                    button {
+                        background:$bluepaper !important;
+                    }
+
+                    &:hover {
+                        transform:scale(1.005);
+                        transition:0.3s;
+                        @include outershadow;
+
+                        button {
+                            a {
+                                opacity:0.85;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

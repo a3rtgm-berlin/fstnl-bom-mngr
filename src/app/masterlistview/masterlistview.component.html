@@ -1,0 +1,112 @@
+<div class="btn-group functions">
+    <!--<div id="sider">
+        <div class="input-group">
+            <label>Select column</label><label>Enter filter</label><label>matches total</label>
+            <input type="text" class="form-control cnt" disabled value="{{processedBom ? processedBom.length : '-'}}">
+            
+            <input class="form-control wrt" type="text" placeholder="filter BOM table" #filter (change)="filterBom(filter.value)">
+            
+            <select class="form-control cat" #filterCol>
+                <ng-container *ngFor="let col of cols">
+                    <option  *ngIf="col.name" value="{{col.value}}">{{col.name}}</option>
+                </ng-container>
+            </select>
+        </div>
+    </div>-->
+
+    <div id="sider" class="borderless">
+        <div class="button-grp">
+            <button class="csv" (click)="downloadBom('full')"><p>Download Full XLSX</p></button>
+            <!-- <button class="pdf" (click)="downloadFullPDF()"><p>Download Full PDF</p></button> -->
+            <button class="csv" (click)="downloadBom('filtered')"><p>Download filtered XLSX</p></button>
+            <!-- <button class="pdf" (click)="downloadprocPDF()"><p>Download filtered PDF</p></button> -->
+        </div>
+    </div>
+</div>
+
+<!-- NEW TABLE -->
+<div #spacer></div>
+<div id="user_functions" stickyThing [spacer]="spacer" marginTop="0">
+    <div class="filter">
+        <input id="filter" class="active form-control wrt" type="text" placeholder="filter BOM table" matInput (change)="applyFilter($event.target.value)">
+        <input id="filter2" class="form-control wrt" type="text" placeholder="apply 2nd filter" matInput (change)="applyFilterSnd($event.target.value)">
+        <div class="loopbutton"></div>
+        <div class="marker"><span>{{thisFilter}} | {{thisCount}}</span></div>
+    </div>
+    <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 50, 100, dataSource.data.length]" showFirstLastButtons></mat-paginator>
+    <div id="totopbutton"><div class="inner" (click)="scrollTop()"></div></div>
+</div>
+
+<table class="table table-sm" id="BOM" mat-table matSort [dataSource]="dataSource">
+    <ng-container matColumnDef="Location" #boundaryLocation>
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+        <td class="location" [ngStyle]="{'background': colors[element.Location]}" mat-cell *matCellDef="let element" > {{element.Location}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Part">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Part </th>
+        <td  class="part" mat-cell *matCellDef="let element" >{{element.Part}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Description">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+        <td class="description" mat-cell *matCellDef="let element" >{{element.Description}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Unit">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Unit </th>
+        <td mat-cell *matCellDef="let element" > {{element.Unit}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Projects">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Projects </th>
+        <td mat-cell *matCellDef="let element" > {{element.Boms.join(', ')}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Quantity Total">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Quantity Total </th>
+        <td mat-cell *matCellDef="let element" > {{element['Quantity Total'] | localeNumber}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Location Wagons">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location Wagons </th>
+        <td mat-cell *matCellDef="let element"> {{element['Location Wagons']}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Location Bins">
+        <th class="thead-dark" mat-header-cell *matHeaderCellDef mat-sort-header> Location Bins </th>
+        <td mat-cell *matCellDef="let element"> {{element['Location Bins']}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+   
+</table>
+
+<!-- OLD TABLE <table class="table table-sm" id="BOM">
+    <thead class="thead-dark">
+        <th (click)="addSort('Location', $event)" scope="col">Location</th>
+        <th (click)="addSort('Part', $event)" scope="col">Part</th>
+        <th (click)="addSort('Description', $event)" scope="col">Description</th>
+        <th (click)="addSort('Unit', $event)" scope="col">Unit</th>
+        <th scope="col">Projects</th>
+        <th (click)="addSort('Quantity Total', $event)" scope="col">Quantity Total</th>
+        <th scope="col">Station Wagons</th>
+        <th scope="col">Station Bins</th>
+    </thead>
+    <ng-container *ngFor="let item of processedBom">
+      <tr>
+        <td [ngStyle]="{'background': colors[item.Location]}" class="location">{{item.Location}}</td>
+        <td>{{item.Part}}</td>
+        <td>{{item.Description}}</td>
+        <td>{{item.Unit}}</td>
+        <td>{{item.Boms.join(', ')}}</td>
+        <td>{{item['Quantity Total'] | localeNumber}}</td>
+        <td>{{item.StationWagons}}</td>
+        <td>{{item.StationBins}}</td>
+      </tr>
+    </ng-container>    
+</table>-->

@@ -1,0 +1,61 @@
+<div class="d-flex flex-column single-list">
+    <ng-container *ngIf="2 | role">
+    <div class="meta-view">
+        <label><strong>{{master$.id}}</strong> {{master$ ? "[ Masterlist loaded ]" : "[ Masterlist not found! ]"}}</label>
+        <table class="table table-sm">
+            <thead>
+                <th scope="col">Master-List-ID</th>
+                <th scope="col">Projects</th>
+                <th scope="col">Date</th>
+                <th scope="col">Processed</th>
+            </thead>
+            <tr>
+                <td>{{master$ ? master.id : "-"}}</td>
+                <td>{{master$ ? master.projects.join(', ') : "-"}}</td>
+                <td>{{master$ ? master.date : "-"}}</td>
+                <td>{{master$ ? master.uploadDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "-"}}</td>
+            </tr>
+        </table>
+        <div class="btn-group tabspanel" #tabsPanel>
+            <button *ngFor="let currentTab of tabs" class="btn {{currentTab === tab ? 'btn-primary' : 'btn-outline-primary'}}" (click)="selectTab($event, currentTab)">View {{currentTab}}</button>
+        </div>
+    </div>
+    </ng-container>
+        <div class="btn-group xl">
+            <div [ngSwitch]="tab" class="tableholder">
+                <ng-template *ngIf="2 | role" [ngSwitchCase]="'MasterBOM'">
+                    <app-masterlistview 
+                        [bom]="master$.json ? master$.json : null"
+                        [colors]="colors"
+                        [id]="master$.id">
+                    </app-masterlistview>
+                </ng-template>
+                <ng-template *ngIf="2 | role" [ngSwitchCase]="'Moving File'">
+                    <app-compare-orders 
+                        [movingFile]="master.movingFile ? master.movingFile : null">
+                    </app-compare-orders>
+                </ng-template>
+                <ng-template *ngIf="2 | role" [ngSwitchCase]="'RPN'">
+                    <app-project-remain-need
+                        [projects]="master$.projects"
+                        [id]="master$.id"
+                        (created)="setLocalStateOnMaster($event, 'rpn')">
+                    </app-project-remain-need>
+                </ng-template>
+                <ng-template [ngSwitchCase]="'Planogram'">
+                    <app-planogram 
+                        [id]="master$.id"
+                        [bom]="master$.json"
+                        [colors]="colors"
+                        (created)="setLocalStateOnMaster($event, 'planogram')">
+                    </app-planogram>
+                </ng-template>
+                <ng-template ngSwitchDefault>
+                    <p>No Tab Selected.</p>
+                </ng-template>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <small class="form-text text-muted" *ngIf="!master$">The requested BOM-List is not available. Please check the Year and Month.</small>
+        </div>
+    </div>
