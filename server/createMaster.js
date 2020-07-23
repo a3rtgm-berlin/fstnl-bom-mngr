@@ -63,7 +63,7 @@ async function combineLists(boms, id, date, projectTags) {
 
     masterList.forEach((mat1, e1, i) => {
         masterList.forEach((mat2, e2, j) => {
-            if (mat1.Location === mat2.Location && mat1.Part === mat2.Part && mat1.Boms[0] !== mat2.Boms[0]) {
+            if (mat1.Location === mat2.Location && mat1.Part == mat2.Part && mat1.Boms[0] !== mat2.Boms[0]) {
                 mat1['Quantity Total'] += mat2['Quantity Total'];
                 mat1.Boms.push(mat2.Boms[0]);
                 masterList.delete(mat2);

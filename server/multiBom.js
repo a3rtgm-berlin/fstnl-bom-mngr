@@ -11,7 +11,7 @@ module.exports = class MultiBom {
     mergeIntoMultiBom(bom) {
         this.bom.json.forEach((part) => {
             bom.json.forEach(_part => {
-                if (_part.Location === part.Location && _part.Part === part.Part) {
+                if (_part.Location === part.Location && _part.Part == part.Part) {
                     part['Quantity Total'] = part['Quantity Total'] >= _part['Quantity Total'] ? part['Quantity Total'] : _part['Quantity Total'];
                     _part.delete = true;
                 }

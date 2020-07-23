@@ -119,7 +119,7 @@ function planogramParser(input, id) {
     
                         dataAsJson.forEach(_part => {
                             if (_part.Wagon !== part.Wagon && _part.Bin !== part.Bin) {
-                                if (_part.Location === part.Location && _part.Part === part.Part) {
+                                if (_part.Location === part.Location && _part.Part == part.Part) {
                                     _part.delete = true;
                                     map['Bin Location'].push([_part.Wagon, _part.Bin]);
                                     map['Bin Count'] += 1;

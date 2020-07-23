@@ -1,6 +1,6 @@
 {
     "curly": false,
-    "eqeqeq": true,
+    "eqeqeq": false,
     "nocomma": false,
-    "esversion":9
+    "esversion": 9
 }

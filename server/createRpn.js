@@ -49,7 +49,7 @@ module.exports = async function createRpn(req, res) {
         const project = bom.project;
 
         bom.json.forEach(item => {
-            const match = allParts.find(part => part.Part === item.Part);
+            const match = allParts.find(part => part.Part == item.Part);
 
             if (match) {
               match.ovCount += item['Quantity Total'];

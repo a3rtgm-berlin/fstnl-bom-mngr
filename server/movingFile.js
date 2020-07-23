@@ -78,7 +78,7 @@ module.exports = class MovingFile {
         console.log('half time', this.currentBom.json.length, $added.size, $removed.size);
 
         $added.forEach((e, currentItem, s) => {
-            const $ancestor = Array.from($removed).find(oldItem => oldItem.Part === currentItem.Part);
+            const $ancestor = Array.from($removed).find(oldItem => oldItem.Part == currentItem.Part);
 
             if ($ancestor) {
                 $added.delete(currentItem);
@@ -112,7 +112,6 @@ module.exports = class MovingFile {
                     currentItem.Part == item.Part && 
                     currentItem.Location !== item.Location && 
                     currentItem.Status !== "removed")) {
-                        // console.log(item.Part, item.Part == "500333601", typeof item.Part);
                         item.Status = "obsolete";
                         movingMeta.removed -= 1;
                         movingMeta.obsolete += 1;
